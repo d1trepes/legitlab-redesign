@@ -1,30 +1,29 @@
-# LEGIT LAB — Claude Code website demo
+# LEGIT LAB — демоверсия редизайна
 
-**[ФАКТ]** Это приватный репозиторий материалов для отдельной демоверсии редизайна **Legit Lab** (B2C-аутентификация вещей по фото). Действующий `legit-lab.com` здесь **не меняется**. На 08.11.2026 в репозитории есть документация, выбранный знак и настоящие переданные пользователем hero-ассеты, но нет исходного кода нового сайта. Следующий шаг — Claude Code **создаёт сайт здесь**, а не пишет очередное ТЗ.
+**Отдельная концептуальная демоверсия, не production.** Действующий `legit-lab.com` не меняется.
 
-## Запуск в Claude Code — один шаг
-1. Подключи/клонируй этот репозиторий в Claude Code.
-2. Открой [START_IN_CLAUDE_CODE.md](START_IN_CLAUDE_CODE.md) и отправь содержащийся там единый промпт.
+Сейчас собрана **главная страница** (9 блоков, светлая и тёмная тема, desktop и mobile). Решения и ограничения — в [docs/IMPLEMENTATION_NOTES.md](docs/IMPLEMENTATION_NOTES.md) и [docs/DECISIONS.md](docs/DECISIONS.md) (D-031—D-039).
 
-Claude Code автоматически должен прочитать [CLAUDE.md](CLAUDE.md); в нём приоритеты, готовые ссылки на материалы и запрет выдумывать результаты. В этом запросе разрешён **изолированный работающий прототип**, не production-deploy.
+## Запуск
+```bash
+npm install
+npm run dev        # http://localhost:3000
+```
 
-## Что уже есть
-- **Выбранный знак C2 Compact:** `assets/logo/selected/C2-compact-selected.svg` (графический выбор D-029; коммерческие права ещё не проверены).
-- **Два пользовательских hero-худи:** `assets/hero/hero-hoodie-black-light.webp` и `assets/hero/hero-hoodie-white-dark.webp` (прямые производные оригинала, без новой генерации).
-- **Согласованная композиция hero:** огромный `LEGIT LAB` за худи, H1 «Проверка подлинности брендовых вещей», осмысленный CTA.
-- **Система:** fashion-editorial × streetwear × authentication, светлая монохромная по умолчанию / тёмная через настройки; TT Firs Neue + TT Commons Pro только после проверки лицензий.
-- **Аудит/IA:** `docs/UX_AUDIT.md`, `docs/CURRENT_SITEMAP.md`, `docs/PROPOSED_SITEMAP.md`.
-- **Подробная история:** `docs/DECISIONS.md`, `docs/STAGE_02_ART_DIRECTION.md`, `docs/HERO_ASSET_MANIFEST.md`, `docs/REFERENCE_NOTES.md`, `docs/PROJECT_BRIEF.md`, `docs/ROADMAP.md`.
+## Проверки и сборка
+```bash
+npm run typecheck
+npm run lint
+npm run build      # статический сайт в папке out/
+```
+Папку `out/` можно выложить на любой статический хостинг (Vercel, Netlify, GitHub Pages) для просмотра.
 
-## Документы для разработки
-- [CLAUDE.md](CLAUDE.md) — инструкция ассистенту Claude Code.
-- [docs/CLAUDE_BUILD_SPEC.md](docs/CLAUDE_BUILD_SPEC.md) — полное ТЗ всех блоков и demo-flow.
-- [docs/REFERENCE_TO_SECTIONS.md](docs/REFERENCE_TO_SECTIONS.md) — что взять из композиционных референсов.
-- [docs/ASSET_REGISTER.md](docs/ASSET_REGISTER.md) — пути к знаку/фото, что можно использовать, чего нет.
-- [docs/QUALITY_GATE.md](docs/QUALITY_GATE.md) — проверка результата.
-- [START_IN_CLAUDE_CODE.md](START_IN_CLAUDE_CODE.md) — готовый текст первого запроса.
+## Стек
+Next.js 16 (App Router) + TypeScript, CSS Modules, шрифты Sofia Sans Extra Condensed и Golos Text (OFL) локально.
 
-## Рамки
-Только B2C и Беларусь на старте; UI на русском; заявка с сайта в браузере, а Telegram Mini App — отдельный канал. Без Figma, подмены чужих фото, вымышленных проверок, фейковых отзывов и обещаний 100%-ной достоверности. Цены в BYN только после проверки; не подключать production-платежи, не обещать коммерческую готовность логотипа. Внешние screenshot-референсы в текущем Git-дереве отсутствуют, поэтому для композиции используется **документированный разбор**, а для hero — **реальные ассеты из репозитория**.
-
-**Важно:** старые документы могли запрещать старт разработки до закрытия этапа 02. Решение D-030 делает исключение **только для обратимой Claude Code демоверсии**, чтобы перейти к просмотру результата, не объявляя визуальную систему утверждённой.
+## Структура
+- `app/` — layout, страница, глобальные токены (`globals.css`).
+- `components/` — блоки главной, по файлу на блок.
+- `lib/data.ts` — контент: каталог, цены, статьи, ссылки.
+- `public/img/` — оптимизированные копии ассетов. Оригиналы — в `assets/`, не изменяются.
+- `docs/` — спецификации и журнал решений.

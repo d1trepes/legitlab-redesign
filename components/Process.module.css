@@ -1,0 +1,223 @@
+.section {
+  padding: var(--section-y) 0;
+  background: var(--surface);
+  border-top: 1px solid var(--line);
+  transition: background-color 0.3s ease;
+}
+
+.head {
+  display: grid;
+  grid-template-columns: 1fr minmax(260px, 400px);
+  align-items: end;
+  gap: 40px;
+}
+
+.lead {
+  color: var(--muted);
+  font-size: 18px;
+}
+
+/* VELORA «Style Edit»: staggered editorial scenes instead of a numbered list. */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  column-gap: 24px;
+  row-gap: clamp(56px, 7vw, 96px);
+  margin-top: clamp(56px, 7vw, 100px);
+}
+
+.a {
+  grid-column: 1 / span 5;
+}
+
+.b {
+  grid-column: 7 / span 6;
+  margin-top: clamp(80px, 14vw, 220px);
+}
+
+.c {
+  grid-column: 2 / span 5;
+  margin-top: clamp(-160px, -8vw, -60px);
+}
+
+.d {
+  grid-column: 8 / span 5;
+  align-self: end;
+}
+
+.media {
+  position: relative;
+  background: var(--photo-bg);
+}
+
+.media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.portrait {
+  aspect-ratio: 4 / 5;
+}
+
+.square {
+  aspect-ratio: 1;
+}
+
+.sceneTitle {
+  margin-top: 28px;
+  font-family: var(--font-display);
+  font-weight: 860;
+  font-size: clamp(36px, 3.6vw, 56px);
+  line-height: 0.92;
+  text-transform: uppercase;
+}
+
+.text {
+  margin-top: 12px;
+  max-width: 42ch;
+  color: var(--muted);
+}
+
+/* Hotspots on the macro photo */
+.spot {
+  position: absolute;
+  width: 22px;
+  height: 22px;
+  margin: -11px 0 0 -11px;
+  padding: 0;
+  border: 2px solid #ffffff;
+  background: rgba(18, 18, 18, 0.35);
+  cursor: pointer;
+  z-index: 3;
+  animation: pulse 2.6s ease-in-out infinite;
+}
+
+.spot:nth-of-type(2) {
+  animation-delay: 0.6s;
+}
+
+.spot:nth-of-type(3) {
+  animation-delay: 1.2s;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.55);
+  }
+  50% {
+    box-shadow: 0 0 0 8px rgba(255, 255, 255, 0);
+  }
+}
+
+.spotLabel {
+  position: absolute;
+  left: 50%;
+  bottom: calc(100% + 10px);
+  transform: translate(-50%, 6px);
+  padding: 7px 10px;
+  background: #ffffff;
+  color: #121212;
+  font-size: 14px;
+  font-weight: 600;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease, transform 0.25s var(--ease);
+}
+
+.spot:hover .spotLabel,
+.spot:focus-visible .spotLabel {
+  opacity: 1;
+  transform: translate(-50%, 0);
+}
+
+/* Result card built from a real public check */
+.result {
+  display: grid;
+  grid-template-columns: 0.9fr 1fr;
+  border: 1px solid var(--line-strong);
+  background: var(--bg);
+}
+
+.resultPhoto {
+  aspect-ratio: 4 / 5;
+  background: var(--surface-2);
+  overflow: hidden;
+}
+
+.resultPhoto img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.resultData {
+  display: grid;
+  align-content: space-between;
+  margin: 0;
+  padding: clamp(16px, 2vw, 24px);
+}
+
+.resultData div + div {
+  margin-top: 14px;
+}
+
+.resultData dt {
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.resultData dd {
+  margin: 2px 0 0;
+  font-size: 17px;
+  font-weight: 600;
+}
+
+.resultVerdict {
+  display: inline-block;
+  margin-top: 6px !important;
+  padding: 6px 12px;
+  background: var(--text);
+  color: var(--bg);
+  font-size: 14px !important;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.limits {
+  padding: clamp(24px, 3vw, 36px);
+  border: 1px solid var(--line-strong);
+  font-size: 18px;
+}
+
+.limitsTitle {
+  margin-bottom: 12px;
+  font-family: var(--font-display);
+  font-weight: 860;
+  font-size: 32px;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+@media (max-width: 1100px) {
+  .head {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+}
+
+@media (max-width: 900px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+
+  .a,
+  .b,
+  .c,
+  .d {
+    grid-column: 1;
+    margin-top: 0;
+  }
+}

@@ -1,0 +1,182 @@
+.section {
+  padding: var(--section-y) 0;
+  background: var(--invert-bg);
+  color: var(--invert-text);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.head {
+  display: grid;
+  grid-template-columns: 1fr minmax(260px, 420px);
+  align-items: end;
+  gap: 40px;
+}
+
+.lead {
+  color: var(--invert-muted);
+  font-size: 18px;
+}
+
+.prices {
+  display: grid;
+  grid-template-columns: 1fr 1fr 0.9fr;
+  gap: 16px;
+  margin-top: clamp(40px, 5vw, 72px);
+}
+
+.priceTile,
+.ctaTile {
+  display: flex;
+  flex-direction: column;
+  min-height: 340px;
+  padding: clamp(20px, 2.4vw, 32px);
+  border: 1px solid var(--invert-line);
+  border-radius: var(--radius);
+  background: var(--invert-surface);
+}
+
+.priceNumber {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: clamp(120px, 15vw, 220px);
+  line-height: 0.78;
+  letter-spacing: -0.02em;
+}
+
+.priceUnit {
+  margin-top: 16px;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.priceBrands {
+  margin-top: auto;
+  padding-top: 24px;
+  color: var(--invert-muted);
+  font-size: 15px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.ctaTile {
+  justify-content: space-between;
+  gap: 24px;
+  background: transparent;
+}
+
+.ctaText {
+  font-family: var(--font-display);
+  font-weight: 860;
+  font-size: clamp(32px, 2.8vw, 44px);
+  line-height: 0.95;
+  text-transform: uppercase;
+}
+
+.wallet {
+  margin-top: clamp(64px, 8vw, 112px);
+  padding-top: clamp(40px, 5vw, 64px);
+  border-top: 1px solid var(--invert-line);
+  scroll-margin-top: 96px;
+}
+
+.walletHead {
+  display: grid;
+  grid-template-columns: 1fr minmax(260px, 420px);
+  align-items: end;
+  gap: 40px;
+}
+
+.walletTitle {
+  font-family: var(--font-display);
+  font-weight: 860;
+  font-size: clamp(48px, 6vw, 88px);
+  line-height: 0.86;
+  text-transform: uppercase;
+}
+
+.walletText {
+  color: var(--invert-muted);
+}
+
+.packages {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin: 32px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.pack {
+  display: flex;
+  flex-direction: column;
+  padding: 24px;
+  border: 1px solid var(--invert-line);
+  border-radius: var(--radius);
+}
+
+.packNumber {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: clamp(64px, 6vw, 96px);
+  line-height: 0.8;
+}
+
+.packUnit {
+  margin-top: 8px;
+  font-weight: 600;
+}
+
+.packBonus {
+  margin-top: 20px;
+  font-size: 15px;
+}
+
+.packPrice {
+  margin-top: 4px;
+  font-size: 14px;
+  color: var(--invert-muted);
+}
+
+.walletBtn {
+  margin-top: 28px;
+}
+
+@media (max-width: 1100px) {
+  .head,
+  .walletHead {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .prices {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .ctaTile {
+    grid-column: 1 / -1;
+    min-height: 0;
+  }
+
+  .packages {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .prices {
+    grid-template-columns: 1fr;
+  }
+
+  .priceTile {
+    min-height: 0;
+  }
+
+  .packages {
+    gap: 12px;
+  }
+
+  .pack {
+    padding: 18px;
+  }
+}

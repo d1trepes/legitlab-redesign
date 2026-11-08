@@ -1,0 +1,257 @@
+.header {
+  position: fixed;
+  inset: 0 0 auto;
+  z-index: 50;
+  padding: 16px var(--gutter) 0;
+  transition: padding 0.3s var(--ease);
+  pointer-events: none;
+}
+
+.scrolled {
+  padding-top: 8px;
+}
+
+.frame {
+  pointer-events: auto;
+  max-width: var(--max);
+  margin-inline: auto;
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  height: 64px;
+  padding: 0 12px 0 20px;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius);
+  background: color-mix(in srgb, var(--surface) 88%, transparent);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  transition: height 0.3s var(--ease), background-color 0.3s ease;
+}
+
+.scrolled .frame {
+  height: 58px;
+}
+
+.brand {
+  text-decoration: none;
+  flex-shrink: 0;
+}
+
+.nav {
+  display: flex;
+  gap: 32px;
+  margin-inline: auto;
+}
+
+.navLink {
+  position: relative;
+  font-size: 16px;
+  font-weight: 500;
+  text-decoration: none;
+  padding: 6px 0;
+}
+
+.navLink::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 1px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.3s var(--ease);
+}
+
+.navLink:hover::after {
+  transform: scaleX(1);
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.icon {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border: 0;
+  border-radius: var(--radius);
+  background: transparent;
+  color: var(--text);
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.icon:hover {
+  background: var(--surface-2);
+}
+
+.settings {
+  position: relative;
+  margin-right: 8px;
+}
+
+.panel {
+  position: absolute;
+  top: calc(100% + 14px);
+  right: 0;
+  width: 300px;
+  padding: 20px;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius);
+  background: var(--surface);
+  animation: drop 0.25s var(--ease);
+}
+
+@keyframes drop {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+}
+
+.settingsBody {
+  display: grid;
+  gap: 18px;
+}
+
+.group {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  min-width: 0;
+}
+
+.groupTitle {
+  padding: 0;
+  margin-bottom: 8px;
+  font-size: var(--fs-small);
+  color: var(--muted);
+}
+
+.groupValue {
+  font-size: 15px;
+}
+
+.segment {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  border: 1px solid var(--line-strong);
+}
+
+.segmentItem {
+  position: relative;
+  cursor: pointer;
+}
+
+.segmentItem input {
+  position: absolute;
+  opacity: 0;
+  inset: 0;
+  cursor: pointer;
+}
+
+.segmentItem span {
+  display: block;
+  padding: 10px;
+  text-align: center;
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.segmentItem input:checked + span {
+  background: var(--text);
+  color: var(--bg);
+}
+
+.segmentItem input:focus-visible + span {
+  outline: 2px solid var(--text);
+  outline-offset: 2px;
+}
+
+.menuBtn {
+  display: none;
+  margin-left: auto;
+}
+
+.mobile {
+  pointer-events: auto;
+  position: fixed;
+  inset: 88px 0 0;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  padding: 24px var(--gutter) 32px;
+  background: var(--bg);
+  overflow-y: auto;
+  animation: drop 0.3s var(--ease);
+}
+
+.mobileNav {
+  display: grid;
+}
+
+.mobileNav a,
+.mobileNav button {
+  padding: 14px 0;
+  border: 0;
+  border-bottom: 1px solid var(--line);
+  background: none;
+  text-align: left;
+  text-decoration: none;
+  font-family: var(--font-display);
+  font-weight: 860;
+  font-size: 44px;
+  line-height: 1;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.mobileSettings {
+  padding: 20px;
+  border: 1px solid var(--line);
+}
+
+.mobileSocial {
+  display: flex;
+  gap: 24px;
+}
+
+.mobileSocial a {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 500;
+  text-decoration: none;
+}
+
+@media (max-width: 1080px) {
+  .nav {
+    gap: 20px;
+  }
+
+  .actions .icon:not(.settings .icon) {
+    display: none;
+  }
+}
+
+@media (max-width: 900px) {
+  .nav,
+  .actions {
+    display: none;
+  }
+
+  .menuBtn {
+    display: grid;
+  }
+
+  .frame {
+    height: 58px;
+    padding: 0 8px 0 16px;
+  }
+}
