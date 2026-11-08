@@ -11,28 +11,31 @@
 - Крупный **LEGIT LAB** — композиционная типографика позади объекта, набирается как текст в коде; H1, описание и CTA остаются отдельными. Не вшивать текст в генерируемую картинку.
 - Художественные бирки не являются доказательством подлинности и не должны изображать настоящую проверку.
 
-## HERO PROMPT V2 (основной; можно приложить неудачное изображение как референс ткани)
+## HERO PROMPT V2 — без референсного изображения, только предплечье за нижней границей
 
 ```text
-Use the uploaded hoodie image only as a reference for charcoal fabric texture, realistic folds and visible labels. Completely redesign the pose and composition.
+Create a single photorealistic high-fashion editorial cutout for LEGIT LAB, a clothing authenticity-checking service. Build the composition entirely from scratch. No reference image.
 
-Create an iconic photorealistic monochrome fashion editorial cutout for a clothing authentication website, inspired by the vertical silhouette of a hand lifting a basketball in an editorial sports poster.
+COMPOSITION — THE MOST IMPORTANT REQUIREMENT:
+One realistic human forearm rises straight UP from the BOTTOM CENTER of the image, like an arm lifting an object high above the viewer. The arm enters the frame ONLY through the BOTTOM EDGE. The hand is near the upper-middle of the frame and firmly grips the collar / gathered neckline of ONE oversized charcoal-black hoodie.
 
-CRITICAL COMPOSITION: A single human forearm rises vertically UPWARD FROM THE BOTTOM CENTER of the frame. The wrist begins at the bottom edge. A strong realistic hand reaches upward and grips a heavy charcoal-grey oversized hoodie around its collar at approximately the upper-middle of the composition. The hoodie fabric drapes downward OVER AND AROUND the raised forearm, cascading in natural folds as if sliding under gravity. The fabric must visually interact with the arm, not hang separately next to it.
+The hoodie is lifted into the air. Its heavy cotton fabric folds and cascades naturally around the raised hand and forearm, as if slowly sliding down under gravity. The garment has a sculptural yet believable shape. The hood, entire body, bottom hem and BOTH sleeves including cuffs are ALL FULLY VISIBLE and COMPLETELY INSIDE THE IMAGE FRAME.
 
-One authentic-looking woven garment label is visible at the inner collar, with one or two small unbranded labels naturally hanging downward. No large blank retail price tags.
+STRICT CROPPING RULE: the ONLY element allowed to cross or be cut by the image border is the human FOREARM at the BOTTOM CENTER. DO NOT crop any part of the hoodie, hood, sleeves, cuffs, hem, hanging tags, fingers or hand. Keep visible empty space around the full hoodie silhouette, especially on the left, right and top edges. The hoodie hem must end above the bottom border, while the forearm continues off the bottom of the image.
 
-The hand, hoodie and labels together form one dramatic vertical sculptural silhouette. Front-facing camera with slight low-angle perspective, believable anatomy, gravity, garment weight, premium studio editorial lighting, sharp textile detail, organic shadows.
+A small woven fabric label is visible inside the neckline, with one or two realistically sized, plain, unbranded garment tags hanging naturally from the collar. They suggest close examination of clothing, not retail price tags.
 
-Isolated full subject on transparent background. Leave enough negative space on both sides for oversized LEGIT LAB typography to sit BEHIND the subject in the website. No typography baked into the image.
+Front-facing camera with a subtle low-angle perspective; authentic human anatomy, five fingers, correct grip, true fabric weight, visible stitching, premium fashion-campaign lighting, tactile cotton texture, monochrome blacks and charcoal greys, clear silhouette and natural shadows.
 
-ABSOLUTELY NO hand entering from left, right or top; no arm coming from a corner; no extra arms or fingers; no mannequins, shopping ads, printed brand logos, fake lettering, colored accents, cartoon 3D, random graphics or artificial floating elements.
+Portrait 4:5 composition, full isolated subject on a TRANSPARENT background, suitable for placement in front of oversized website typography. No text or logo baked into the image.
+
+AVOID: hand or arm entering from the top or either side, diagonal arm coming from a corner, hoodie cut off by frame, sleeves cut off, partial garment, mannequin, clothes hanger, second hand, extra fingers, floating garment, bizarre fabric physics, large white price tags, retail product shoot, colorful accents, CGI plastic look, watermarks, typography, icons or interface elements.
 ```
 
 ### Проверка результата hero
 
-- [ ] Поза: **предплечье начинается строго снизу**, а не в верхнем/боковом углу.
-- [ ] Худи спадает **поверх и вокруг** руки; нет ощущения, что человек держит товар за край на вешалке.
+- [ ] Поза: **предплечье входит строго через нижний центр**, не сбоку и не сверху; **только предплечье** обрезается нижней границей.
+- [ ] **Вся толстовка полностью в кадре**: капюшон, оба рукава с манжетами, низ изделия, бирки; со всех сторон кроме низа руки есть свободное поле. Ткань естественно спадает поверх и вокруг поднятой руки.
 - [ ] Бирки небольшие и естественно связаны с воротом; не похожи на белые ценники магазина.
 - [ ] Силуэт узнаваем при небольшом отображении и не закрывает H1/CTA.
 - [ ] Нет неестественной кисти и лишних пальцев; края cutout чистые на белом и на почти чёрном фоне.
