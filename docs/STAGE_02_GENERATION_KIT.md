@@ -78,3 +78,18 @@ Design ONLY an original black monochrome abstract symbol for the fashion authent
 2. Отобрать работающий визуальный материал, проверить русскую типографику TT Firs Neue + TT Commons Pro и лицензии, light/dark и макет 1440/390.
 3. Согласовать окончательный арт-дирекшн и 2–3 варианта логотипа.
 4. Только после утверждения и отдельной задачи начать в Codex этап 03: **сначала технический тест navbar + hero + переход, затем вся desktop-главная из восьми секций**. Не запускать код прямо из этого промпта.
+
+
+## PROMPT V2.1 — парная белая версия для dark theme (после выбора чёрного ассета)
+
+**[ГИПОТЕЗА]** Это задача редактирования уже выбранного чёрного кадра, а не новая генерация с нуля. Чтобы сохранить идентичный силуэт, следует приложить именно выбранный кадр (отдельный PNG с прозрачностью). Не менять руку, бирки, масштаб и границы.
+
+```text
+Edit the provided image to create the exact matching DARK-THEME version of this same fashion editorial cutout. Keep the original pose, composition, anatomical proportions, hand, forearm, hood, sleeves, cuffs, hem, labels, hanging tags, lighting direction, camera angle, canvas size and transparent background EXACTLY THE SAME.
+
+Change ONLY the charcoal-black hoodie fabric to realistic clean WHITE / SOFT OFF-WHITE cotton fleece, with subtle cool-grey shadows, natural stitch detail and believable texture. Preserve the natural skin tone of the arm and the existing label/tag colors. Keep all garment parts fully within the original frame; ONLY the lower forearm crosses the bottom edge. No new objects, no rearrangement, no typography, no logos, no artificial color inversion. Make the white garment stand out clearly on a near-black website background without glowing edges or overexposure.
+```
+
+[РЕШЕНИЕ ПО ПРЕДПОЧТЕНИЮ] Light theme → charcoal/black hoodie; Dark theme → white/off-white hoodie. Не делать обе версии чёрными и не применять CSS invert к картинке с человеческой кожей.
+
+**Статус:** негенерированная белая версия; исходный пользовательский PNG ещё не перенесён в GitHub как файл. Оригинал доступен в текущем диалоге, но не объявлять его сохранённым в репозитории.
