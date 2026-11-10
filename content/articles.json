@@ -1,0 +1,32 @@
+{
+  "items": [
+    {
+      "slug": "amiri-hoodie-legitcheck",
+      "brand": "Amiri",
+      "title": "AMIRI Hoodie Legitcheck",
+      "lead": "Как отличить оригинальное худи Amiri от подделки: бирки, материалы, принт, швы.",
+      "date": "2026-10-08",
+      "cover": "content/article-covers/amiri.jpg",
+      "url": "https://legit-lab.com/articles/amiri-hoodie-legitcheck"
+    },
+    {
+      "slug": "moncler-puffer-legitcheck",
+      "brand": "Moncler",
+      "title": "Moncler Puffer Legitcheck",
+      "lead": "Как отличить оригинальный пуховик Moncler: бирки, логотип, фурнитура, QR-код, пошив.",
+      "date": "2026-09-24",
+      "cover": "content/article-covers/moncler.jpg",
+      "url": "https://legit-lab.com/articles/moncler-puffer-legitcheck"
+    },
+    {
+      "slug": "balenciaga-track-legitcheck",
+      "brand": "Balenciaga",
+      "title": "Balenciaga Track Legitcheck",
+      "lead": "Форма, логотипы, маркировка, материалы и подошва Balenciaga Track.",
+      "date": "2026-09-22",
+      "cover": "content/article-covers/balenciaga-track.jpg",
+      "url": "https://legit-lab.com/articles/balenciaga-track-legitcheck"
+    }
+  ],
+  "_note": "Тексты статей живут на legit-lab.com. В демо можно сверстать страницу статьи со своим кратким оригинальным текстом и ссылкой на оригинал; чужие тексты дословно не копировать."
+}
