@@ -1,0 +1,58 @@
+name: Deploy to GitHub Pages
+
+# Builds the Next.js static export (folder `out/`) and publishes it to
+# https://d1trepes.github.io/legitlab-redesign/ on every push to main.
+# Requires: Settings → Pages → Source: GitHub Actions.
+# The app must use `output: "export"` and `basePath: "/legitlab-redesign"`.
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    outputs:
+      present: ${{ steps.app.outputs.present }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check for app
+        id: app
+        run: |
+          if [ -f package.json ]; then echo "present=true" >> "$GITHUB_OUTPUT"; else echo "present=false" >> "$GITHUB_OUTPUT"; fi
+      - uses: actions/setup-node@v4
+        if: steps.app.outputs.present == 'true'
+        with:
+          node-version: 22
+          cache: npm
+      - name: Install and build
+        if: steps.app.outputs.present == 'true'
+        run: |
+          npm ci
+          npm run build
+          touch out/.nojekyll
+      - uses: actions/upload-pages-artifact@v3
+        if: steps.app.outputs.present == 'true'
+        with:
+          path: out
+
+  deploy:
+    needs: build
+    if: needs.build.outputs.present == 'true'
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
