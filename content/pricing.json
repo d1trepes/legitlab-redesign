@@ -1,0 +1,55 @@
+{
+  "_source": "legit-lab.com: раздел «Популярные бренды» и экран пополнения кошелька (references/current-site/wallet-topup.png). Решение владельца 08.11.2026: оплата в кредитах, кредиты покупаются в BYN.",
+  "currency": "кредиты (на текущем сайте — CRD)",
+  "topUpCurrency": "BYN",
+  "pricePerCheckByBrand": [
+    {
+      "credits": 50,
+      "brands": [
+        "Nike",
+        "Air Jordan",
+        "Adidas",
+        "Vans"
+      ]
+    },
+    {
+      "credits": 70,
+      "brands": [
+        "Balenciaga",
+        "Stone Island",
+        "Supreme",
+        "Yeezy",
+        "Vlone"
+      ]
+    }
+  ],
+  "packages": [
+    {
+      "credits": 50,
+      "bonus": 0,
+      "priceBYN": null
+    },
+    {
+      "credits": 150,
+      "bonus": 10,
+      "priceBYN": null,
+      "tag": "Популярное"
+    },
+    {
+      "credits": 300,
+      "bonus": 50,
+      "priceBYN": null
+    },
+    {
+      "credits": 1000,
+      "bonus": 250,
+      "priceBYN": null
+    }
+  ],
+  "_todo": "Цены пакетов в BYN не утверждены. На текущем сайте пакеты стоят $4.99 / $13.99 / $24.99 / $74.99 — это НЕ BYN. В демо показывать явно помеченную демо-цену из этого файла или «уточняется».",
+  "urgency": [
+    "Стандартная",
+    "Срочная"
+  ],
+  "_urgencyNote": "Из README продакшна (STANDARD / FAST). Наценка за срочность и сроки не утверждены — не выдумывать цифры."
+}
