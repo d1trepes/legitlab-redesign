@@ -1,0 +1,51 @@
+:root {
+  --bg: #e8e8e6;
+  --surface: #f4f4f2;
+  --raised: #ffffff;
+  --ink: #0b0b0b;
+  --ink-2: #55554f;
+  --ink-3: #8a8a84;
+  --line: rgb(11 11 11 / 0.14);
+  --line-strong: rgb(11 11 11 / 0.9);
+  --night: #101010;
+  --night-2: #1a1a1a;
+  --on-night: #f1f1ee;
+  --on-night-2: #a3a39d;
+  --night-line: rgb(255 255 255 / 0.16);
+  --danger: #b3261e;
+  --photo-dim: 1;
+
+  --display: "Alumni Sans", "Arial Narrow", "Helvetica Neue Condensed", Impact, sans-serif;
+  --text: "Geologica", "Helvetica Neue", Arial, system-ui, sans-serif;
+
+  --pad: 16px;
+  --max: 1680px;
+  --header: 64px;
+  --sheet: 28px;
+  --ease: cubic-bezier(0.2, 0.7, 0.1, 1);
+
+  --xxl: clamp(64px, 12.1vw, 208px);
+  --xl: clamp(52px, 9vw, 152px);
+  --l: clamp(44px, 6.2vw, 104px);
+  --m: clamp(36px, 4.2vw, 64px);
+  --s: clamp(26px, 2.6vw, 36px);
+  color-scheme: light;
+}
+@media (min-width: 700px) { :root { --pad: 24px; } }
+@media (min-width: 1100px) { :root { --pad: 40px; --header: 72px; } }
+
+:root[data-theme="dark"] {
+  --bg: #0c0c0c;
+  --surface: #151515;
+  --raised: #1e1e1e;
+  --ink: #f1f1ee;
+  --ink-2: #a3a39d;
+  --ink-3: #74746f;
+  --line: rgb(255 255 255 / 0.15);
+  --line-strong: rgb(255 255 255 / 0.9);
+  --night: #000000;
+  --night-2: #131313;
+  --danger: #ff8a80;
+  --photo-dim: 0.92;
+  color-scheme: dark;
+}
