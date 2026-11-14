@@ -5,11 +5,17 @@ const clamp = (v, a = 0, b = 1) => Math.min(b, Math.max(a, v)), lerp = (a, b, t)
 const ease = t => t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
 const RAW = 'https://raw.githubusercontent.com/d1trepes/legitlab-redesign/main/';
 const root = document.documentElement;
+// мобильная версия (до 1023 px) и телефон (до 767 px) — chats/4-mobile.md
+const MQ = matchMedia('(max-width:1023px)'), PH = matchMedia('(max-width:767px)');
+const isM = () => MQ.matches;
+// облегчённый режим: уменьшить движение, экономия трафика, слабое устройство
+const nc = navigator.connection || {};
+const LITE_DEV = !!nc.saveData || (navigator.hardwareConcurrency || 8) <= 4 || (navigator.deviceMemory || 8) <= 3;
 
 /* ---------- уменьшить движение: только системная настройка ---------- */
 const mq = matchMedia('(prefers-reduced-motion: reduce)');
 let RM = mq.matches;
-const setRM = v => { RM = v; root.classList.toggle('rm', v); };
+const setRM = v => { RM = v; root.classList.toggle('rm', v); root.classList.toggle('lite', v || LITE_DEV); };
 setRM(RM);
 mq.addEventListener && mq.addEventListener('change', e => setRM(e.matches));
 
@@ -58,6 +64,7 @@ let W = 1344, H = 480, TH = 420, AR = .8;
 const setAR = () => { if (thing.naturalWidth) AR = thing.naturalWidth / thing.naturalHeight; };
 thing.addEventListener('load', setAR); setAR();
 const size = () => {
+  if (isM()) return;
   root.style.setProperty('--sheetH', sheet.offsetHeight + 'px');
   W = scene.clientWidth; H = scene.clientHeight;
   msg.style.top = (H / 2 + 112) + 'px';
@@ -68,12 +75,14 @@ document.fonts && document.fonts.ready.then(size);
 
 let mx = 0, my = 0, rx = 0, ry = 0, clickT = 0, p = 0;
 scene.addEventListener('pointermove', e => {
+  if (isM()) return;
   const r = scene.getBoundingClientRect();
   mx = (e.clientX - r.left) / r.width * 2 - 1; my = (e.clientY - r.top) / r.height * 2 - 1;
 });
 scene.addEventListener('pointerleave', () => { mx = 0; my = 0; });
 const scrollP = () => clamp((scrollY - hero.offsetTop) / ((hero.offsetHeight - innerHeight) * .5));
 const toggle = () => {
+  if (isM()) return;
   clickT = clickT > .5 || p > .5 ? 0 : 1;
   if (clickT === 0 && scrollP() > .02) scrollTo({ top: hero.offsetTop, behavior: RM ? 'auto' : 'smooth' });
 };
@@ -82,8 +91,10 @@ scene.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ')
 
 let catsTop = cats.offsetTop;
 addEventListener('resize', () => { catsTop = cats.offsetTop; });
-let heroVisible = true;
+let heroVisible = true, dRun = false;
+const startD = () => { if (!dRun && !isM()) { dRun = true; hdrState = ''; requestAnimationFrame(frame); } };
 function frame(t) {
+  if (isM()) { dRun = false; return; }
   requestAnimationFrame(frame);
   // первый экран ушёл из вида — не тратим кадры на облако
   heroVisible = scrollY < hero.offsetTop + hero.offsetHeight;
@@ -120,11 +131,12 @@ function header() {
   if (st === hdrState) return; hdrState = st;
   hdr.classList.toggle('hide', st === 'hide'); hdr.classList.toggle('solid', st === 'solid');
 }
-requestAnimationFrame(frame);
+startD();
 requestAnimationFrame(() => requestAnimationFrame(() => root.classList.add('ready')));
 setTimeout(() => { sheet.style.animation = 'none'; }, 1300);
 
 /* ---------- 3. iPhone ---------- */
+const segs = $$('#segs button'), stx = $$('#stx>div');
 const how = $('#how'), track = $('#track'), steps = $$('.st'), s1 = $('#s1'), frameNo = $('#frameNo');
 const thumbs = $('#thumbs'); for (let i = 0; i < 7; i++) thumbs.appendChild(document.createElement('i'));
 const th = [...thumbs.children];
@@ -165,15 +177,19 @@ function show(i) {
   if (i === cur) return; cur = i; clearT();
   track.style.transform = `translateX(${-i * 33.3333}%)`;
   steps.forEach((s, k) => { s.classList.toggle('on', k === i); s.setAttribute('aria-pressed', k === i); });
+  segs.forEach((s, k) => { s.classList.toggle('on', k === i); s.setAttribute('aria-pressed', k === i); });
+  stx.forEach((s, k) => s.classList.toggle('on', k === i));
   if (i === 0) shot1();
   if (i === 1) { lookI = 1; look(); }
 }
 new IntersectionObserver(es => es.forEach(e => {
+  if (isM()) return;
   if (!e.isIntersecting) { clearT(); cur = -1; }
   else show(Math.min(2, Math.floor(howP() * 3)));
 })).observe(how);
 const howP = () => clamp((scrollY - how.offsetTop) / (how.offsetHeight - innerHeight));
 addEventListener('scroll', () => {
+  if (isM()) return;
   const r = how.getBoundingClientRect();
   if (r.bottom < 0 || r.top > innerHeight) return;
   show(Math.min(2, Math.floor(howP() * 3)));
@@ -182,7 +198,7 @@ steps.forEach(s => s.addEventListener('click', () => {
   const i = +s.dataset.i;
   scrollTo({ top: how.offsetTop + (how.offsetHeight - innerHeight) * (i / 3 + .12), behavior: RM ? 'auto' : 'smooth' });
 }));
-const fit = () => { $('#phoneFit').style.transform = `scale(${Math.min(1, (innerHeight - 110) / 650)})`; };
+const fit = () => { if (isM()) return; $('#phoneFit').style.transform = `scale(${Math.min(1, (innerHeight - 110) / 650)})`; };
 addEventListener('resize', fit); fit();
 show(0);
 
@@ -199,13 +215,16 @@ let C = PICK.map(([id, ar]) => ({ id, ar, brand: FALLBACK[id][0], category: FALL
 let filter = 'all';
 const mas = $('#mas');
 const render = () => {
-  const cols = [[], [], [], []];
-  C.filter(c => filter === 'all' || c.verdict === filter).forEach((c, i) => cols[i % 4].push(c));
+  // телефон — 2 колонки и 8 проверок, планшет — 3 и 9, десктоп — 4 и все
+  const n = !isM() ? 4 : PH.matches ? 2 : 3, lim = !isM() ? 99 : n === 2 ? 8 : 9;
+  const cols = Array.from({ length: n }, () => []);
+  C.filter(c => filter === 'all' || c.verdict === filter).slice(0, lim).forEach((c, i) => cols[i % n].push(c));
   mas.innerHTML = cols.map(col => '<div>' + col.map(c =>
-    `<a class="chk" href="#" data-go="/checks/${esc(c.id)}" data-r><div class="ph"><img src="img/checks/${esc(c.id)}.webp" style="aspect-ratio:${c.ar}" alt="${esc(c.brand)}, ${esc(c.category)}" loading="lazy" decoding="async"><span class="vd-p ${c.verdict === 'Оригинал' ? 'o' : 'r'}">${esc(c.verdict)}</span></div><div class="nm"><b>${esc(c.brand)}</b><span>${esc(c.category)}</span></div></a>`
+    `<a class="chk" href="#" data-go="/checks/${esc(c.id)}" data-r><div class="ph"><picture><source media="(max-width:1023px)" srcset="img/checks/${esc(c.id)}-400.webp"><img src="img/checks/${esc(c.id)}.webp" width="400" height="500" style="aspect-ratio:${c.ar}" alt="${esc(c.brand)}, ${esc(c.category)}" loading="lazy" decoding="async"></picture><span class="vd-p ${c.verdict === 'Оригинал' ? 'o' : 'r'}">${esc(c.verdict)}</span></div><div class="nm"><b>${esc(c.brand)}</b><span>${esc(c.category)}</span></div></a>`
   ).join('') + '</div>').join('');
-  observe();
+  observe(); lazyFade && lazyFade(mas);
 };
+let lazyFade = null;
 $$('#flt .btn').forEach(b => {
   b.setAttribute('aria-pressed', b.dataset.f === 'all');
   b.addEventListener('click', () => {
@@ -247,5 +266,214 @@ const io = new IntersectionObserver(es => es.forEach(e => {
   el.classList.add('in'); io.unobserve(el);
 }), { rootMargin: '0px 0px -8% 0px' });
 function observe() { $$('[data-r]:not(.in)').forEach(el => io.observe(el)); }
+
+/* =====================================================================
+   МОБИЛЬНАЯ ВЕРСИЯ (до 1023 px) — chats/4-mobile.md. На десктопе не работает.
+   ===================================================================== */
+const lite = () => root.classList.contains('lite');
+const tsh = $('#tsh');
+
+/* ---------- 1. облако под палец ---------- */
+// x, y — доля свободного поля сцены (−1…1, кадр не выходит за края); z; поворот Y; наклон Z
+const CM = [[-.96, -1, -30, 12, -4], [-1, .02, 30, 10, 3], [-.88, 1, -10, 8, -2], [.3, -1, -70, -4, 2], [.98, -.72, 20, -10, 3], [.88, .14, -40, -12, -3], [1, 1, 24, -8, 2]];
+const hm = { ry: 0, v: 0, drag: false, moved: false, x0: 0, ry0: 0, lx: 0, lt: 0, P: 0, T: 0, from: 0, t0: 0, raf: 0, last: 0 };
+let MW = 390, MH = 400, JH = 180, FS = 1, FH = 116;
+function mSize() {
+  if (!isM()) return;
+  root.style.setProperty('--sheetH', sheet.offsetHeight + 'px');
+  MW = scene.clientWidth; MH = scene.clientHeight;
+  JH = Math.round(MH * .46); thing.style.height = JH + 'px';
+  FS = clamp(Math.min(MH / 410, MW / 390), .6, 1.3);
+  FH = els[0].offsetHeight || 116;
+  tsh.style.width = Math.round(JH * AR * .9) + 'px';
+  tsh.style.transform = `translate(-50%,${Math.round(JH * .47)}px)`;
+  mApply();
+}
+function mApply() {
+  const e = ease(hm.P), f = 1 - e, L = lite();
+  const fw = 78, rxR = Math.max(0, MW / 2 - fw * FS / 2 - 12), ryR = Math.max(0, MH / 2 - FH * FS / 2 - 10);
+  // собранные кадры: строка сообщения, под ней 4 + 3
+  const GS = Math.min(FS, (MW - 40 - 30) / (4 * fw), (MH - 24 - 46) / (2 * FH));
+  const gw = fw * GS + 10, gh = FH * GS, t0 = -(36 + 2 * gh + 10) / 2;
+  msg.style.top = (MH / 2 + t0) + 'px';
+  const ryc = L ? 0 : hm.ry * f;
+  cloud.style.transform = ryc ? `rotateY(${ryc}deg)` : '';
+  els.forEach((el, i) => {
+    const c = CM[i], q = ease(clamp((hm.P - i * .04) / (1 - 6 * .04)));
+    const gx = i < 4 ? (i - 1.5) * gw : (i - 5) * gw, gy = t0 + 36 + gh / 2 + (i < 4 ? 0 : gh + 10);
+    const x = lerp(c[0] * rxR, gx, q), y = lerp(c[1] * ryR, gy, q), z = L ? 0 : lerp(c[2], 0, q);
+    el.style.transform = `translate3d(${x.toFixed(1)}px,${y.toFixed(1)}px,${z.toFixed(1)}px) rotateY(${L ? 0 : lerp(c[3], 0, q).toFixed(2)}deg) rotateZ(${lerp(c[4], 0, q).toFixed(2)}deg) scale(${lerp(FS, GS, q).toFixed(3)})`;
+  });
+  thing.style.opacity = 1 - .78 * e; tsh.style.opacity = 1 - .85 * e;
+  thing.style.transform = `rotateY(${-ryc}deg) translate3d(${-JH * AR / 2}px,${-JH / 2}px,0)`;
+  msg.style.opacity = clamp((hm.P - .7) / .3);
+}
+// цикл кадров крутится только во время жеста, инерции и сборки
+function mTick(t) {
+  hm.raf = 0;
+  const dt = hm.last ? Math.min(.04, (t - hm.last) / 1000) : .016; hm.last = t;
+  let go = hm.drag;
+  if (!hm.drag) {
+    if (Math.abs(hm.ry) > .03 || Math.abs(hm.v) > .3) { hm.v += (-60 * hm.ry - 11 * hm.v) * dt; hm.ry = clamp(hm.ry + hm.v * dt, -14, 14); go = true; }
+    else { hm.ry = 0; hm.v = 0; }
+  }
+  if (hm.P !== hm.T) { const k = (t - hm.t0) / 760; hm.P = k >= 1 ? hm.T : lerp(hm.from, hm.T, k); go = true; }
+  mApply();
+  if (go) hm.raf = requestAnimationFrame(mTick); else hm.last = 0;
+}
+const kick = () => { if (!hm.raf) { hm.last = 0; hm.raf = requestAnimationFrame(mTick); } };
+const mToggle = () => {
+  hm.T = hm.T ? 0 : 1; hm.from = hm.P; hm.t0 = performance.now();
+  hero.classList.toggle('asm', !!hm.T);
+  scene.setAttribute('aria-pressed', !!hm.T);
+  if (lite()) { hm.P = hm.T; mApply(); return; }
+  kick();
+};
+scene.addEventListener('pointerdown', e => {
+  if (!isM()) return;
+  hm.down = true; hm.moved = false; hm.x0 = hm.lx = e.clientX;
+  if (lite() || hm.T) return;
+  hm.drag = true; hm.ry0 = hm.ry; hm.lt = e.timeStamp; hm.v = 0;
+}, { passive: true });
+scene.addEventListener('pointermove', e => {
+  if (hm.down && Math.abs(e.clientX - hm.x0) > 8) hm.moved = true;
+  if (!hm.drag) return;
+  const dx = e.clientX - hm.x0, dt = (e.timeStamp - hm.lt) / 1000;
+  hm.ry = clamp(hm.ry0 + dx / MW * 34, -14, 14);
+  if (dt > 0) hm.v = lerp(hm.v, (e.clientX - hm.lx) / MW * 34 / dt, .5);
+  hm.lx = e.clientX; hm.lt = e.timeStamp; kick();
+}, { passive: true });
+const mUp = () => { hm.down = false; if (!hm.drag) return; hm.drag = false; hm.v = clamp(hm.v, -140, 140); kick(); };
+scene.addEventListener('pointerup', mUp); scene.addEventListener('pointercancel', mUp);
+scene.addEventListener('click', () => { if (!isM()) return; if (hm.moved) { hm.moved = false; return; } mToggle(); });
+scene.addEventListener('keydown', e => { if (isM() && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); mToggle(); } });
+// парение кадров — CSS-анимация; первый экран ушёл из вида — пауза
+new IntersectionObserver(es => es.forEach(e => hero.classList.toggle('off', !e.isIntersecting))).observe(hero);
+
+/* ---------- шапка: прячется вниз, возвращается вверх с подложкой ---------- */
+let lastY = scrollY, mhs = '', hq = false, menuOpen = false;
+const mHdr = () => {
+  if (!isM() || menuOpen) return;
+  const y = scrollY, d = y - lastY; let st = mhs;
+  if (y < 10) st = 'top'; else if (d > 4 && y > 60) st = 'hide'; else if (d < -4) st = 'solid';
+  if (Math.abs(d) > 4 || y < 10) lastY = y;
+  if (st !== mhs) { mhs = st; hdr.classList.toggle('hide', st === 'hide'); hdr.classList.toggle('solid', st === 'solid'); }
+};
+addEventListener('scroll', () => { if (isM() && !hq) { hq = true; requestAnimationFrame(() => { hq = false; mHdr(); }); } }, { passive: true });
+
+/* ---------- меню ---------- */
+const mbtn = $('#mbtn'), mm = $('#mmenu'); let saveY = 0, mmT;
+const lockScroll = on => {
+  const b = document.body.style;
+  if (on) { saveY = scrollY; b.position = 'fixed'; b.top = -saveY + 'px'; b.left = b.right = '0'; }
+  else { b.position = b.top = b.left = b.right = ''; scrollTo(0, saveY); lastY = saveY; }
+};
+const openMenu = () => {
+  if (menuOpen) return; menuOpen = true; clearTimeout(mmT);
+  mm.hidden = false; void mm.offsetWidth; mm.classList.add('on');
+  hdr.classList.add('mon'); mbtn.setAttribute('aria-expanded', 'true'); mbtn.setAttribute('aria-label', 'Закрыть меню');
+  lockScroll(true);
+};
+const closeMenu = (focus) => {
+  if (!menuOpen) return; menuOpen = false;
+  mm.classList.remove('on'); hdr.classList.remove('mon');
+  mbtn.setAttribute('aria-expanded', 'false'); mbtn.setAttribute('aria-label', 'Меню');
+  lockScroll(false);
+  mmT = setTimeout(() => { mm.hidden = true; }, lite() || RM ? 0 : 460);
+  if (focus) mbtn.focus();
+};
+mbtn.addEventListener('click', () => menuOpen ? closeMenu() : openMenu());
+mm.addEventListener('click', e => { if (e.target.closest('a')) closeMenu(); });
+document.addEventListener('keydown', e => { if (menuOpen && e.key === 'Escape') closeMenu(true); });
+
+/* ---------- окно: лист снизу, закрытие свайпом вниз ---------- */
+const box = $('.modal .box'); let by0 = null, bdy = 0;
+box.addEventListener('pointerdown', e => {
+  if (!isM() || e.target.closest('button')) return;
+  by0 = e.clientY; bdy = 0; box.style.transition = 'none'; box.setPointerCapture && box.setPointerCapture(e.pointerId);
+});
+box.addEventListener('pointermove', e => { if (by0 === null) return; bdy = Math.max(0, e.clientY - by0); box.style.transform = `translateY(${bdy}px)`; });
+const boxUp = () => { if (by0 === null) return; by0 = null; box.style.transition = ''; box.style.transform = ''; if (bdy > 70) closeModal(); };
+box.addEventListener('pointerup', boxUp); box.addEventListener('pointercancel', boxUp);
+
+/* ---------- 3. iPhone: свайп и автолистание, пока блок на экране ---------- */
+let autoT = 0, howOn = false, mIdx = 0;
+const schedule = () => {
+  clearTimeout(autoT);
+  if (!isM() || !howOn || lite()) return;
+  autoT = setTimeout(() => { show((cur + 1) % 3); schedule(); }, 4500);
+};
+new IntersectionObserver(es => es.forEach(e => {
+  if (!isM()) return;
+  howOn = e.isIntersecting;
+  if (howOn) { cur = -1; show(mIdx); schedule(); }
+  else { mIdx = Math.max(0, cur); clearT(); clearTimeout(autoT); }
+}), { threshold: .25 }).observe(how);
+segs.forEach(b => b.addEventListener('click', () => { show(+b.dataset.i); schedule(); }));
+const iph = $('.iph'); let sx0 = null, sdx = 0, swp = false;
+const trackTo = d => { track.style.transform = `translateX(calc(${-Math.max(0, cur) * 33.3333}% + ${d}px))`; };
+iph.addEventListener('pointerdown', e => { if (!isM()) return; sx0 = e.clientX; sdx = 0; swp = false; }, { passive: true });
+iph.addEventListener('pointermove', e => {
+  if (sx0 === null) return;
+  sdx = e.clientX - sx0;
+  if (!swp && Math.abs(sdx) > 8) { swp = true; track.style.transition = 'none'; clearTimeout(autoT); }
+  if (swp) {
+    const k = iph.offsetWidth / iph.getBoundingClientRect().width; // экран телефона уменьшен
+    let d = sdx * k; if ((cur <= 0 && d > 0) || (cur === 2 && d < 0)) d *= .35;
+    trackTo(d);
+  }
+}, { passive: true });
+const iphUp = cancel => {
+  if (sx0 === null) return; sx0 = null;
+  if (!swp) return;
+  track.style.transition = '';
+  const n = !cancel && Math.abs(sdx) > 40 ? clamp(cur + (sdx < 0 ? 1 : -1), 0, 2) : cur;
+  if (n !== cur) show(n); else trackTo(0);
+  schedule();
+};
+iph.addEventListener('pointerup', () => iphUp(false)); iph.addEventListener('pointercancel', () => iphUp(true));
+
+/* ---------- 5. статьи: полоса прокрутки ленты ---------- */
+const arow = $('#arow'), abar = $('#abar i'); let aq = false;
+const aUpd = () => {
+  aq = false;
+  const fr = arow.clientWidth / arow.scrollWidth, max = arow.scrollWidth - arow.clientWidth;
+  abar.style.width = Math.min(100, fr * 100) + '%';
+  abar.style.transform = `translateX(${max > 0 ? arow.scrollLeft / max * (1 / fr - 1) * 100 : 0}%)`;
+};
+arow.addEventListener('scroll', () => { if (!aq) { aq = true; requestAnimationFrame(aUpd); } }, { passive: true });
+
+/* ---------- фото: подложка, проявление после загрузки ---------- */
+lazyFade = (scope = document) => {
+  if (!isM()) return;
+  scope.querySelectorAll('img[loading="lazy"]').forEach(im => {
+    if (im.closest('.view') || im.classList.contains('lz') || (im.complete && im.naturalWidth)) return;
+    im.classList.add('lz');
+    const ok = () => im.classList.add('ok');
+    im.addEventListener('load', ok, { once: true }); im.addEventListener('error', ok, { once: true });
+  });
+};
+
+/* ---------- переключение десктоп ↔ мобильная ---------- */
+const enterM = () => {
+  pin.style.transform = pin.style.opacity = '';
+  hdr.classList.remove('hide', 'solid'); mhs = ''; lastY = scrollY;
+  $('#phoneFit').style.transform = '';
+  hm.P = hm.T = 0; hero.classList.remove('asm');
+  mSize(); aUpd(); lazyFade();
+  if (how.getBoundingClientRect().top < innerHeight) { cur = -1; show(0); }
+};
+const enterD = () => {
+  closeMenu(); clearTimeout(autoT);
+  thing.style.height = ''; tsh.removeAttribute('style'); cloud.style.transform = '';
+  clickT = 0; p = 0; hero.classList.remove('asm');
+  size(); fit(); startD(); cur = -1; show(0);
+};
+MQ.addEventListener && MQ.addEventListener('change', () => { (isM() ? enterM : enterD)(); render(); });
+PH.addEventListener && PH.addEventListener('change', () => { if (isM()) { render(); aUpd(); } });
+addEventListener('resize', () => { if (isM()) { mSize(); aUpd(); } });
+document.fonts && document.fonts.ready.then(() => { if (isM()) mSize(); });
+thing.addEventListener('load', () => { if (isM()) mSize(); });
+if (isM()) enterM();
 render(); observe();
 })();

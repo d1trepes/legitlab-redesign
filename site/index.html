@@ -12,7 +12,8 @@
 <script>document.documentElement.classList.add('js');if(matchMedia('(prefers-reduced-motion: reduce)').matches)document.documentElement.classList.add('rm')</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="preload" as="image" href="img/hero-puffer.webp" fetchpriority="high">
+<link rel="preload" as="image" href="img/hero-puffer.webp" fetchpriority="high" media="(min-width:1024px)">
+<link rel="preload" as="image" href="img/hero-puffer-700.webp" fetchpriority="high" media="(max-width:1023px)">
 <link rel="preload" as="image" href="img/frames/f1.webp">
 <link rel="preload" as="image" href="img/frames/f2.webp">
 <link rel="preload" as="image" href="img/frames/f3.webp">
@@ -21,7 +22,7 @@
 <link rel="preload" as="image" href="img/frames/f6.webp">
 <link rel="preload" as="image" href="img/frames/f7.webp">
 <link href="https://fonts.googleapis.com/css2?family=Fira+Sans+Extra+Condensed:wght@600;700&family=Geologica:wght@300;400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="styles.css?v=2611150133">
+<link rel="stylesheet" href="styles.css?v=2611151200">
 </head>
 <body>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="c2" viewBox="64 58 408 408"><g fill="currentColor"><polygon points="178,76 289,76 219,344 427,344 390,442 100,442"/><polygon points="324,76 430,76 390,203 268,258"/></g></symbol></svg>
@@ -30,7 +31,13 @@
    <a class="logo" href="#top" aria-label="LEGIT LAB, наверх"><svg><use href="#c2"/></svg><span class="wm">LEGIT LAB</span></a>
    <nav class="nav"><a href="#" data-go="/checks">Проверки</a><a href="#" data-go="/how">Как это работает</a><a href="#" data-go="/pricing">Цены</a><a href="#" data-go="/articles">Статьи</a></nav>
    <div class="bs"><a class="btn sm out" href="#" data-go="/auth">Войти</a><a class="btn sm fill" href="#" data-go="/check">Начать проверку</a></div>
+   <button class="mbtn" id="mbtn" type="button" aria-label="Меню" aria-expanded="false" aria-controls="mmenu"><i></i><i></i></button>
   </div></header>
+
+<div class="mmenu" id="mmenu" hidden>
+ <nav class="mnav"><a href="#" data-go="/checks">Проверки</a><a href="#" data-go="/how">Как это работает</a><a href="#" data-go="/pricing">Цены</a><a href="#" data-go="/articles">Статьи</a></nav>
+ <div class="mcta"><a class="btn fill" href="#" data-go="/check">Начать проверку</a><a class="btn out" href="#" data-go="/auth">Войти</a></div>
+</div>
 
 <!-- ===== 1. ПЕРВЫЙ ЭКРАН ===== -->
 <main id="top">
@@ -39,13 +46,14 @@
 
 
   <div class="scene" id="scene" role="button" tabindex="0" aria-label="Семь кадров, которые попросит мастер. Нажмите, чтобы собрать их в ленту">
-   <div class="cloud" id="cloud"><img class="thing" id="thing" src="img/hero-puffer.webp" width="864" height="1080" fetchpriority="high" decoding="async" alt=""></div>
+   <i class="tsh" id="tsh"></i>
+   <div class="cloud" id="cloud"><picture><source media="(max-width:1023px)" srcset="img/hero-puffer-700.webp"><img class="thing" id="thing" src="img/hero-puffer.webp" width="864" height="1080" fetchpriority="high" decoding="async" alt=""></picture></div>
    <p class="msg" id="msg">Эксперт получил 7 кадров и смотрит детали</p>
   </div>
 
   <div class="sheet" id="sheet">
    <h1 class="acc"><span class="ln"><i>Оригинал</i></span><span class="ln"><i>или реплика?</i></span></h1>
-   <div class="rt"><p>Снимите вещь по&nbsp;подсказкам.<br>Эксперт изучит бирки, швы и&nbsp;фурнитуру и&nbsp;вынесет заключение.</p>
+   <div class="rt"><p>Снимите вещь по&nbsp;подсказкам.<br> <span class="p2">Эксперт изучит бирки, швы и&nbsp;фурнитуру и&nbsp;вынесет заключение.</span></p>
    <div class="cta"><a class="btn out" href="#" data-go="/how">Как это работает</a><a class="btn fill" href="#" data-go="/check">Начать проверку</a></div></div>
   </div>
  </div>
@@ -54,14 +62,15 @@
 <!-- ===== 2. ЧТО МЫ ПРОВЕРЯЕМ ===== -->
 <section class="dk cats">
  <div class="wrap">
-  <div class="g12 head" data-r><h2 class="acc">Что мы проверяем</h2><p class="side">Выберите категорию —<br>мастер подскажет, какие кадры снять именно для&nbsp;неё.</p></div>
+  <div class="g12 head" data-r><h2 class="acc">Что мы проверяем</h2><p class="side">Выберите категорию —<br> мастер подскажет, какие кадры снять именно для&nbsp;неё.</p></div>
   <div class="g12 tiles">
-   <a class="tile big" href="#" data-go="/check?category=outerwear" data-r><img src="img/cats/outerwear-wide-800.webp" srcset="img/cats/outerwear-wide-800.webp 800w, img/cats/outerwear-wide-1400.webp 1400w" sizes="(min-width:1024px) 50vw, 100vw" loading="lazy" decoding="async" style="object-position:50% 50%" alt=""><div class="cap"><b>Верхняя одежда</b><span>Пуховики, куртки, пальто</span></div><span class="btn fill">Проверить</span></a>
-   <a class="tile big" href="#" data-go="/check?category=shoes" data-r><img src="img/cats/sneakers-wide-800.webp" srcset="img/cats/sneakers-wide-800.webp 800w, img/cats/sneakers-wide-1400.webp 1400w" sizes="(min-width:1024px) 50vw, 100vw" loading="lazy" decoding="async" style="object-position:50% 50%" alt=""><div class="cap"><b>Обувь</b><span>Кроссовки, кеды, ботинки</span></div><span class="btn fill">Проверить</span></a>
-   <a class="tile sm" href="#" data-go="/check?category=clothing" data-r><img src="img/cats/clothing-600.webp" srcset="img/cats/clothing-600.webp 600w, img/cats/clothing-1000.webp 1000w" sizes="(min-width:1024px) 33vw, 100vw" loading="lazy" decoding="async" style="object-position:50% 45%" alt=""><div class="cap"><b>Одежда</b><span>Худи, футболки, джинсы</span></div><span class="btn fill">Проверить</span></a>
-   <a class="tile sm" href="#" data-go="/check?category=bags" data-r><img src="img/cats/bags-600.webp" srcset="img/cats/bags-600.webp 600w, img/cats/bags-1000.webp 1000w" sizes="(min-width:1024px) 33vw, 100vw" loading="lazy" decoding="async" style="object-position:50% 50%" alt=""><div class="cap"><b>Сумки</b><span>Сумки, рюкзаки, кошельки</span></div><span class="btn fill">Проверить</span></a>
-   <a class="tile sm" href="#" data-go="/check?category=accessories" data-r><img src="img/cats/accessories-600.webp" srcset="img/cats/accessories-600.webp 600w, img/cats/accessories-1000.webp 1000w" sizes="(min-width:1024px) 33vw, 100vw" loading="lazy" decoding="async" style="object-position:50% 62%" alt=""><div class="cap"><b>Аксессуары</b><span>Ремни, головные уборы, очки</span></div><span class="btn fill">Проверить</span></a>
+   <a class="tile big" href="#" data-go="/check?category=outerwear" data-r><picture><source media="(max-width:1023px)" srcset="img/cats/outerwear-wide-480.webp 480w, img/cats/outerwear-wide-800.webp 800w" sizes="(min-width:768px) 50vw, calc(100vw - 32px)"><img src="img/cats/outerwear-wide-800.webp" width="800" height="700" srcset="img/cats/outerwear-wide-800.webp 800w, img/cats/outerwear-wide-1400.webp 1400w" sizes="(min-width:1024px) 50vw, 100vw" loading="lazy" decoding="async" style="object-position:50% 50%" alt=""></picture><div class="cap"><b>Верхняя одежда</b><span>Пуховики, куртки, пальто</span></div><span class="btn fill">Проверить</span></a>
+   <a class="tile big" href="#" data-go="/check?category=shoes" data-r><picture><source media="(max-width:1023px)" srcset="img/cats/sneakers-wide-480.webp 480w, img/cats/sneakers-wide-800.webp 800w" sizes="(min-width:768px) 50vw, calc(100vw - 32px)"><img src="img/cats/sneakers-wide-800.webp" width="800" height="700" srcset="img/cats/sneakers-wide-800.webp 800w, img/cats/sneakers-wide-1400.webp 1400w" sizes="(min-width:1024px) 50vw, 100vw" loading="lazy" decoding="async" style="object-position:50% 50%" alt=""></picture><div class="cap"><b>Обувь</b><span>Кроссовки, кеды, ботинки</span></div><span class="btn fill">Проверить</span></a>
+   <div class="strip" id="catStrip"><a class="tile sm" href="#" data-go="/check?category=clothing" data-r><picture><source media="(max-width:1023px)" srcset="img/cats/clothing-480.webp 480w, img/cats/clothing-800.webp 800w" sizes="(min-width:768px) 33vw, 72vw"><img src="img/cats/clothing-600.webp" width="600" height="750" srcset="img/cats/clothing-600.webp 600w, img/cats/clothing-1000.webp 1000w" sizes="(min-width:1024px) 33vw, 100vw" loading="lazy" decoding="async" style="object-position:50% 45%" alt=""></picture><div class="cap"><b>Одежда</b><span>Худи, футболки, джинсы</span></div><span class="btn fill">Проверить</span></a>
+   <a class="tile sm" href="#" data-go="/check?category=bags" data-r><picture><source media="(max-width:1023px)" srcset="img/cats/bags-480.webp 480w, img/cats/bags-800.webp 800w" sizes="(min-width:768px) 33vw, 72vw"><img src="img/cats/bags-600.webp" width="600" height="750" srcset="img/cats/bags-600.webp 600w, img/cats/bags-1000.webp 1000w" sizes="(min-width:1024px) 33vw, 100vw" loading="lazy" decoding="async" style="object-position:50% 50%" alt=""></picture><div class="cap"><b>Сумки</b><span>Сумки, рюкзаки, кошельки</span></div><span class="btn fill">Проверить</span></a>
+   <a class="tile sm" href="#" data-go="/check?category=accessories" data-r><picture><source media="(max-width:1023px)" srcset="img/cats/accessories-480.webp 480w, img/cats/accessories-800.webp 800w" sizes="(min-width:768px) 33vw, 72vw"><img src="img/cats/accessories-600.webp" width="600" height="750" srcset="img/cats/accessories-600.webp 600w, img/cats/accessories-1000.webp 1000w" sizes="(min-width:1024px) 33vw, 100vw" loading="lazy" decoding="async" style="object-position:50% 62%" alt=""></picture><div class="cap"><b>Аксессуары</b><span>Ремни, головные уборы, очки</span></div><span class="btn fill">Проверить</span></a></div>
   </div>
+  <a class="btn fill mend" href="#" data-go="/check">Начать проверку</a>
  </div>
 </section>
 
@@ -111,15 +120,18 @@
     </div>
    </div>
   </div></div>
+  <div class="mstep"><div class="segs" id="segs"><button type="button" data-i="0" aria-label="Снимаете вещь по подсказкам"></button><button type="button" data-i="1" aria-label="Эксперт изучает детали"></button><button type="button" data-i="2" aria-label="Получаете заключение"></button></div>
+   <div class="stx" id="stx"><div><b>Снимаете вещь по&nbsp;подсказкам</b><span>Мастер покажет, какие кадры нужны.</span></div><div><b>Эксперт изучает детали</b><span>Проверку делает человек. Если чего-то не&nbsp;видно, попросит доснять.</span></div><div><b>Получаете заключение</b><span>Итог и&nbsp;сертификат с&nbsp;QR-кодом.</span></div></div></div>
  </div></div></div>
 </section>
 
 <!-- ===== 4. НАСТОЯЩИЕ ПРОВЕРКИ ===== -->
 <section class="checks" id="checks">
  <div class="wrap">
-  <div class="g12 head" data-r><h2 class="acc">Настоящие проверки</h2><p class="side">Фото, которые люди прислали на&nbsp;проверку.<br>Сняты на&nbsp;телефон —<span style="white-space:nowrap"> такими же будут и&nbsp;ваши.</span></p></div>
+  <div class="g12 head" data-r><h2 class="acc">Настоящие проверки</h2><p class="side">Фото, которые люди прислали на&nbsp;проверку.<br> Сняты на&nbsp;телефон —<span style="white-space:nowrap"> такими же будут и&nbsp;ваши.</span></p></div>
   <div class="g12 bar" data-r><div class="flt" id="flt"><button class="btn sm fill" data-f="all">Все</button><button class="btn sm out" data-f="Оригинал">Оригиналы</button><button class="btn sm out" data-f="Реплика">Реплики</button></div><div class="all"><a class="btn out" href="#" data-go="/checks">Смотреть все проверки</a></div></div>
   <div class="mas" id="mas" aria-live="polite"></div>
+  <a class="btn out mend" href="#" data-go="/checks">Смотреть все проверки</a>
  </div>
 </section>
 
@@ -127,11 +139,13 @@
 <section class="arts">
  <div class="wrap">
   <div class="g12 head" data-r><h2 class="acc">Статьи</h2><div class="side"><a class="btn out" href="#" data-go="/articles">Все статьи</a></div></div>
-  <div class="g12">
-   <a class="art a1" href="https://legit-lab.com/articles/amiri-hoodie-legitcheck" data-slug="amiri-hoodie-legitcheck" target="_blank" rel="noopener" data-r><div class="ph"><img src="img/articles/amiri.webp" loading="lazy" decoding="async" style="aspect-ratio:4/5" alt=""></div><span class="br">Amiri</span><span class="tt">Hoodie Legitcheck</span><span class="ld">Как отличить оригинальное худи Amiri от подделки: бирки, материалы, принт, швы.</span></a>
-   <a class="art a2" href="https://legit-lab.com/articles/moncler-puffer-legitcheck" data-slug="moncler-puffer-legitcheck" target="_blank" rel="noopener" data-r><div class="ph"><img src="img/articles/moncler.webp" loading="lazy" decoding="async" style="aspect-ratio:1/1" alt=""></div><span class="br">Moncler</span><span class="tt">Puffer Legitcheck</span><span class="ld">Как отличить оригинальный пуховик Moncler: бирки, логотип, фурнитура, QR-код, пошив.</span></a>
-   <a class="art a3" href="https://legit-lab.com/articles/balenciaga-track-legitcheck" data-slug="balenciaga-track-legitcheck" target="_blank" rel="noopener" data-r><div class="ph"><img src="img/articles/balenciaga-track.webp" loading="lazy" decoding="async" style="aspect-ratio:3/4" alt=""></div><span class="br">Balenciaga</span><span class="tt">Track Legitcheck</span><span class="ld">Форма, логотипы, маркировка, материалы и подошва Balenciaga Track.</span></a>
+  <div class="g12 arow" id="arow">
+   <a class="art a1" href="https://legit-lab.com/articles/amiri-hoodie-legitcheck" data-slug="amiri-hoodie-legitcheck" target="_blank" rel="noopener" data-r><div class="ph"><img src="img/articles/amiri.webp" width="406" height="510" loading="lazy" decoding="async" style="aspect-ratio:4/5" alt=""></div><span class="br">Amiri</span><span class="tt">Hoodie Legitcheck</span><span class="ld">Как отличить оригинальное худи Amiri от подделки: бирки, материалы, принт, швы.</span></a>
+   <a class="art a2" href="https://legit-lab.com/articles/moncler-puffer-legitcheck" data-slug="moncler-puffer-legitcheck" target="_blank" rel="noopener" data-r><div class="ph"><img src="img/articles/moncler.webp" width="406" height="510" loading="lazy" decoding="async" style="aspect-ratio:1/1" alt=""></div><span class="br">Moncler</span><span class="tt">Puffer Legitcheck</span><span class="ld">Как отличить оригинальный пуховик Moncler: бирки, логотип, фурнитура, QR-код, пошив.</span></a>
+   <a class="art a3" href="https://legit-lab.com/articles/balenciaga-track-legitcheck" data-slug="balenciaga-track-legitcheck" target="_blank" rel="noopener" data-r><div class="ph"><img src="img/articles/balenciaga-track.webp" width="406" height="510" loading="lazy" decoding="async" style="aspect-ratio:3/4" alt=""></div><span class="br">Balenciaga</span><span class="tt">Track Legitcheck</span><span class="ld">Форма, логотипы, маркировка, материалы и подошва Balenciaga Track.</span></a>
   </div>
+  <div class="abar" id="abar" aria-hidden="true"><i></i></div>
+  <a class="btn out mend" href="#" data-go="/articles">Все статьи</a>
  </div>
 </section>
 
@@ -140,7 +154,7 @@
  <div class="wrap">
   <div class="stage">
    <p class="ph" aria-label="Проверь до покупки"><span>Проверь</span><span>до покупки</span></p>
-   <i class="floor"></i><img class="fig" src="img/final-person.webp" width="933" height="1400" loading="lazy" decoding="async" alt="">
+   <i class="floor"></i><picture><source media="(max-width:1023px)" srcset="img/final-person-1000.webp"><img class="fig" src="img/final-person.webp" width="933" height="1400" loading="lazy" decoding="async" alt=""></picture>
   </div>
   <div class="cta"><a class="btn fill" href="#" data-go="/check">Начать проверку</a><a class="btn out" href="https://t.me/legit_lab_bot" data-link="telegramBot" target="_blank" rel="noopener">Открыть в Telegram</a></div>
  </div>
@@ -165,6 +179,6 @@
  <div class="box"><h3 id="modalT">Страница в&nbsp;разработке</h3><p>Эта страница появится позже</p><button class="btn out" id="modalX" type="button">Закрыть</button></div>
 </div>
 
-<script src="main.js?v=2611150133"></script>
+<script src="main.js?v=2611151200"></script>
 </body>
 </html>

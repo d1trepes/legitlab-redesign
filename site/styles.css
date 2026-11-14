@@ -259,3 +259,241 @@ img{display:block;max-width:100%}
  .st b{font-size:22px}
  .foot .phr{font-size:48px}
 }
+
+/* ===== Мобильные элементы: на десктопе скрыты (chats/4-mobile.md) ===== */
+.mbtn,.mmenu,.mend,.mstep,.abar,.tsh{display:none}
+.strip{display:contents}
+picture{display:contents}
+.chk img,.art img{height:auto}
+
+/* =====================================================================
+   ПЛАНШЕТ И ТЕЛЕФОН (до 1023 px). Десктоп выше не меняется.
+   ===================================================================== */
+@media (max-width:1023px){
+ :root{--m:32px;--g:16px;--rs:24px;--sh:8px}
+ body{font-size:16px}
+ .wrap{padding:0 var(--m)}
+ .btn{height:52px;font-size:16px;padding:0 22px}
+ .btn.sm{height:40px;padding:0 16px;font-size:14px}
+ .mend{display:flex;width:100%;margin-top:32px}
+ .fill:hover{background:var(--ink);border-color:var(--ink)}
+ .out:hover{background:transparent;color:var(--ink)}
+ .dk .fill:hover{background:#fff;border-color:#fff}
+ .dk .out:hover{background:transparent;color:#fff;border-color:rgba(255,255,255,.72)}
+ .fill:active{background:#000;border-color:#000}
+ .out:active{background:var(--ink);color:var(--surf)}
+ a,button{-webkit-tap-highlight-color:transparent}
+
+ /* появление: только opacity + 12 px */
+ .js [data-r]{transform:translateY(12px);transition:opacity .5s var(--ease),transform .5s var(--ease)}
+ .lite [data-r]{opacity:1;transform:none;transition:none}
+ /* фото: подложка, проявление после загрузки */
+ img.lz{opacity:0;transition:opacity .3s}
+ img.lz.ok{opacity:1}
+
+ /* ---------- шапка ---------- */
+ .hdr .wrap{height:60px;gap:8px;padding:0 calc(var(--m) - 8px) 0 var(--m)}
+ .hdr.solid{background:rgba(232,233,233,.97)}
+ .nav,.hdr .bs .out{display:none}
+ .hdr .bs{margin-left:auto}
+ .hdr .logo{gap:4px}
+ .hdr .logo svg{width:24px;height:24px}
+ .hdr .logo .wm{font-size:11px}
+ .mbtn{display:block;position:relative;width:44px;height:44px;border:1.5px solid var(--ink);background:transparent;flex:none;margin-left:4px}
+ .mbtn i{position:absolute;left:11px;right:11px;height:1.5px;background:currentColor;top:50%;transition:transform .3s var(--ease)}
+ .mbtn i:first-child{transform:translateY(-4px)}
+ .mbtn i:last-child{transform:translateY(3px)}
+ .mbtn:focus-visible{outline:2px solid var(--ink);outline-offset:3px}
+ .hdr.mon{background:transparent;box-shadow:none;transform:none;color:#fff}
+ .hdr.mon .bs{visibility:hidden}
+ .hdr.mon .mbtn{border-color:rgba(255,255,255,.72)}
+ .hdr.mon .mbtn i:first-child{transform:translateY(-.5px) rotate(45deg)}
+ .hdr.mon .mbtn i:last-child{transform:translateY(-.5px) rotate(-45deg)}
+
+ /* меню: чёрный лист на весь экран */
+ .mmenu{display:flex;flex-direction:column;position:fixed;inset:0;z-index:55;background:var(--dark);color:#F2F3F3;padding:76px var(--m) calc(20px + env(safe-area-inset-bottom));transform:translateY(100%);transition:transform .45s var(--ease);overflow-y:auto;overscroll-behavior:contain}
+ .mmenu[hidden]{display:none}
+ .mmenu.on{transform:none}
+ .mnav{display:flex;flex-direction:column;border-top:1px solid var(--dline)}
+ .mnav a{display:flex;align-items:center;height:56px;font-size:30px;font-weight:500;line-height:1;border-bottom:1px solid var(--dline);letter-spacing:-.01em}
+ .mcta{display:flex;flex-direction:column;gap:10px;margin-top:auto;padding-top:32px}
+ .mcta .btn{width:100%}
+ .mcta .fill{background:#fff;color:var(--ink);border-color:#fff}
+ .mcta .out{color:#fff;border-color:rgba(255,255,255,.72)}
+ .mnav a,.mcta{opacity:0;transform:translateY(12px);transition:opacity .35s,transform .35s var(--ease)}
+ .mmenu.on .mnav a,.mmenu.on .mcta{opacity:1;transform:none}
+ .mmenu.on .mnav a:nth-child(1){transition-delay:.12s}
+ .mmenu.on .mnav a:nth-child(2){transition-delay:.16s}
+ .mmenu.on .mnav a:nth-child(3){transition-delay:.2s}
+ .mmenu.on .mnav a:nth-child(4){transition-delay:.24s}
+ .mmenu.on .mcta{transition-delay:.28s}
+ .rm .mmenu,.rm .mnav a,.rm .mcta,.lite .mmenu,.lite .mnav a,.lite .mcta{transition:none}
+
+ /* ---------- 1. первый экран ---------- */
+ .hero{height:auto}
+ .hero .pin{position:relative;height:100vh;height:100svh;min-height:560px;transform:none!important;opacity:1!important}
+ .scene{top:60px;perspective:900px;touch-action:pan-y;-webkit-user-select:none;user-select:none}
+ .thing{filter:none;height:calc((100svh - 60px - var(--sheetH,400px)) * .46)}
+ .tsh{display:block;position:absolute;left:50%;top:50%;width:150px;height:18px;border-radius:50%;background:rgba(13,14,15,.3);filter:blur(9px);pointer-events:none}
+ .fr{left:-39px;top:-57px;width:78px;padding:4px 4px 6px;font-size:11px;line-height:1.15;box-shadow:0 10px 22px rgba(13,14,15,.14);will-change:auto}
+ .fr img{width:70px;height:88px;margin-bottom:5px}
+ .js .fr{animation:fl 6s ease-in-out infinite alternate}
+ .fr:nth-child(3n+1){animation-duration:5.2s;animation-delay:-1.4s}
+ .fr:nth-child(3n+2){animation-duration:6.6s;animation-delay:-3.1s}
+ .hero.asm .fr,.hero.off .fr,.lite .fr,.rm .fr{animation:none}
+ .hero.off .fr{animation-play-state:paused}
+ @keyframes fl{from{translate:0 -4px}to{translate:0 5px}}
+ .lite .scene,.rm .scene{perspective:none}
+ .msg{font-size:15px;padding:0 var(--m);transition:opacity .4s}
+ .sheet{left:var(--sh);right:var(--sh);display:block;padding:28px calc(var(--m) - var(--sh)) 52px;border-radius:var(--rs) var(--rs) 0 0}
+ .sheet h1{font-size:56px;margin-bottom:16px}
+ .sheet .rt{gap:20px;padding:0}
+ .sheet p{font-size:16px;line-height:1.45;max-width:none}
+ .sheet p br{display:none}
+ .sheet .cta{flex-direction:column-reverse;gap:10px}
+ .sheet .btn{width:100%;padding:0 22px}
+ .js .sheet h1 .ln i{transform:none}
+ .js .sheet p,.js .sheet .cta{opacity:1;transform:none}
+ .js.ready .sheet{animation:none}
+
+ /* ---------- 2. что мы проверяем ---------- */
+ .dk{margin:0 var(--sh)}
+ .dk .wrap{padding:0 calc(var(--m) - var(--sh))}
+ .cats{margin-top:-24px;padding:80px 0 40px;box-shadow:0 -16px 40px rgba(13,14,15,.16)}
+ .head{display:block;margin-bottom:28px}
+ .head h2,.how h2{font-size:48px}
+ .head .side{font-size:16px;margin-top:16px}
+ .head .side br{display:none}
+ .tiles{display:grid;grid-template-columns:1fr 1fr;gap:var(--g)}
+ .tile{transition:transform .18s var(--ease)}
+ .tile:active{transform:scale(.98)}
+ .tile:hover img{transform:none}
+ .tile.big{grid-column:auto;aspect-ratio:4/3}
+ .tile .btn{display:none}
+ .tile .cap,.tile.sm .cap{left:18px;right:18px;bottom:16px}
+ .tile .cap b,.tile.sm .cap b{font-size:22px;margin-bottom:3px}
+ .tile .cap span{font-size:14px}
+ .strip{grid-column:1/-1;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--g)}
+ .tile.sm{grid-column:auto;aspect-ratio:4/5}
+
+ /* ---------- 3. как это работает ---------- */
+ .how{height:auto;padding:88px 0 40px}
+ .how .pin{position:static;height:auto;min-height:0;display:block}
+ .how .g12{display:flex;flex-direction:column;align-items:stretch}
+ .how .lt{display:contents}
+ .how h2{order:1}
+ .how .rt{order:2;height:576px;margin-top:36px;justify-content:center}
+ .phone-fit{transform:scale(.9)!important;transform-origin:50% 0}
+ .iph{touch-action:pan-y;-webkit-user-select:none;user-select:none}
+ .steps{display:none}
+ .mstep{display:block;order:3;margin-top:28px}
+ .how .lt>.btn{order:4;width:100%;margin-top:28px}
+ .segs{display:flex;gap:6px;margin:0 0 6px}
+ .segs button{flex:1;height:44px;border:0;background:none;position:relative;padding:0}
+ .segs button:before{content:"";position:absolute;left:0;right:0;top:0;height:3px;background:var(--line);transition:background .3s}
+ .segs button.on:before{background:var(--ink)}
+ .segs button:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+ .stx{display:grid;margin-top:-26px}
+ .stx>div{grid-area:1/1;opacity:0;transform:translateY(6px);transition:opacity .35s,transform .35s var(--ease)}
+ .stx>div.on{opacity:1;transform:none}
+ .stx b{display:block;font-size:22px;font-weight:500;line-height:1.2;margin-bottom:6px}
+ .stx span{display:block;font-size:16px;font-weight:300;color:var(--mute);line-height:1.45}
+ .lite .stx>div{transition:none}
+
+ /* ---------- 4. настоящие проверки ---------- */
+ .checks{padding:88px 0 40px}
+ .checks .head{margin-bottom:24px}
+ .checks .bar{display:block;margin-bottom:24px}
+ .checks .bar .all{display:none}
+ .flt{gap:8px}
+ .flt .btn.sm{height:44px;padding:0 16px;font-size:15px}
+ .mas{grid-template-columns:repeat(2,minmax(0,1fr));column-gap:var(--g)}
+ .chk{margin-bottom:24px}
+ .chk:hover img{transform:none}
+ .chk .nm{display:block;margin-top:10px}
+ .chk .nm b{display:block;font-size:22px}
+ .chk .nm span{display:block;margin-top:3px;white-space:normal}
+ .vd-p{left:8px;bottom:8px;height:26px;padding:0 9px}
+ .checks .mend{margin-top:16px}
+
+ /* ---------- 5. статьи ---------- */
+ .arts{padding:88px 0 40px}
+ .arts .head{margin-bottom:28px}
+ .arts .head .side{display:none}
+ .arow{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--g)}
+ .art{grid-column:auto}
+ .art.a2,.art.a3{margin-top:0}
+ .art img{aspect-ratio:4/5!important}
+ .art:hover img{transform:none}
+ .art .ph{margin-bottom:14px}
+ .art .br{font-size:30px}
+ .art .tt{font-size:17px;margin:4px 0 4px}
+ .art .ld{font-size:15px}
+
+ /* ---------- 6. финальный призыв ---------- */
+ .final{padding:88px 0 72px;--ih:min(calc(560 / 390 * 100vw),780px);--fs:calc((100vw - 2 * var(--m)) / 3.7)}
+ .final .stage{height:var(--ih)}
+ .final .ph{top:calc(var(--ih) * .05);font-size:var(--fs);line-height:.82;text-align:left}
+ .final .ph span{white-space:normal;width:min-content}
+ .final .fig{height:var(--ih);filter:contrast(.9) brightness(1.06)}
+ .final .floor{top:calc(var(--ih) * .934);width:calc(var(--ih) * .3);height:16px}
+ .final .cta{flex-direction:column;gap:10px;margin-top:28px}
+ .final .cta .btn{width:100%}
+
+ /* ---------- футер ---------- */
+ .foot{padding:64px 0 24px;margin-bottom:var(--sh)}
+ .foot .g12{display:grid;grid-template-columns:1fr 1fr;column-gap:var(--g);row-gap:28px}
+ .foot .phr{grid-column:1/-1;font-size:36px;margin-bottom:12px}
+ .foot .col,.foot .col:nth-child(2),.foot .col:nth-child(3){grid-column:auto;gap:0;padding:0}
+ .foot .col:nth-child(4){grid-column:1/-1}
+ .foot .col h4{margin-bottom:4px}
+ .foot .col a{display:flex;align-items:center;min-height:44px;font-size:16px}
+ .foot .bot{flex-wrap:wrap;align-items:center;column-gap:20px;row-gap:4px;margin-top:40px;padding-top:24px}
+ .foot .bot .logo{flex-basis:100%;margin:0 0 16px;align-items:flex-start}
+ .foot .bot .logo svg{width:40px;height:40px}
+ .foot .bot .logo .wm{font-size:14px}
+ .foot .bot a,.foot .bot>span:not(.logo){display:inline-flex;align-items:center;min-height:44px}
+
+ /* ---------- окно: лист снизу ---------- */
+ .modal{align-items:flex-end}
+ .modal .box{width:100%;border-radius:var(--rs) var(--rs) 0 0;padding:14px var(--m) calc(20px + env(safe-area-inset-bottom));transform:translateY(100%);transition:transform .35s var(--ease);touch-action:none}
+ .modal .box:before{content:"";display:block;width:40px;height:4px;border-radius:2px;background:var(--line);margin:0 auto 24px}
+ .modal .btn{width:100%}
+}
+
+/* ===== Телефон (до 767 px) ===== */
+@media (max-width:767px){
+ :root{--m:20px;--g:12px}
+ .sheet h1{font-size:56px}
+ .tiles{grid-template-columns:1fr}
+ .strip{display:flex;gap:var(--g);overflow-x:auto;scroll-snap-type:x mandatory;margin:0 calc(var(--sh) - var(--m));padding:0 calc(var(--m) - var(--sh));scroll-padding:0 calc(var(--m) - var(--sh));scrollbar-width:none;overscroll-behavior-x:contain}
+ .strip::-webkit-scrollbar{display:none}
+ .tile.sm{flex:0 0 72%;scroll-snap-align:start}
+ .how .rt{height:500px}
+ .phone-fit{transform:scale(.78)!important}
+ .arow{display:flex;gap:var(--g);overflow-x:auto;scroll-snap-type:x mandatory;margin:0 calc(-1 * var(--m));padding:0 var(--m);scroll-padding:0 var(--m);scrollbar-width:none;overscroll-behavior-x:contain}
+ .arow::-webkit-scrollbar{display:none}
+ .art{flex:0 0 82%;scroll-snap-align:start}
+ .abar{display:block;position:relative;height:2px;background:var(--line);margin-top:24px;overflow:hidden}
+ .abar i{position:absolute;left:0;top:0;bottom:0;width:33.4%;background:var(--ink);will-change:transform}
+ .arts .mend{margin-top:28px}
+}
+@media (max-width:1023px) and (max-height:700px){
+ :root{--sheetH:320px}
+ .sheet .p2{display:none}
+ .sheet{padding-top:22px}
+ .sheet h1{margin-bottom:12px}
+ .sheet .rt{gap:16px}
+}
+@media (min-width:768px) and (max-width:1023px){
+ .sheet h1{font-size:84px}
+ .head h2,.how h2{font-size:68px}
+ .sheet .cta{flex-direction:row-reverse}
+ .sheet .btn{width:auto;flex:1}
+ .final .cta{flex-direction:row}
+ .final .cta .btn{width:auto;flex:1}
+ .mas{grid-template-columns:repeat(3,minmax(0,1fr))}
+ .foot .g12{grid-template-columns:repeat(3,1fr)}
+ .foot .phr{grid-column:1/-1}
+ .foot .col:nth-child(4){grid-column:auto}
+}
