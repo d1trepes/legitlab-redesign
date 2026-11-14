@@ -3,13 +3,13 @@
 **Результат чата:** готовая главная для компьютера в папке `site/`, опубликованная на https://d1trepes.github.io/legitlab-redesign/
 **Файл итога:** `decisions/30-build-notes.md`
 
-Всё уже решено: `decisions/10-concept.md`, `decisions/20-visual-system.md`, `decisions/25-build-prompt.md`. Собирай строго по ним, ничего не придумывай заново.
+Всё уже решено: `decisions/10-concept.md`, `decisions/20-visual-system.md`, `decisions/22-photos.md`, `decisions/25-build-prompt.md` и прототип `decisions/25-prototype.html`. Собирай строго по ним, ничего не придумывай заново.
 
 ## Задание
 
 1. Собери главную по `decisions/25-build-prompt.md`: шапка, все блоки, футер. Ширина 1440 px, без поломок на 1024–1920. Мобильную версию сейчас не делаем.
 2. Формат: статичный сайт в папке `site/` — `site/index.html`, стили и скрипты рядом в `site/`. Без сборщиков. 3D — через Three.js с CDN.
-3. Фото — по абсолютным raw-ссылкам: `https://raw.githubusercontent.com/d1trepes/legitlab-redesign/main/assets/v2/<имя>.png`, `.../content/catalog-photos/<ID>.jpg`, `.../content/article-covers/<имя>.jpg`. Логотип — SVG прямо в коде. Данные — из `content/*.json`.
+3. Фото — по абсолютным raw-ссылкам: `https://raw.githubusercontent.com/d1trepes/legitlab-redesign/main/assets/v2/<имя>.png`, `.../content/catalog-photos/<ID>.jpg`, `.../content/article-covers/<имя>.jpg`, новые фото — `.../assets/v3/<имя>.png`. Логотип — SVG прямо в коде. Данные — из `content/*.json`.
 4. Интерактив работает. Заголовок и «Начать проверку» видны сразу, до загрузки 3D. При «уменьшить движение» — статичная версия.
 5. Кнопки ведут на страницы из схемы сайта. Этих страниц пока нет — показывай аккуратное окно «Страница в разработке». Telegram и TikTok — настоящие ссылки.
 6. Перед показом проверь себя: не больше 6 блоков; не больше одного акцентного заголовка на экран; кнопки только заливка или обводка; нет надзаголовков, нумерации, списков с точками, подчёркнутых ссылок вместо кнопок, стрелок, бейджей, эмодзи, выдуманных цифр. Исправь всё найденное.
