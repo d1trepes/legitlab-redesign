@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LEGIT LAB — проверка подлинности брендовых вещей по фото</title>
+<meta name="description" content="Снимите вещь по подсказкам — эксперт изучит бирки, швы и фурнитуру и вынесет заключение: оригинал или реплика.">
+<meta property="og:title" content="LEGIT LAB — оригинал или реплика?">
+<meta property="og:description" content="Проверка подлинности брендовых вещей по фото. Заключение эксперта и сертификат с QR-кодом.">
+<meta property="og:image" content="https://raw.githubusercontent.com/d1trepes/legitlab-redesign/main/assets/v2/hero-doubt.png">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='64 58 408 408'%3E%3Cg fill='%230D0E0F'%3E%3Cpolygon points='178,76 289,76 219,344 427,344 390,442 100,442'/%3E%3Cpolygon points='324,76 430,76 390,203 268,258'/%3E%3C/g%3E%3C/svg%3E">
+<script>document.documentElement.classList.add('js');if(matchMedia('(prefers-reduced-motion: reduce)').matches)document.documentElement.classList.add('rm')</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://raw.githubusercontent.com" crossorigin>
+<link rel="preload" as="image" href="https://raw.githubusercontent.com/d1trepes/legitlab-redesign/main/assets/v3/hero-puffer.png">
+<link href="https://fonts.googleapis.com/css2?family=Fira+Sans+Extra+Condensed:wght@600;700&family=Geologica:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="c2" viewBox="64 58 408 408"><g fill="currentColor"><polygon points="178,76 289,76 219,344 427,344 390,442 100,442"/><polygon points="324,76 430,76 390,203 268,258"/></g></symbol></svg>
+
+<header class="hdr" id="hdr"><div class="wrap">
+   <a class="logo" href="#top" aria-label="LEGIT LAB, наверх"><svg><use href="#c2"/></svg><span class="wm">LEGIT LAB</span></a>
+   <nav class="nav"><a href="#" data-go="/checks">Проверки</a><a href="#" data-go="/how">Как это работает</a><a href="#" data-go="/pricing">Цены</a><a href="#" data-go="/articles">Статьи</a></nav>
+   <div class="bs"><a class="btn sm out" href="#" data-go="/auth">Войти</a><a class="btn sm fill" href="#" data-go="/check">Начать проверку</a></div>
+  </div></header>
+
+<!-- ===== 1. ПЕРВЫЙ ЭКРАН ===== -->
+<main id="top">
+<section class="hero" id="hero">
+ <div class="pin">
+
+
+  <div class="scene" id="scene" role="button" tabindex="0" aria-label="Семь кадров, которые попросит мастер. Нажмите, чтобы собрать их в ленту">
+   <div class="cloud" id="cloud"><img class="thing" id="thing" src="https://raw.githubusercontent.com/d1trepes/legitlab-redesign/main/assets/v3/hero-puffer.png" alt=""></div>
+   <p class="msg" id="msg">Эксперт получил 7 кадров и смотрит детали</p>
+  </div>
+
+  <div class="sheet" id="sheet">
+   <h1 class="acc"><span class="ln"><i>Оригинал</i></span><span class="ln"><i>или реплика?</i></span></h1>
+   <div class="rt"><p>Снимите вещь по&nbsp;подсказкам.<br>Эксперт изучит бирки, швы и&nbsp;фурнитуру и&nbsp;вынесет заключение.</p>
+   <div class="cta"><a class="btn out" href="#" data-go="/how">Как это работает</a><a class="btn fill" href="#" data-go="/check">Начать проверку</a></div></div>
+  </div>
+ </div>
+</section>
+
+<!-- ===== 2. ЧТО МЫ ПРОВЕРЯЕМ ===== -->
+<section class="dk cats">
+ <div class="wrap">
+  <div class="g12 head" data-r><h2 class="acc">Что мы проверяем</h2><p class="side">Выберите категорию —<br>мастер подскажет, какие кадры снять именно для&nbsp;неё.</p></div>
+  <div class="g12 tiles">
+   <a class="tile big" href="#" data-go="/check?category=outerwear" data-r><img src="https://raw.githubusercontent.com/d1trepes/legitlab-redesign/main/assets/v3/cat-outerwear-wide.png" style="object-position:50% 50%" alt=""><div class="cap"><b>Верхняя одежда</b><span>Пуховики, куртки, пальто</span></div><span class="btn fill">Проверить</span></a>
+   <a class="tile big" href="#" data-go="/check?category=shoes" data-r><img src="https://raw.githubusercontent.com/d1trepes/legitlab-redesign/main/assets/v3/cat-sneakers-wide.png" style="object-position:50% 50%" alt=""><div class="cap"><b>Обувь</b><span>Кроссовки, кеды, ботинки</span></div><span class="btn fill">Проверить</span></a>
+   <a class="tile sm" href="#" data-go="/check?category=clothing" data-r><img src="https://raw.githubusercontent.com/d1trepes/legitlab-redesign/main/assets/v2/cat-clothing.png" style="object-position:50% 45%" alt=""><div class="cap"><b>Одежда</b><span>Худи, футболки, джинсы</span></div><span class="btn fill">Проверить</span></a>
+   <a class="tile sm" href="#" data-go="/check?category=bags" data-r><img src="https://raw.githubusercontent.com/d1trepes/legitlab-redesign/main/assets/v2/cat-bags.png" style="object-position:50% 50%" alt=""><div class="cap"><b>Сумки</b><span>Сумки, рюкзаки, кошельки</span></div><span class="btn fill">Проверить</span></a>
+   <a class="tile sm" href="#" data-go="/check?category=accessories" data-r><img src="https://raw.githubusercontent.com/d1trepes/legitlab-redesign/main/assets/v2/cat-accessories.png" style="object-position:50% 62%" alt=""><div class="cap"><b>Аксессуары</b><span>Ремни, головные уборы, очки</span></div><span class="btn fill">Проверить</span></a>
+  </div>
+ </div>
+</section>
+
+<!-- ===== 3. КАК ЭТО РАБОТАЕТ ===== -->
+<section class="how" id="how">
+ <div class="pin"><div class="wrap"><div class="g12">
+  <div class="lt">
+   <h2 class="acc">Как это работает</h2>
+   <div class="steps">
+    <button class="st on" data-i="0"><b>Снимаете вещь по подсказкам</b><span>Мастер покажет, какие кадры нужны.</span></button>
+    <button class="st" data-i="1"><b>Эксперт изучает детали</b><span>Проверку делает человек. Если чего-то не видно, попросит доснять.</span></button>
+    <button class="st" data-i="2"><b>Получаете заключение</b><span>Итог и сертификат с QR-кодом.</span></button>
+   </div>
+   <a class="btn fill" href="#" data-go="/check">Начать проверку</a>
+  </div>
+  <div class="rt"><div class="phone-fit" id="phoneFit">
+   <div class="iph"><i class="k k1"></i><i class="k k2"></i><i class="k k3"></i><i class="k k4"></i>
+    <div class="scr"><div class="island"></div>
+     <div class="track" id="track">
+      <!-- экран 1 -->
+      <div class="sc s1" id="s1">
+       <div class="sb"><span>9:41</span><span class="ic"><i class="sig"></i><i class="bat"></i></span></div>
+       <div class="tt"><b>Бирка крупно</b><span id="frameNo">Кадр 2 из 7</span></div>
+       <div class="vf"><img src="https://raw.githubusercontent.com/d1trepes/legitlab-redesign/main/assets/v3/detail-2-tag.png" alt=""><i class="br b1"></i><i class="br b2"></i><i class="br b3"></i><i class="br b4"></i><span class="hint">Поднесите бирку ближе, чтобы штрихкод был резким</span><i class="flash"></i></div>
+       <div class="thumbs" id="thumbs"></div>
+       <div class="shut"></div>
+      </div>
+      <!-- экран 2 -->
+      <div class="sc s2" id="s2">
+       <div class="sb"><span>9:41</span><span class="ic"><i class="sig"></i><i class="bat"></i></span></div>
+       <div class="tt"><b>Эксперт смотрит фото</b><span>Если чего-то не видно, попросит доснять.</span></div>
+       <div class="view" id="view"><span id="viewL">Бирка</span></div>
+       <div class="grid7" id="grid7"></div>
+       <div class="who"><span>Пуховик · Верхняя одежда</span><span>7 кадров</span></div>
+      </div>
+      <!-- экран 3 -->
+      <div class="sc s3" id="s3">
+       <div class="sb"><span>9:41</span><span class="ic"><i class="sig"></i><i class="bat"></i></span></div>
+       <div class="top anim"><b>Заключение эксперта</b><span>LL-7Q3K</span></div>
+       <div class="pic anim"><img src="https://raw.githubusercontent.com/d1trepes/legitlab-redesign/main/assets/v3/detail-1-overall.png" alt=""></div>
+       <p class="vd anim">Оригинал</p>
+       <p class="it anim">Пуховик · Верхняя одежда</p>
+       <div class="cq anim"><svg class="qr" id="qr" viewBox="0 0 29 29" shape-rendering="crispEdges"></svg><p><b>Сертификат с QR-кодом</b>Код открывает публичную страницу проверки</p></div>
+       <span class="btn fill anim">Открыть сертификат</span>
+      </div>
+     </div>
+    </div>
+   </div>
+  </div></div>
+ </div></div></div>
+</section>
+
+<!-- ===== 4. НАСТОЯЩИЕ ПРОВЕРКИ ===== -->
+<section class="checks" id="checks">
+ <div class="wrap">
+  <div class="g12 head" data-r><h2 class="acc">Настоящие проверки</h2><p class="side">Фото, которые люди прислали на&nbsp;проверку.<br>Сняты на&nbsp;телефон —<span style="white-space:nowrap"> такими же будут и&nbsp;ваши.</span></p></div>
+  <div class="g12 bar" data-r><div class="flt" id="flt"><button class="btn sm fill" data-f="all">Все</button><button class="btn sm out" data-f="Оригинал">Оригиналы</button><button class="btn sm out" data-f="Реплика">Реплики</button></div><div class="all"><a class="btn out" href="#" data-go="/checks">Смотреть все проверки</a></div></div>
+  <div class="mas" id="mas" aria-live="polite"></div>
+ </div>
+</section>
+
+<!-- ===== 5. СТАТЬИ ===== -->
+<section class="arts">
+ <div class="wrap">
+  <div class="g12 head" data-r><h2 class="acc">Статьи</h2><div class="side"><a class="btn out" href="#" data-go="/articles">Все статьи</a></div></div>
+  <div class="g12">
+   <a class="art a1" href="https://legit-lab.com/articles/amiri-hoodie-legitcheck" data-slug="amiri-hoodie-legitcheck" target="_blank" rel="noopener" data-r><div class="ph"><img src="https://raw.githubusercontent.com/d1trepes/legitlab-redesign/main/content/article-covers/amiri.jpg" style="aspect-ratio:4/5" alt=""></div><span class="br">Amiri</span><span class="tt">Hoodie Legitcheck</span><span class="ld">Как отличить оригинальное худи Amiri от подделки: бирки, материалы, принт, швы.</span></a>
+   <a class="art a2" href="https://legit-lab.com/articles/moncler-puffer-legitcheck" data-slug="moncler-puffer-legitcheck" target="_blank" rel="noopener" data-r><div class="ph"><img src="https://raw.githubusercontent.com/d1trepes/legitlab-redesign/main/content/article-covers/moncler.jpg" style="aspect-ratio:1/1" alt=""></div><span class="br">Moncler</span><span class="tt">Puffer Legitcheck</span><span class="ld">Как отличить оригинальный пуховик Moncler: бирки, логотип, фурнитура, QR-код, пошив.</span></a>
+   <a class="art a3" href="https://legit-lab.com/articles/balenciaga-track-legitcheck" data-slug="balenciaga-track-legitcheck" target="_blank" rel="noopener" data-r><div class="ph"><img src="https://raw.githubusercontent.com/d1trepes/legitlab-redesign/main/content/article-covers/balenciaga-track.jpg" style="aspect-ratio:3/4" alt=""></div><span class="br">Balenciaga</span><span class="tt">Track Legitcheck</span><span class="ld">Форма, логотипы, маркировка, материалы и подошва Balenciaga Track.</span></a>
+  </div>
+ </div>
+</section>
+
+<!-- ===== 6. ФИНАЛЬНЫЙ ПРИЗЫВ ===== -->
+<section class="final">
+ <div class="wrap">
+  <div class="stage">
+   <p class="ph" aria-label="Проверь до покупки"><span>Проверь</span><span>до покупки</span></p>
+   <i class="floor"></i><img class="fig" src="https://raw.githubusercontent.com/d1trepes/legitlab-redesign/main/assets/v3/final-person.png" alt="">
+  </div>
+  <div class="cta"><a class="btn fill" href="#" data-go="/check">Начать проверку</a><a class="btn out" href="https://t.me/legit_lab_bot" data-link="telegramBot" target="_blank" rel="noopener">Открыть в Telegram</a></div>
+ </div>
+</section>
+
+</main>
+
+<!-- ===== ФУТЕР ===== -->
+<footer class="dk foot">
+ <div class="wrap">
+  <div class="g12">
+   <p class="phr acc">Оригинал или реплика&nbsp;—<br>ответ эксперта по&nbsp;фото</p>
+   <div class="col"><h4>Проверка</h4><a href="#" data-go="/check">Начать проверку</a><a href="#" data-go="/how">Как это работает</a><a href="#" data-go="/pricing">Цены</a></div>
+   <div class="col"><h4>Сайт</h4><a href="#" data-go="/checks">Проверки</a><a href="#" data-go="/articles">Статьи</a><a href="#" data-go="/auth">Войти</a></div>
+   <div class="col"><h4>Мы в сети</h4><a href="https://t.me/legit_lab_bot" data-link="telegramBot" target="_blank" rel="noopener">Telegram-бот</a><a href="https://t.me/legitlaboratory" data-link="telegramChannel" target="_blank" rel="noopener">Telegram-канал</a><a href="https://www.tiktok.com/@legit_laboratory" data-link="tiktok" target="_blank" rel="noopener">TikTok</a></div>
+  </div>
+  <div class="bot"><span class="logo"><svg><use href="#c2"/></svg><span class="wm">LEGIT LAB</span></span><span>© 2026 LEGIT LAB</span><a href="#" data-go="/legal/offer">Оферта</a><a href="#" data-go="/legal/privacy">Конфиденциальность</a></div>
+ </div>
+</footer>
+
+<div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="modalT" hidden>
+ <div class="box"><h3 id="modalT">Страница в&nbsp;разработке</h3><p>Эта страница появится позже</p><button class="btn out" id="modalX" type="button">Закрыть</button></div>
+</div>
+
+<script src="main.js"></script>
+</body>
+</html>
