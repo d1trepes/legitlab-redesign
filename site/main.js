@@ -41,8 +41,9 @@ document.addEventListener('keydown', e => {
 $('.hdr .logo').addEventListener('click', e => { e.preventDefault(); scrollTo({ top: 0, behavior: RM ? 'auto' : 'smooth' }); });
 
 /* ---------- 1. облако из 7 кадров ---------- */
-const V3 = RAW + 'assets/v3/';
-const IMG = { d1: V3 + 'detail-1-overall.png', d2: V3 + 'detail-2-tag.png', d3: V3 + 'detail-3-label.png', d4: V3 + 'detail-4-seams.png', d5: V3 + 'detail-5-hardware.png', d6: V3 + 'detail-6-logo.png', d7: V3 + 'detail-7-inside.png' };
+// оптимизированные копии кадров (assets/v3/detail-*.png → site/img/frames): f — 320 px для облака и миниатюр, v — 640 px для экрана iPhone
+const IMG = {}, BIG = {};
+for (let i = 1; i <= 7; i++) { IMG['d' + i] = `img/frames/f${i}.webp`; BIG['d' + i] = `img/frames/v${i}.webp`; }
 const FR = [['Общий вид', 'd1'], ['Бирка', 'd2'], ['Этикетка', 'd3'], ['Швы', 'd4'], ['Фурнитура', 'd5'], ['Логотип', 'd6'], ['Изнанка', 'd7']];
 // позиции в облаке: x, y, z, поворот Y, наклон Z (для сцены 1344×480)
 const CL = [[-560, -45, -40, 22, -4], [-350, 110, 170, 14, 3], [-290, -160, -240, 10, -2], [310, -165, -200, -10, 3], [330, 112, 190, -16, -3], [570, -85, -70, -22, 4], [590, 128, -30, -20, -3]];
@@ -50,7 +51,7 @@ const pin = $('#hero .pin'), cats = $('.cats'), hdr = $('#hdr');
 const cloud = $('#cloud'), scene = $('#scene'), thing = $('#thing'), msg = $('#msg'), hero = $('#hero'), sheet = $('#sheet');
 const els = FR.map(([t, f]) => {
   const d = document.createElement('div'); d.className = 'fr';
-  d.innerHTML = `<img src="${IMG[f]}" alt="" decoding="async">${t}`;
+  d.innerHTML = `<img src="${IMG[f]}" width="120" height="150" alt="" decoding="async">${t}`;
   cloud.appendChild(d); return d;
 });
 let W = 1344, H = 480, TH = 420, AR = .8;
@@ -81,7 +82,13 @@ scene.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ')
 
 let catsTop = cats.offsetTop;
 addEventListener('resize', () => { catsTop = cats.offsetTop; });
+let heroVisible = true;
 function frame(t) {
+  requestAnimationFrame(frame);
+  // первый экран ушёл из вида — не тратим кадры на облако
+  heroVisible = scrollY < hero.offsetTop + hero.offsetHeight;
+  header();
+  if (!heroVisible) return;
   const target = Math.max(scrollP(), clickT);
   p = RM ? target : lerp(p, target, .085); if (Math.abs(p - target) < .001) p = target;
   const k = RM ? 0 : 1, ep = ease(p), flat = 1 - ep;
@@ -105,12 +112,13 @@ function frame(t) {
   const cv = clamp((scrollY + innerHeight - catsTop) / (innerHeight * .6));
   pin.style.transform = RM ? '' : `translateY(${-30 * cv}px)`;
   pin.style.opacity = 1 - .25 * cv;
-  // шапка: видна наверху, прячется, пока лист наезжает, возвращается с подложкой
-  const y = scrollY;
-  if (y < innerHeight * .25) { hdr.classList.remove('hide', 'solid'); }
-  else if (y < catsTop - 40) { hdr.classList.add('hide'); hdr.classList.remove('solid'); }
-  else { hdr.classList.add('solid'); hdr.classList.remove('hide'); }
-  requestAnimationFrame(frame);
+}
+// шапка: видна наверху, прячется, пока лист наезжает, возвращается с подложкой
+let hdrState = '';
+function header() {
+  const y = scrollY, st = y < innerHeight * .25 ? 'top' : y < cats.offsetTop - 40 ? 'hide' : 'solid';
+  if (st === hdrState) return; hdrState = st;
+  hdr.classList.toggle('hide', st === 'hide'); hdr.classList.toggle('solid', st === 'solid');
 }
 requestAnimationFrame(frame);
 requestAnimationFrame(() => requestAnimationFrame(() => root.classList.add('ready')));
@@ -123,7 +131,7 @@ const th = [...thumbs.children];
 const g7 = $('#grid7'), view = $('#view');
 FR.forEach(([, f]) => {
   const i = document.createElement('i'); i.style.backgroundImage = `url(${IMG[f]})`; g7.appendChild(i);
-  const im = document.createElement('img'); im.src = IMG[f]; im.alt = ''; im.decoding = 'async'; view.insertBefore(im, view.firstChild);
+  const im = document.createElement('img'); im.src = BIG[f]; im.alt = ''; im.decoding = 'async'; im.loading = 'lazy'; view.insertBefore(im, view.firstChild);
 });
 const gi = [...g7.children], vi = [...view.querySelectorAll('img')].reverse();
 // QR: условный узор с тремя опорными квадратами
@@ -160,6 +168,10 @@ function show(i) {
   if (i === 0) shot1();
   if (i === 1) { lookI = 1; look(); }
 }
+new IntersectionObserver(es => es.forEach(e => {
+  if (!e.isIntersecting) { clearT(); cur = -1; }
+  else show(Math.min(2, Math.floor(howP() * 3)));
+})).observe(how);
 const howP = () => clamp((scrollY - how.offsetTop) / (how.offsetHeight - innerHeight));
 addEventListener('scroll', () => {
   const r = how.getBoundingClientRect();
@@ -190,7 +202,7 @@ const render = () => {
   const cols = [[], [], [], []];
   C.filter(c => filter === 'all' || c.verdict === filter).forEach((c, i) => cols[i % 4].push(c));
   mas.innerHTML = cols.map(col => '<div>' + col.map(c =>
-    `<a class="chk" href="#" data-go="/checks/${esc(c.id)}" data-r><div class="ph"><img src="${RAW + esc(c.photo)}" style="aspect-ratio:${c.ar}" alt="${esc(c.brand)}, ${esc(c.category)}" loading="lazy" decoding="async"><span class="vd-p ${c.verdict === 'Оригинал' ? 'o' : 'r'}">${esc(c.verdict)}</span></div><div class="nm"><b>${esc(c.brand)}</b><span>${esc(c.category)}</span></div></a>`
+    `<a class="chk" href="#" data-go="/checks/${esc(c.id)}" data-r><div class="ph"><img src="img/checks/${esc(c.id)}.webp" style="aspect-ratio:${c.ar}" alt="${esc(c.brand)}, ${esc(c.category)}" loading="lazy" decoding="async"><span class="vd-p ${c.verdict === 'Оригинал' ? 'o' : 'r'}">${esc(c.verdict)}</span></div><div class="nm"><b>${esc(c.brand)}</b><span>${esc(c.category)}</span></div></a>`
   ).join('') + '</div>').join('');
   observe();
 };
@@ -210,8 +222,9 @@ const getJSON = path => fetch(RAW + path, { cache: 'no-cache' }).then(r => r.ok 
 getJSON('content/catalog.json').then(d => {
   const by = Object.fromEntries((d.items || []).map(it => [it.id, it]));
   // только публичные поля: id, brand, category, verdict, photo
-  C = C.map(c => { const it = by[c.id]; return it ? { ...c, brand: it.brand, category: it.category, verdict: it.verdict, photo: it.photo || c.photo } : c; });
-  render();
+  const next = C.map(c => { const it = by[c.id]; return it ? { ...c, brand: it.brand, category: it.category, verdict: it.verdict } : c; });
+  // перерисовываем ленту, только если данные отличаются от встроенных — иначе фото не перезагружаются и не мигают
+  if (JSON.stringify(next) !== JSON.stringify(C)) { C = next; render(); }
 }).catch(() => {});
 getJSON('content/articles.json').then(d => {
   (d.items || []).forEach(it => {
@@ -220,7 +233,6 @@ getJSON('content/articles.json').then(d => {
     if (it.url) a.href = it.url;
     if (it.brand) a.querySelector('.br').textContent = it.brand;
     if (it.lead) a.querySelector('.ld').textContent = it.lead;
-    if (it.cover) a.querySelector('img').src = RAW + it.cover;
   });
 }).catch(() => {});
 getJSON('content/links.json').then(d => {

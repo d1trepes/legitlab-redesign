@@ -12,10 +12,16 @@
 <script>document.documentElement.classList.add('js');if(matchMedia('(prefers-reduced-motion: reduce)').matches)document.documentElement.classList.add('rm')</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="preconnect" href="https://raw.githubusercontent.com" crossorigin>
-<link rel="preload" as="image" href="https://raw.githubusercontent.com/d1trepes/legitlab-redesign/main/assets/v3/hero-puffer.png">
+<link rel="preload" as="image" href="img/hero-puffer.webp" fetchpriority="high">
+<link rel="preload" as="image" href="img/frames/f1.webp">
+<link rel="preload" as="image" href="img/frames/f2.webp">
+<link rel="preload" as="image" href="img/frames/f3.webp">
+<link rel="preload" as="image" href="img/frames/f4.webp">
+<link rel="preload" as="image" href="img/frames/f5.webp">
+<link rel="preload" as="image" href="img/frames/f6.webp">
+<link rel="preload" as="image" href="img/frames/f7.webp">
 <link href="https://fonts.googleapis.com/css2?family=Fira+Sans+Extra+Condensed:wght@600;700&family=Geologica:wght@300;400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="styles.css?v=9038e7e">
+<link rel="stylesheet" href="styles.css?v=2611150133">
 </head>
 <body>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="c2" viewBox="64 58 408 408"><g fill="currentColor"><polygon points="178,76 289,76 219,344 427,344 390,442 100,442"/><polygon points="324,76 430,76 390,203 268,258"/></g></symbol></svg>
@@ -33,7 +39,7 @@
 
 
   <div class="scene" id="scene" role="button" tabindex="0" aria-label="Семь кадров, которые попросит мастер. Нажмите, чтобы собрать их в ленту">
-   <div class="cloud" id="cloud"><img class="thing" id="thing" src="https://raw.githubusercontent.com/d1trepes/legitlab-redesign/main/assets/v3/hero-puffer.png" alt=""></div>
+   <div class="cloud" id="cloud"><img class="thing" id="thing" src="img/hero-puffer.webp" width="864" height="1080" fetchpriority="high" decoding="async" alt=""></div>
    <p class="msg" id="msg">Эксперт получил 7 кадров и смотрит детали</p>
   </div>
 
@@ -50,11 +56,11 @@
  <div class="wrap">
   <div class="g12 head" data-r><h2 class="acc">Что мы проверяем</h2><p class="side">Выберите категорию —<br>мастер подскажет, какие кадры снять именно для&nbsp;неё.</p></div>
   <div class="g12 tiles">
-   <a class="tile big" href="#" data-go="/check?category=outerwear" data-r><img src="https://raw.githubusercontent.com/d1trepes/legitlab-redesign/main/assets/v3/cat-outerwear-wide.png" style="object-position:50% 50%" alt=""><div class="cap"><b>Верхняя одежда</b><span>Пуховики, куртки, пальто</span></div><span class="btn fill">Проверить</span></a>
-   <a class="tile big" href="#" data-go="/check?category=shoes" data-r><img src="https://raw.githubusercontent.com/d1trepes/legitlab-redesign/main/assets/v3/cat-sneakers-wide.png" style="object-position:50% 50%" alt=""><div class="cap"><b>Обувь</b><span>Кроссовки, кеды, ботинки</span></div><span class="btn fill">Проверить</span></a>
-   <a class="tile sm" href="#" data-go="/check?category=clothing" data-r><img src="https://raw.githubusercontent.com/d1trepes/legitlab-redesign/main/assets/v2/cat-clothing.png" style="object-position:50% 45%" alt=""><div class="cap"><b>Одежда</b><span>Худи, футболки, джинсы</span></div><span class="btn fill">Проверить</span></a>
-   <a class="tile sm" href="#" data-go="/check?category=bags" data-r><img src="https://raw.githubusercontent.com/d1trepes/legitlab-redesign/main/assets/v2/cat-bags.png" style="object-position:50% 50%" alt=""><div class="cap"><b>Сумки</b><span>Сумки, рюкзаки, кошельки</span></div><span class="btn fill">Проверить</span></a>
-   <a class="tile sm" href="#" data-go="/check?category=accessories" data-r><img src="https://raw.githubusercontent.com/d1trepes/legitlab-redesign/main/assets/v2/cat-accessories.png" style="object-position:50% 62%" alt=""><div class="cap"><b>Аксессуары</b><span>Ремни, головные уборы, очки</span></div><span class="btn fill">Проверить</span></a>
+   <a class="tile big" href="#" data-go="/check?category=outerwear" data-r><img src="img/cats/outerwear-wide-800.webp" srcset="img/cats/outerwear-wide-800.webp 800w, img/cats/outerwear-wide-1400.webp 1400w" sizes="(min-width:1024px) 50vw, 100vw" loading="lazy" decoding="async" style="object-position:50% 50%" alt=""><div class="cap"><b>Верхняя одежда</b><span>Пуховики, куртки, пальто</span></div><span class="btn fill">Проверить</span></a>
+   <a class="tile big" href="#" data-go="/check?category=shoes" data-r><img src="img/cats/sneakers-wide-800.webp" srcset="img/cats/sneakers-wide-800.webp 800w, img/cats/sneakers-wide-1400.webp 1400w" sizes="(min-width:1024px) 50vw, 100vw" loading="lazy" decoding="async" style="object-position:50% 50%" alt=""><div class="cap"><b>Обувь</b><span>Кроссовки, кеды, ботинки</span></div><span class="btn fill">Проверить</span></a>
+   <a class="tile sm" href="#" data-go="/check?category=clothing" data-r><img src="img/cats/clothing-600.webp" srcset="img/cats/clothing-600.webp 600w, img/cats/clothing-1000.webp 1000w" sizes="(min-width:1024px) 33vw, 100vw" loading="lazy" decoding="async" style="object-position:50% 45%" alt=""><div class="cap"><b>Одежда</b><span>Худи, футболки, джинсы</span></div><span class="btn fill">Проверить</span></a>
+   <a class="tile sm" href="#" data-go="/check?category=bags" data-r><img src="img/cats/bags-600.webp" srcset="img/cats/bags-600.webp 600w, img/cats/bags-1000.webp 1000w" sizes="(min-width:1024px) 33vw, 100vw" loading="lazy" decoding="async" style="object-position:50% 50%" alt=""><div class="cap"><b>Сумки</b><span>Сумки, рюкзаки, кошельки</span></div><span class="btn fill">Проверить</span></a>
+   <a class="tile sm" href="#" data-go="/check?category=accessories" data-r><img src="img/cats/accessories-600.webp" srcset="img/cats/accessories-600.webp 600w, img/cats/accessories-1000.webp 1000w" sizes="(min-width:1024px) 33vw, 100vw" loading="lazy" decoding="async" style="object-position:50% 62%" alt=""><div class="cap"><b>Аксессуары</b><span>Ремни, головные уборы, очки</span></div><span class="btn fill">Проверить</span></a>
   </div>
  </div>
 </section>
@@ -79,7 +85,7 @@
       <div class="sc s1" id="s1">
        <div class="sb"><span>9:41</span><span class="ic"><i class="sig"></i><i class="bat"></i></span></div>
        <div class="tt"><b>Бирка крупно</b><span id="frameNo">Кадр 2 из 7</span></div>
-       <div class="vf"><img src="https://raw.githubusercontent.com/d1trepes/legitlab-redesign/main/assets/v3/detail-2-tag.png" alt=""><i class="br b1"></i><i class="br b2"></i><i class="br b3"></i><i class="br b4"></i><span class="hint">Поднесите бирку ближе, чтобы штрихкод был резким</span><i class="flash"></i></div>
+       <div class="vf"><img src="img/frames/v2.webp" loading="lazy" decoding="async" alt=""><i class="br b1"></i><i class="br b2"></i><i class="br b3"></i><i class="br b4"></i><span class="hint">Поднесите бирку ближе, чтобы штрихкод был резким</span><i class="flash"></i></div>
        <div class="thumbs" id="thumbs"></div>
        <div class="shut"></div>
       </div>
@@ -95,7 +101,7 @@
       <div class="sc s3" id="s3">
        <div class="sb"><span>9:41</span><span class="ic"><i class="sig"></i><i class="bat"></i></span></div>
        <div class="top anim"><b>Заключение эксперта</b><span>LL-7Q3K</span></div>
-       <div class="pic anim"><img src="https://raw.githubusercontent.com/d1trepes/legitlab-redesign/main/assets/v3/detail-1-overall.png" alt=""></div>
+       <div class="pic"><img src="img/frames/v1.webp" loading="lazy" decoding="async" alt=""></div>
        <p class="vd anim">Оригинал</p>
        <p class="it anim">Пуховик · Верхняя одежда</p>
        <div class="cq anim"><svg class="qr" id="qr" viewBox="0 0 29 29" shape-rendering="crispEdges"></svg><p><b>Сертификат с QR-кодом</b>Код открывает публичную страницу проверки</p></div>
@@ -122,9 +128,9 @@
  <div class="wrap">
   <div class="g12 head" data-r><h2 class="acc">Статьи</h2><div class="side"><a class="btn out" href="#" data-go="/articles">Все статьи</a></div></div>
   <div class="g12">
-   <a class="art a1" href="https://legit-lab.com/articles/amiri-hoodie-legitcheck" data-slug="amiri-hoodie-legitcheck" target="_blank" rel="noopener" data-r><div class="ph"><img src="https://raw.githubusercontent.com/d1trepes/legitlab-redesign/main/content/article-covers/amiri.jpg" style="aspect-ratio:4/5" alt=""></div><span class="br">Amiri</span><span class="tt">Hoodie Legitcheck</span><span class="ld">Как отличить оригинальное худи Amiri от подделки: бирки, материалы, принт, швы.</span></a>
-   <a class="art a2" href="https://legit-lab.com/articles/moncler-puffer-legitcheck" data-slug="moncler-puffer-legitcheck" target="_blank" rel="noopener" data-r><div class="ph"><img src="https://raw.githubusercontent.com/d1trepes/legitlab-redesign/main/content/article-covers/moncler.jpg" style="aspect-ratio:1/1" alt=""></div><span class="br">Moncler</span><span class="tt">Puffer Legitcheck</span><span class="ld">Как отличить оригинальный пуховик Moncler: бирки, логотип, фурнитура, QR-код, пошив.</span></a>
-   <a class="art a3" href="https://legit-lab.com/articles/balenciaga-track-legitcheck" data-slug="balenciaga-track-legitcheck" target="_blank" rel="noopener" data-r><div class="ph"><img src="https://raw.githubusercontent.com/d1trepes/legitlab-redesign/main/content/article-covers/balenciaga-track.jpg" style="aspect-ratio:3/4" alt=""></div><span class="br">Balenciaga</span><span class="tt">Track Legitcheck</span><span class="ld">Форма, логотипы, маркировка, материалы и подошва Balenciaga Track.</span></a>
+   <a class="art a1" href="https://legit-lab.com/articles/amiri-hoodie-legitcheck" data-slug="amiri-hoodie-legitcheck" target="_blank" rel="noopener" data-r><div class="ph"><img src="img/articles/amiri.webp" loading="lazy" decoding="async" style="aspect-ratio:4/5" alt=""></div><span class="br">Amiri</span><span class="tt">Hoodie Legitcheck</span><span class="ld">Как отличить оригинальное худи Amiri от подделки: бирки, материалы, принт, швы.</span></a>
+   <a class="art a2" href="https://legit-lab.com/articles/moncler-puffer-legitcheck" data-slug="moncler-puffer-legitcheck" target="_blank" rel="noopener" data-r><div class="ph"><img src="img/articles/moncler.webp" loading="lazy" decoding="async" style="aspect-ratio:1/1" alt=""></div><span class="br">Moncler</span><span class="tt">Puffer Legitcheck</span><span class="ld">Как отличить оригинальный пуховик Moncler: бирки, логотип, фурнитура, QR-код, пошив.</span></a>
+   <a class="art a3" href="https://legit-lab.com/articles/balenciaga-track-legitcheck" data-slug="balenciaga-track-legitcheck" target="_blank" rel="noopener" data-r><div class="ph"><img src="img/articles/balenciaga-track.webp" loading="lazy" decoding="async" style="aspect-ratio:3/4" alt=""></div><span class="br">Balenciaga</span><span class="tt">Track Legitcheck</span><span class="ld">Форма, логотипы, маркировка, материалы и подошва Balenciaga Track.</span></a>
   </div>
  </div>
 </section>
@@ -134,7 +140,7 @@
  <div class="wrap">
   <div class="stage">
    <p class="ph" aria-label="Проверь до покупки"><span>Проверь</span><span>до покупки</span></p>
-   <i class="floor"></i><img class="fig" src="https://raw.githubusercontent.com/d1trepes/legitlab-redesign/main/assets/v3/final-person.png" alt="">
+   <i class="floor"></i><img class="fig" src="img/final-person.webp" width="933" height="1400" loading="lazy" decoding="async" alt="">
   </div>
   <div class="cta"><a class="btn fill" href="#" data-go="/check">Начать проверку</a><a class="btn out" href="https://t.me/legit_lab_bot" data-link="telegramBot" target="_blank" rel="noopener">Открыть в Telegram</a></div>
  </div>
@@ -159,6 +165,6 @@
  <div class="box"><h3 id="modalT">Страница в&nbsp;разработке</h3><p>Эта страница появится позже</p><button class="btn out" id="modalX" type="button">Закрыть</button></div>
 </div>
 
-<script src="main.js?v=9038e7e"></script>
+<script src="main.js?v=2611150133"></script>
 </body>
 </html>

@@ -13,7 +13,7 @@ https://raw.githubusercontent.com/d1trepes/legitlab-redesign/main/<путь к �
 Что где лежит:
 - README.md — карта репозитория.
 - BRIEF.md — главный бриф: продукт, цель страницы, что было плохо и хорошо в прошлой версии, правила дизайна. Читать первым.
-- chats/ — задания пяти чатов: 1-idea.md, 2-visual.md, 3-build.md, 4-fixes.md, 5-mobile.md.
+- chats/ — задания пяти чатов: 1-idea.md, 2-visual.md, 3-build.md, 4-mobile.md, 5-fixes.md.
 - decisions/ — итоги прошлых чатов. Решения в них уже приняты: не предлагай их заново и не меняй без моего слова.
 - references/ — референсы. В references/README.md у каждого написано, что из него брать. failed-v2/ — отклонённая версия с пометками GOOD / OK / BAD / REMOVE. current-site/ — текущий сайт legit-lab.com.
 - assets/v2/ — фотосерия (иллюстрации): hero-doubt, ring-woman-puffer, ring-man-coat, ring-hands-tags, cat-outerwear, cat-clothing, cat-sneakers, cat-bags, cat-accessories (.png).
