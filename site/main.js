@@ -96,7 +96,9 @@ function frame(t) {
     el.style.transform = `translate3d(${x}px,${y}px,${z}px) rotateY(${lerp(c[3], 0, q)}deg) rotateZ(${lerp(c[4], 0, q)}deg)`;
   });
   thing.style.opacity = 1 - .78 * ep;
-  thing.style.transform = `translate3d(${-TH * AR / 2}px,${-TH / 2}px,0) scale(${1 - .06 * ep})`;
+  // вещь стоит на месте: обратный поворот гасит поворот облака, двигаются только кадры
+  const sc = 1 - .06 * ep;
+  thing.style.transform = `rotateY(${-ry * flat}deg) rotateX(${-rx * flat}deg) translate3d(${-TH * AR * sc / 2}px,${-TH * sc / 2}px,0) scale(${sc})`;
   msg.style.opacity = clamp((p - .7) / .3);
   // карточки: чёрный лист наезжает, первый экран чуть уходит вглубь
   catsTop = cats.offsetTop;
@@ -115,7 +117,7 @@ requestAnimationFrame(() => requestAnimationFrame(() => root.classList.add('read
 setTimeout(() => { sheet.style.animation = 'none'; }, 1300);
 
 /* ---------- 3. iPhone ---------- */
-const how = $('#how'), track = $('#track'), steps = $$('.st'), s1 = $('#s1'), s3 = $('#s3'), frameNo = $('#frameNo');
+const how = $('#how'), track = $('#track'), steps = $$('.st'), s1 = $('#s1'), frameNo = $('#frameNo');
 const thumbs = $('#thumbs'); for (let i = 0; i < 7; i++) thumbs.appendChild(document.createElement('i'));
 const th = [...thumbs.children];
 const g7 = $('#grid7'), view = $('#view');
@@ -155,10 +157,8 @@ function show(i) {
   if (i === cur) return; cur = i; clearT();
   track.style.transform = `translateX(${-i * 33.3333}%)`;
   steps.forEach((s, k) => { s.classList.toggle('on', k === i); s.setAttribute('aria-pressed', k === i); });
-  s3.classList.remove('go');
   if (i === 0) shot1();
   if (i === 1) { lookI = 1; look(); }
-  if (i === 2) later(() => s3.classList.add('go'), RM ? 0 : 350);
 }
 const howP = () => clamp((scrollY - how.offsetTop) / (how.offsetHeight - innerHeight));
 addEventListener('scroll', () => {
