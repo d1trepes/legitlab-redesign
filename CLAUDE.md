@@ -1,9 +1,5 @@
 # CLAUDE.md
 
-LEGIT LAB — демоверсия цифрового продукта проверки подлинности брендовых вещей (Беларусь). Не production.
+Редизайн главной страницы LEGIT LAB. Начни с [README.md](README.md) и [BRIEF.md](BRIEF.md), затем `decisions/` и задание нужного чата в `chats/`.
 
-**Главный документ: [BRIEF.md](BRIEF.md).** Прочитай его целиком перед работой.
-
-Потом: `references/README.md` и все изображения в `references/`, затем `assets/v2/`, `assets/logo/selected/`, `content/`.
-
-Публикация: GitHub Pages через `.github/workflows/pages.yml` (push в `main`). Интерфейс на русском. Работать в ветке, итог — Pull Request.
+Код главной — в `site/`, публикуется на GitHub Pages через `.github/workflows/pages.yml`. Интерфейс на русском.
