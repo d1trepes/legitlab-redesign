@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LEGIT LAB — концепция и вайрфрейм главной</title>
+<style>
+:root{--bg:#f1f1ef;--ph:#d3d3d0;--ph2:#bdbdba;--ink:#151515;--mute:#6c6c69;--line:#c9c9c6;--dark:#161616;--m:48px;--g:24px}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Arial,Helvetica,sans-serif;background:#e4e4e1;color:var(--ink);font-size:16px;line-height:1.45;padding-top:56px}
+button{font:inherit;cursor:pointer}
+a{color:inherit;text-decoration:none}
+
+.bar{position:fixed;top:0;left:0;right:0;height:56px;background:#111;color:#eee;display:flex;align-items:center;gap:22px;padding:0 20px;z-index:100;font-size:14px}
+.bar b{margin-right:auto}
+.seg{display:flex;gap:4px;align-items:center}
+.seg span{color:#999;margin-right:6px}
+.seg button{background:transparent;color:#ddd;border:1px solid #555;border-radius:4px;padding:6px 12px;font-size:13px}
+.seg button.on{background:#eee;color:#111;border-color:#eee}
+
+.frame{container-type:inline-size;max-width:1280px;margin:24px auto;background:var(--bg);transition:max-width .35s;overflow:clip;position:relative;box-shadow:0 0 0 1px #ccc}
+body.phone .frame{max-width:390px}
+@container (max-width:600px){.frame *{--m:18px;--g:12px}}
+.wrap{padding:0 var(--m)}
+.g12{display:grid;grid-template-columns:repeat(12,1fr);column-gap:var(--g)}
+
+/* grid overlay */
+.gridov{position:absolute;inset:0;z-index:90;pointer-events:none;display:none;padding:0 48px;grid-template-columns:repeat(12,1fr);column-gap:24px}
+.gridov i{background:rgba(220,0,0,.07);border-left:1px solid rgba(220,0,0,.25);border-right:1px solid rgba(220,0,0,.25)}
+body.grid .gridov{display:grid}
+body.phone .gridov{padding:0 18px;column-gap:12px}
+
+.btn{display:inline-flex;align-items:center;justify-content:center;height:48px;padding:0 24px;border-radius:6px;font-size:15px;font-weight:700;border:1.5px solid var(--ink);white-space:nowrap}
+.btn.fill{background:var(--ink);color:#fff}
+.btn.out{background:transparent;color:var(--ink)}
+.btn.sm{height:38px;padding:0 16px;font-size:14px}
+.btn.on{background:var(--ink);color:#fff}
+.dark .btn.fill,.btn.inv{background:#fff;color:#111;border-color:#fff}
+.dark .btn.out{color:#fff;border-color:#fff}
+
+.poster{font-family:"Arial Narrow",Arial,sans-serif;font-weight:700;text-transform:uppercase;letter-spacing:-.02em;line-height:.9}
+h2.poster{font-size:80px}
+@container (max-width:600px){h2.poster{font-size:44px}}
+.ph{background:var(--ph);position:relative;display:flex;align-items:center;justify-content:center;color:#7a7a77;font-size:12px;text-align:center;padding:8px}
+.ph.alt{background:var(--ph2)}
+.mute{color:var(--mute)}
+.small{font-size:13px}
+
+/* header */
+.hdr{display:flex;align-items:center;gap:32px;height:76px;position:relative;z-index:5}
+.logo{display:flex;align-items:center;gap:10px;font-weight:700;letter-spacing:.04em;font-size:15px}
+.logo .mark{width:34px;height:34px;display:block}
+.nav{display:flex;gap:28px;font-size:15px;margin-right:auto}
+.hdr .btns{display:flex;gap:10px}
+.burger{display:none;width:40px;height:40px;border:1.5px solid var(--ink);border-radius:6px;background:none}
+@container (max-width:600px){.nav,.hdr .btns .out{display:none}.hdr{gap:12px;height:64px}.hdr .btns{margin-left:auto}.burger{display:block}}
+
+/* ===== HERO ===== */
+.hero{position:relative;height:740px}
+.scene{position:absolute;inset:0;z-index:2;perspective:1400px;touch-action:pan-y;user-select:none;cursor:pointer}
+.cloud{position:absolute;left:50%;top:50%;width:0;height:0;transform-style:preserve-3d;transition:transform .25s}
+.item{position:absolute;width:280px;height:400px;left:-140px;top:-200px;transition:opacity .5s;z-index:2;border-radius:4px}
+.fr{position:absolute;width:118px;height:150px;left:-59px;top:-75px;background:#fff;padding:6px;box-shadow:0 10px 24px rgba(0,0,0,.12);transition:transform 1s cubic-bezier(.3,.7,.2,1);font-size:11px;color:#555;display:flex;flex-direction:column;gap:5px}
+.fr .ph{flex:1}
+.hero .msg{position:absolute;left:0;right:0;text-align:center;font-size:18px;opacity:0;transition:opacity .5s;z-index:3}
+.hero.packed .msg{opacity:1}.hero.packed .item{opacity:.25}
+.hero h1{font-size:118px;position:relative;z-index:1}
+.hero p.lead{font-size:18px;max-width:420px}
+.cta{display:flex;gap:12px;flex-wrap:wrap}
+.lay{display:none;position:absolute;inset:0;pointer-events:none}
+.lay *{pointer-events:auto}
+.hero[data-l="1"] .l1,.hero[data-l="2"] .l2,.hero[data-l="3"] .l3{display:block}
+
+/* L1 centre: heading split around the item */
+.l1 h1{z-index:3;white-space:nowrap}.l1 .h-a{position:absolute;left:var(--m);top:120px}
+.l1 .h-b{position:absolute;right:var(--m);top:300px;text-align:right}
+.hero[data-l="1"] .item{width:230px;left:-115px;height:360px;top:-200px}
+.l1 .bot{position:absolute;left:0;right:0;bottom:44px;display:flex;flex-direction:column;align-items:center;gap:18px;text-align:center;z-index:4}
+.hero[data-l="1"] .cloud{z-index:2}
+/* L2 heading top full width, paragraph and buttons in opposite corners */
+.l2 h1{position:absolute;left:var(--m);top:10px;white-space:nowrap;z-index:3}
+.hero[data-l="2"] .scene{top:150px}
+.l2 .lp{position:absolute;left:var(--m);bottom:44px;z-index:4}
+.l2 .rb{position:absolute;right:var(--m);bottom:44px;z-index:4}
+/* L3 sheet */
+.l3 .sheet{position:absolute;left:var(--m);right:var(--m);bottom:0;background:#fff;border-radius:28px 28px 0 0;padding:34px 40px 30px;display:grid;grid-template-columns:repeat(12,1fr);column-gap:var(--g);align-items:end;z-index:4}
+.l3 .sheet h1{font-size:62px;grid-column:1/7}
+.l3 .sheet p{grid-column:7/10}
+.l3 .sheet .cta{grid-column:10/13;justify-content:flex-end}
+.hero[data-l="3"] .scene{bottom:190px}
+.l3 .sheet h1{white-space:nowrap}
+
+@container (max-width:600px){
+ .hero{height:auto;display:flex;flex-direction:column}
+ .scene{position:relative;height:400px;inset:auto}
+ .hero[data-l="3"] .scene{bottom:auto}
+ .hero[data-l="2"] .scene{top:auto}
+ .hero .msg{display:none}
+ .l3 .sheet{left:auto;right:auto}
+ .l3 .sheet .cta{flex-direction:column-reverse}
+ .l3 .sheet .cta .btn{flex:none}
+ .hero[data-l="1"] .item{width:150px;height:210px;left:-75px;top:-105px}
+ .lay{position:static}
+ .hero h1{font-size:52px}
+ .item{width:150px;height:210px;left:-75px;top:-105px}
+ .fr{width:70px;height:90px;left:-35px;top:-45px;font-size:9px;padding:4px}
+ .l1 .h-a,.l1 .h-b,.l2 h1,.l2 .lp,.l2 .rb{position:static;text-align:left;white-space:normal}
+ .l1 .h-a{padding:0 var(--m)}
+ .l1 .h-b{text-align:right;margin-bottom:20px;padding:0 var(--m)}
+ .l1 .bot{position:static;align-items:stretch;text-align:left;padding:0 var(--m) 40px}
+ .l2 h1{font-size:52px;order:-1;padding:0 var(--m)}
+ .hero[data-l="2"]{flex-direction:column}
+ .l2{display:none!important}
+ .hero[data-l="2"] .l2m{display:flex}
+ .l3 .sheet{position:relative;display:flex;flex-direction:column;align-items:stretch;gap:16px;padding:24px 18px 32px;margin:-24px 0 0;border-radius:24px 24px 0 0}
+ .l3 .sheet h1{font-size:44px}
+ .l3 .sheet .cta{justify-content:flex-start}
+ .cta .btn{flex:1}
+}
+.l2m{display:none;flex-direction:column;gap:16px;padding:0 var(--m) 40px}
+
+/* notes */
+.note{background:#fff;border-top:2px dashed #9a9a96;border-bottom:2px dashed #9a9a96;padding:26px var(--m);font-size:14px;color:#333}
+body.clean .note{display:none}
+.note h4{font-size:15px;margin-bottom:8px}
+.note .row{display:flex;gap:10px;flex-wrap:wrap;margin:10px 0 14px}
+.note .row button{border:1.5px solid #111;background:#fff;color:#111;border-radius:4px;padding:6px 12px;font-size:13px;font-weight:700}
+.note .row button.on{background:#111;color:#fff}
+.note .cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px 32px}
+.note p+p{margin-top:6px}
+
+section{position:relative}
+.blk{padding:120px 0}
+@container (max-width:600px){.blk{padding:64px 0}}
+section[data-v="1"] .v2,section[data-v="2"] .v1{display:none!important}
+.head{align-items:end;margin-bottom:48px;row-gap:20px}
+.head h2{grid-column:1/9}
+.head .side{grid-column:9/13}
+@container (max-width:600px){.head h2,.head .side{grid-column:1/-1}}
+
+/* ===== dark rounded sheets ===== */
+.sheetd{background:var(--dark);color:#f1f1f1;margin:0 12px;border-radius:44px}
+.sheetd .wrap{padding:0 calc(var(--m) - 12px)}
+@container (max-width:600px){.sheetd{margin:0 6px;border-radius:28px}.sheetd .wrap{padding:0 calc(var(--m) - 6px)}}
+.sheetd .ph{background:#2f2f2f;color:#8a8a8a}
+
+/* categories */
+.catgrid{row-gap:var(--g)}
+.tile{position:relative;overflow:hidden;border-radius:14px;display:block}
+.tile .ph{position:absolute;inset:0;transition:transform .5s;align-items:flex-start;padding-top:18px}
+.tile:hover .ph{transform:scale(1.04)}
+.tile .cap{position:absolute;left:26px;bottom:24px;right:170px;z-index:2}
+.tile .cap b{display:block;font-size:34px;line-height:1.05;font-weight:700}
+.tile .cap span{font-size:14px;color:#aaa}
+.tile .btn{position:absolute;right:24px;bottom:24px;z-index:2;opacity:0;transform:translateY(10px);transition:.25s}
+.tile:hover .btn{opacity:1;transform:none}
+.t6{grid-column:span 6;height:540px}
+.t4{grid-column:span 4;height:430px}
+.m-big{grid-column:1/7;grid-row:1/3;height:auto}
+.m-s{grid-column:span 3;height:440px}
+.m-s .cap{right:24px}.m-s .cap b{font-size:26px}
+.m-s .btn{bottom:auto;top:22px}
+@container (max-width:600px){.t6,.t4,.m-s,.m-big{grid-column:1/-1;grid-row:auto;height:300px}.tile .btn{opacity:1;transform:none}.tile .cap{right:20px;bottom:76px;left:18px}.tile .cap b{font-size:26px}.tile .btn{left:18px;right:auto;bottom:18px;top:auto}}
+
+/* how */
+.howpin{height:300vh;position:relative}
+.pin{position:sticky;top:0;height:100vh;display:flex;align-items:center}
+.pin>.wrap{width:100%}
+.how{align-items:center}
+.how .rt{grid-column:1/7}
+.steps{margin:36px 0 40px}
+.steps .st{padding:22px 0;border-top:1px solid var(--line);cursor:pointer;opacity:.35;transition:opacity .25s}
+.steps .st:last-child{border-bottom:1px solid var(--line)}
+.steps .st.on{opacity:1}
+.steps .st b{font-size:26px;display:block;margin-bottom:4px;font-weight:700}
+.iph-wrap{grid-column:8/13;display:flex;justify-content:center}
+.iph{position:relative;width:310px;height:640px;border-radius:56px;background:#0e0e0e;padding:11px;box-shadow:0 0 0 2px #3a3a3a,0 40px 80px rgba(0,0,0,.25)}
+.iph i{position:absolute;background:#2a2a2a;border-radius:2px;width:4px}
+.iph .b1{left:-6px;top:120px;height:30px}.iph .b2{left:-6px;top:170px;height:56px}.iph .b3{right:-6px;top:190px;height:86px}
+.scr{position:relative;width:100%;height:100%;border-radius:46px;overflow:hidden;background:#fff}
+.island{position:absolute;top:11px;left:50%;width:96px;height:28px;margin-left:-48px;background:#000;border-radius:20px;z-index:3}
+.track{position:absolute;left:0;right:0;top:0;transition:transform .6s cubic-bezier(.3,.7,.2,1)}
+.sc{height:618px;padding:58px 18px 26px;display:flex;flex-direction:column;gap:12px}
+.sc .top{display:flex;flex-direction:column;gap:2px}
+.sc .top b{font-size:20px}
+.sc .view{flex:1;border-radius:14px}
+.thumbs{display:flex;gap:6px}.thumbs i{position:static;flex:1;height:34px;border-radius:6px;background:#ececea;width:auto}
+.thumbs i.f{background:#9a9a97}.thumbs i.cur{background:#fff;box-shadow:inset 0 0 0 2px #111}
+.grid7{flex:1;display:grid;grid-template-columns:1fr 1fr;gap:8px}.grid7 i{position:static;width:auto;border-radius:10px}
+.verdict{font-size:46px;font-weight:700;line-height:1;margin-top:20px}
+.qrph{width:150px;height:150px;margin:auto 0}
+.sc .btn{width:100%}
+@container (max-width:600px){
+ .howpin{height:260vh}
+ .how .rt,.iph-wrap{grid-column:1/-1}
+ .how .rt h2{font-size:36px}.steps{margin:14px 0}.steps .st{padding:8px 0;display:none}.steps .st.on{display:block}.steps .st b{font-size:18px}.how .rt>.btn{display:none}
+ .iph{transform:scale(.62);transform-origin:50% 0;margin-bottom:-240px}
+}
+.panels .pn{grid-column:span 4;display:flex;flex-direction:column;gap:6px}
+.panels .pv{height:460px;border-radius:14px;margin-bottom:14px;overflow:hidden}
+.panels .pn b{font-size:22px}
+.mosaic{display:grid;grid-template-columns:repeat(3,1fr);grid-auto-rows:1fr;gap:8px;background:#e3e3e0;padding:8px}
+.mosaic i{position:static;font-style:normal;font-size:11px;border-radius:6px}
+.mosaic i:first-child{grid-column:span 2;grid-row:span 2}
+.certbg{background:var(--ph2);display:flex;align-items:center;justify-content:center}
+.cert2{background:#fff;border-radius:10px;padding:24px;width:72%;display:flex;flex-direction:column;gap:6px;box-shadow:0 20px 40px rgba(0,0,0,.12)}
+.cert2 .verdict{margin:0 0 4px}.cert2 i{width:90px;height:90px;margin-top:10px}
+@container (max-width:600px){.panels .pn{grid-column:1/-1;margin-bottom:28px}.panels .pv{height:320px}}
+
+/* checks */
+.ctrl{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.masonry{columns:4;column-gap:var(--g)}
+.chk{break-inside:avoid;margin-bottom:28px;display:block;position:relative}
+.chk .ph{border-radius:6px}
+.vd{position:absolute;left:10px;bottom:10px;font-size:13px;font-weight:700;padding:6px 10px;border-radius:4px}
+.vd.o{background:#111;color:#fff}.vd.r{background:#fff;color:#111;border:1.5px solid #111}
+.chk .nm{display:flex;justify-content:space-between;align-items:baseline;gap:8px;margin-top:10px}
+.chk .nm b{font-family:"Arial Narrow",Arial;font-weight:700;text-transform:uppercase;font-size:24px;letter-spacing:-.01em;line-height:1}
+.alltile{break-inside:avoid;margin-bottom:28px;background:var(--dark);color:#fff;border-radius:6px;padding:26px;height:330px;display:flex;flex-direction:column;justify-content:space-between}
+.alltile b{font-size:30px;line-height:1.1;display:block}
+@container (max-width:600px){.masonry{columns:2}.chk .nm{flex-direction:column}.chk .nm b{font-size:18px}.alltile{height:260px;padding:18px}.alltile b{font-size:22px}}
+
+/* articles */
+.arts .art{grid-column:span 4;display:block}
+.arts .art:nth-child(2){margin-top:110px}
+.arts .art:nth-child(3){margin-top:40px}
+.art .ph{border-radius:6px;margin-bottom:14px}
+.art .br{font-family:"Arial Narrow",Arial;font-weight:700;text-transform:uppercase;font-size:34px;line-height:1;display:block}
+.art .tt{font-size:18px;display:block;margin:4px 0 8px}
+.art .ph{transition:transform .4s}.art:hover .ph{transform:scale(.985)}
+.arts2 .art{grid-column:span 4;position:relative;height:560px;border-radius:14px;overflow:hidden}
+.arts2 .art .ph{position:absolute;inset:0;margin:0;align-items:flex-start;padding-top:18px}
+.arts2 .cap{position:absolute;left:24px;right:24px;bottom:24px;z-index:2}
+.arts2 .art .btn{position:absolute;right:24px;top:24px;opacity:0;transition:.25s;z-index:2}
+.arts2 .art:hover .btn{opacity:1}
+@container (max-width:600px){.arts .art,.arts2 .art{grid-column:1/-1;margin:0 0 28px!important}.arts2 .art{height:380px}.arts2 .art .btn{opacity:1}}
+
+/* final */
+.fin{position:relative;height:820px;overflow:hidden}
+.fin .word{position:absolute;left:0;right:0;top:56px;text-align:center;font-size:214px;color:#cfcfcc;line-height:.86}
+.fin svg.fig{position:absolute;left:50%;bottom:150px;width:380px;margin-left:-190px;height:660px;z-index:2}
+.fin .figcap{position:absolute;left:50%;bottom:300px;transform:translateX(-50%);font-size:12px;color:#666;z-index:3;text-align:center}
+.fin .bot{position:absolute;left:0;right:0;bottom:56px;display:flex;justify-content:center;gap:12px;z-index:3}
+@container (max-width:600px){.fin{height:640px}.fin .word{font-size:66px;top:40px}.fin svg.fig{width:240px;margin-left:-120px;height:420px;bottom:150px}.fin .figcap{bottom:260px}.fin .bot{flex-direction:column;padding:0 18px;bottom:28px}}
+
+/* footer */
+.ftr{padding:64px 0 28px;margin-bottom:12px}
+.ftr .top{row-gap:36px}
+.ftr .say{grid-column:1/7;font-size:30px;line-height:1.15;max-width:520px}
+.ftr .col{grid-column:span 2;font-size:14px}
+.ftr .col span{display:block;color:#777;margin-bottom:12px}
+.ftr .col a{display:block;margin-bottom:8px;color:#ddd}
+.ftr .bot{margin-top:72px;padding-top:20px;border-top:1px solid #333;font-size:12px;color:#888;display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap}
+
+@container (max-width:600px){.ftr .say{grid-column:1/-1;font-size:22px}.ftr .col{grid-column:span 6}}
+
+.pages{max-width:1280px;margin:0 auto 60px;background:#fff;padding:40px 48px;font-size:14px}
+.pages h3{font-size:22px;margin-bottom:18px}
+.pages table{width:100%;border-collapse:collapse}
+.pages td{padding:12px 12px 12px 0;border-top:1px solid #ddd;vertical-align:top}
+.pages td:first-child{font-weight:700;width:26%}
+.pages td:nth-child(2){width:18%;color:#666}
+body.phone .pages{max-width:390px;padding:24px 18px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+
+<div class="bar">
+  <b>LEGIT LAB — концепция главной, версия 2</b>
+  <div class="seg"><span>Ширина</span><button data-w="desk" class="on">Десктоп</button><button data-w="phone">Телефон</button></div>
+  <div class="seg"><span>Сетка</span><button data-gr="off" class="on">Нет</button><button data-gr="on">Показать</button></div>
+  <div class="seg"><span>Пояснения</span><button data-n="on" class="on">Показать</button><button data-n="off">Скрыть</button></div>
+</div>
+
+<main class="frame" id="frame">
+<div class="gridov"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+
+<header class="wrap hdr">
+  <a class="logo" href="#"><svg class="mark" viewBox="64 58 408 408" aria-hidden="true"><g fill="currentColor"><polygon points="178,76 289,76 219,344 427,344 390,442 100,442"/><polygon points="324,76 430,76 390,203 268,258"/></g></svg>LEGIT LAB</a>
+  <nav class="nav"><a href="#checks">Проверки</a><a href="#how">Как это работает</a><a href="#">Цены</a><a href="#arts">Статьи</a></nav>
+  <div class="btns"><a class="btn out sm" href="#">Войти</a><a class="btn fill sm" href="#">Начать проверку</a></div>
+  <button class="burger" aria-label="Меню"></button>
+</header>
+
+<section class="hero" id="hero" data-l="3">
+  <div class="scene" id="scene">
+    <div class="cloud" id="cloud"><div class="item ph alt">cat-outerwear<br>вещь целиком, фон вырезан</div></div>
+  </div>
+  <div class="msg" id="msg">Эксперт получил 7 кадров и смотрит детали</div>
+
+  <div class="lay l1">
+    <h1 class="poster h-a">Оригинал</h1>
+    <h1 class="poster h-b">или<br>реплика?</h1>
+    <div class="bot">
+      <p class="lead">Снимите вещь по подсказкам. Эксперт изучит бирки, швы и фурнитуру и вынесет заключение.</p>
+      <div class="cta"><a class="btn fill" href="#">Начать проверку</a><a class="btn out" href="#how">Как это работает</a></div>
+    </div>
+  </div>
+
+  <div class="lay l2">
+    <h1 class="poster">Оригинал или реплика?</h1>
+    <p class="lead lp">Снимите вещь по подсказкам. Эксперт изучит бирки, швы и фурнитуру и вынесет заключение.</p>
+    <div class="cta rb"><a class="btn out" href="#how">Как это работает</a><a class="btn fill" href="#">Начать проверку</a></div>
+  </div>
+  <div class="l2m">
+    <h1 class="poster" style="font-size:52px">Оригинал или реплика?</h1>
+    <p class="lead">Снимите вещь по подсказкам. Эксперт изучит бирки, швы и фурнитуру и вынесет заключение.</p>
+    <div class="cta"><a class="btn fill" href="#">Начать проверку</a><a class="btn out" href="#how">Как это работает</a></div>
+  </div>
+
+  <div class="lay l3">
+    <div class="sheet">
+      <h1 class="poster">Оригинал<br>или реплика?</h1>
+      <p>Снимите вещь по подсказкам. Эксперт изучит бирки, швы и фурнитуру и вынесет заключение.</p>
+      <div class="cta"><a class="btn out" href="#how">Как это работает</a><a class="btn fill" href="#">Начать проверку</a></div>
+    </div>
+  </div>
+</section>
+
+<div class="note">
+  <h4>Первый экран: «Семь кадров», три раскладки</h4>
+  <p>Вещь в центре, вокруг семь кадров, которые попросит мастер. Мышь вращает облако. Прокрутка или клик собирают кадры в ленту — «эксперт получил 7 кадров». Подстрочка с ценой убрана.</p>
+  <div class="row" id="lays"><button data-l="3" class="on">Лист снизу</button><button data-l="1">Слова по бокам вещи</button><button data-l="2">Заголовок на всю ширину</button></div>
+  <div class="cols">
+    <div><p><b>Лист снизу.</b> Основной вариант. Сцена на весь экран, кадры летают только над листом и никогда не заходят на текст. Снизу белый лист со скруглением (R2): заголовок в две строки, абзац и кнопки по сетке. При прокрутке кадры собираются в ленту прямо над листом.</p></div>
+    <div><p><b>Слова по бокам вещи.</b> Исправлено: вещь больше не закрывает заголовок. «Оригинал» слева сверху, «или реплика?» справа снизу, вещь стоит в центральных колонках между ними. Размер слов подгоняется под ширину колонок.</p></div>
+    <div><p><b>Заголовок на всю ширину.</b> Строка подгоняется под ширину экрана и больше не обрезается. Кадры летают только под ней.</p></div>
+  </div>
+</div>
+
+<!-- CATEGORIES: dark rounded sheet -->
+<section class="sheetd blk" id="cats" data-v="1">
+  <div class="wrap">
+    <div class="g12 head"><h2 class="poster">Что мы проверяем</h2><p class="side" style="color:#aaa">Выберите категорию — мастер подскажет, какие кадры снять именно для неё.</p></div>
+    <div class="g12 catgrid v1">
+      <a class="tile t6" href="#"><div class="ph">cat-outerwear</div><div class="cap"><b>Верхняя одежда</b><span>Пуховики, куртки, пальто</span></div><span class="btn fill">Проверить</span></a>
+      <a class="tile t6" href="#"><div class="ph">cat-sneakers</div><div class="cap"><b>Обувь</b><span>Кроссовки, ботинки</span></div><span class="btn fill">Проверить</span></a>
+      <a class="tile t4" href="#"><div class="ph">cat-clothing</div><div class="cap"><b>Одежда</b><span>Худи, футболки, брюки</span></div><span class="btn fill">Проверить</span></a>
+      <a class="tile t4" href="#"><div class="ph">cat-bags</div><div class="cap"><b>Сумки</b><span>Сумки, рюкзаки, кошельки</span></div><span class="btn fill">Проверить</span></a>
+      <a class="tile t4" href="#"><div class="ph">cat-accessories</div><div class="cap"><b>Аксессуары</b><span>Ремни, кепки, очки</span></div><span class="btn fill">Проверить</span></a>
+    </div>
+    <div class="g12 catgrid v2">
+      <a class="tile m-big" href="#"><div class="ph">cat-outerwear</div><div class="cap"><b>Верхняя одежда</b><span>Пуховики, куртки, пальто</span></div><span class="btn fill">Проверить</span></a>
+      <a class="tile m-s" href="#"><div class="ph">cat-sneakers</div><div class="cap"><b>Обувь</b><span>Кроссовки, ботинки</span></div><span class="btn fill sm">Проверить</span></a>
+      <a class="tile m-s" href="#"><div class="ph">cat-clothing</div><div class="cap"><b>Одежда</b><span>Худи, футболки, брюки</span></div><span class="btn fill sm">Проверить</span></a>
+      <a class="tile m-s" href="#"><div class="ph">cat-bags</div><div class="cap"><b>Сумки</b><span>Сумки, рюкзаки, кошельки</span></div><span class="btn fill sm">Проверить</span></a>
+      <a class="tile m-s" href="#"><div class="ph">cat-accessories</div><div class="cap"><b>Аксессуары</b><span>Ремни, кепки, очки</span></div><span class="btn fill sm">Проверить</span></a>
+    </div>
+  </div>
+</section>
+<div class="note">
+  <h4>Что мы проверяем — чёрный лист со скруглёнными краями</h4>
+  <p>Главный акцентный блок страницы. Лист отступает от краёв на 12 px, углы скруглены, внутри всё стоит в общей сетке. Карточек нет — только фото, текст прямо на фото. При наведении фото чуть приближается и появляется кнопка «Проверить». На телефоне кнопка видна всегда.</p>
+  <div class="row" data-for="cats"><button data-v="1" class="on">2 сверху, 3 снизу</button><button data-v="2">Одна большая и четыре</button></div>
+</div>
+
+<!-- HOW -->
+<section id="how" data-v="1">
+  <div class="v1 howpin" id="howpin">
+    <div class="pin">
+      <div class="wrap g12 how">
+        <div class="rt">
+          <h2 class="poster">Как это работает</h2>
+          <div class="steps" id="steps">
+            <div class="st on" data-s="0"><b>Снимаете вещь по подсказкам</b><span class="mute">Мастер покажет, какие кадры нужны.</span></div>
+            <div class="st" data-s="1"><b>Эксперт изучает детали</b><span class="mute">Проверку делает человек. Если чего-то не видно, попросит доснять.</span></div>
+            <div class="st" data-s="2"><b>Получаете заключение</b><span class="mute">Итог и сертификат с QR-кодом.</span></div>
+          </div>
+          <a class="btn fill" href="#">Начать проверку</a>
+        </div>
+        <div class="iph-wrap">
+          <div class="iph"><i class="b1"></i><i class="b2"></i><i class="b3"></i>
+            <div class="scr"><div class="island"></div>
+              <div class="track" id="track">
+                <div class="sc">
+                  <div class="top"><span class="small mute">Moncler, верхняя одежда</span><b>Бирка крупно</b><span class="small mute">Кадр 2 из 7</span></div>
+                  <div class="ph view">камера: пример кадра с биркой</div>
+                  <div class="thumbs"><i class="f"></i><i class="cur"></i><i></i><i></i><i></i><i></i><i></i></div>
+                  <span class="btn fill">Снять</span>
+                </div>
+                <div class="sc">
+                  <div class="top"><span class="small mute">Проверка LL-4V0BZE</span><b>Эксперт смотрит фото</b><span class="small mute">Получил 7 кадров</span></div>
+                  <div class="grid7"><i class="ph"></i><i class="ph"></i><i class="ph"></i><i class="ph"></i><i class="ph"></i><i class="ph"></i><i class="ph"></i></div>
+                  <span class="small mute" style="text-align:center">Пришлём уведомление, когда будет итог</span>
+                </div>
+                <div class="sc">
+                  <div class="top"><span class="small mute">Заключение эксперта</span></div>
+                  <div class="verdict">Оригинал</div>
+                  <span class="small">Moncler, верхняя одежда</span>
+                  <div class="ph qrph">QR-код сертификата</div>
+                  <span class="btn out">Открыть сертификат</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="v2 blk">
+    <div class="wrap">
+      <div class="g12 head"><h2 class="poster">Как это работает</h2><div class="side" style="display:flex;justify-content:flex-end"><a class="btn fill" href="#">Начать проверку</a></div></div>
+      <div class="g12 panels">
+        <div class="pn"><div class="pv mosaic"><i class="ph">общий вид</i><i class="ph">бирка</i><i class="ph">этикетка</i><i class="ph">швы</i><i class="ph">фурнитура</i><i class="ph">логотип</i><i class="ph">изнанка</i></div><b>Снимаете вещь по подсказкам</b><span class="mute">Мастер покажет, какие кадры нужны.</span></div>
+        <div class="pn"><div class="pv ph alt">ring-hands-tags: руки эксперта и бирка</div><b>Эксперт изучает детали</b><span class="mute">Проверку делает человек. Если чего-то не видно, попросит доснять.</span></div>
+        <div class="pn"><div class="pv certbg"><div class="cert2"><span class="small mute">Заключение эксперта</span><span class="verdict">Оригинал</span><span class="small">Moncler, верхняя одежда</span><i class="ph">QR</i></div></div><b>Получаете заключение</b><span class="mute">Итог и сертификат с QR-кодом.</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+<div class="note">
+  <h4>Как это работает</h4>
+  <div class="row" data-for="how"><button data-v="1" class="on">Настоящий iPhone</button><button data-v="2">Три кадра истории</button></div>
+  <div class="cols">
+    <div><p><b>Настоящий iPhone.</b> Блок закрепляется на экране, пока человек прокручивает страницу. Внутри реалистичного телефона листается настоящий интерфейс: съёмка кадра, эксперт смотрит фото, заключение с QR. Слева подсвечивается текущий шаг, клик по шагу листает телефон. В сборке телефон — 3D-модель или точный рендер, экраны — настоящие скриншоты мини-приложения.</p></div>
+    <div><p><b>Три кадра истории.</b> Без телефона: три больших панели в ряд, как раскадровка. Мозаика из семи кадров, фото рук эксперта с биркой и сертификат «Оригинал» с QR. Под каждой одна строка. Кнопка вверху справа, как у проверок и статей.</p></div>
+  </div>
+</div>
+
+<!-- CHECKS -->
+<section class="blk" id="checks" data-v="1" style="padding-top:40px">
+  <div class="wrap">
+    <div class="g12 head"><h2 class="poster">Настоящие проверки</h2><div class="side" style="display:flex;flex-direction:column;align-items:flex-start;gap:20px"><p>Фото, которые люди прислали на проверку. Сняты на телефон — такими же будут и ваши.</p><a class="btn out" href="#">Смотреть все проверки</a></div></div>
+    <div class="ctrl" style="margin-bottom:24px" id="filters">
+      <button class="btn out sm on" data-f="all">Все</button><button class="btn out sm" data-f="o">Оригиналы</button><button class="btn out sm" data-f="r">Реплики</button>
+    </div>
+    <div class="masonry" id="masonry"></div>
+  </div>
+</section>
+<div class="note">
+  <h4>Настоящие проверки</h4>
+  <p>«Смотреть все проверки» — кнопка с обводкой вверху справа, под описанием, на уровне заголовка. Лента заканчивается без кнопки.</p>
+</div>
+
+<!-- ARTICLES -->
+<section class="blk" id="arts" data-v="1" style="padding-top:40px">
+  <div class="wrap">
+    <div class="g12 head"><h2 class="poster">Статьи</h2><div class="side" style="display:flex;justify-content:flex-end"><a class="btn out" href="#">Все статьи</a></div></div>
+    <div class="g12 arts v1">
+      <a class="art" href="#"><div class="ph" style="height:440px">обложка amiri</div><span class="br">Amiri</span><span class="tt">Hoodie Legitcheck</span><p class="small mute">Бирки, материалы, принт, швы.</p></a>
+      <a class="art" href="#"><div class="ph" style="height:360px">обложка moncler</div><span class="br">Moncler</span><span class="tt">Puffer Legitcheck</span><p class="small mute">Бирки, логотип, фурнитура, QR-код, пошив.</p></a>
+      <a class="art" href="#"><div class="ph" style="height:400px">обложка balenciaga</div><span class="br">Balenciaga</span><span class="tt">Track Legitcheck</span><p class="small mute">Форма, маркировка, материалы, подошва.</p></a>
+    </div>
+    <div class="g12 arts2 v2">
+      <a class="art" href="#"><div class="ph">обложка amiri</div><div class="cap" style="color:#fff"><span class="br">Amiri</span><span class="tt">Hoodie Legitcheck</span></div><span class="btn inv sm">Читать</span></a>
+      <a class="art" href="#"><div class="ph">обложка moncler</div><div class="cap" style="color:#fff"><span class="br">Moncler</span><span class="tt">Puffer Legitcheck</span></div><span class="btn inv sm">Читать</span></a>
+      <a class="art" href="#"><div class="ph">обложка balenciaga</div><div class="cap" style="color:#fff"><span class="br">Balenciaga</span><span class="tt">Track Legitcheck</span></div><span class="btn inv sm">Читать</span></a>
+    </div>
+  </div>
+</section>
+<div class="note">
+  <h4>Статьи — в языке каталога</h4>
+  <p>Тот же приём, что у проверок: фото разной высоты, бренд плакатным, под ним модель обычным шрифтом. «Все статьи» — кнопка в строке заголовка.</p>
+  <div class="row" data-for="arts"><button data-v="1" class="on">Лесенка, как каталог</button><button data-v="2">Текст на фото, как категории</button></div>
+</div>
+
+<!-- FINAL -->
+<section class="fin" id="fin">
+  <div class="word poster">Проверь<br>до покупки</div>
+  <svg class="fig" viewBox="0 0 380 660" preserveAspectRatio="xMidYMax meet"><path d="M190 30c40 0 70 30 72 70 50 18 78 60 88 120l22 360c2 30-20 50-50 50H70c-30 0-52-20-50-50l22-360c10-60 38-102 88-120 2-40 32-70 60-70z" fill="#b2b2af"/></svg>
+  <div class="figcap">ring-woman-puffer, фон вырезан<br>или 3D-модель человека в пуховике</div>
+  <div class="bot"><a class="btn fill" href="#">Начать проверку</a><a class="btn out" href="#">Открыть в Telegram</a></div>
+</section>
+<div class="note">
+  <h4>Финальный призыв</h4>
+  <p>Фраза через весь кадр, перед ней человек с вырезанным фоном. Лишний абзац убран: фраза и есть сообщение. Кнопки стоят по центру под фигурой, по оси композиции, а не сбоку.</p>
+</div>
+
+<footer class="sheetd ftr">
+  <div class="wrap">
+    <div class="g12 top">
+      <p class="say">Оригинал или реплика — ответ эксперта по фото.</p>
+      <div class="col"><span>Проверка</span><a href="#">Начать проверку</a><a href="#">Как это работает</a><a href="#">Цены</a></div>
+      <div class="col"><span>Сайт</span><a href="#">Проверки</a><a href="#">Статьи</a><a href="#">Войти</a></div>
+      <div class="col"><span>Мы в сети</span><a href="#">Telegram-бот</a><a href="#">Telegram-канал</a><a href="#">TikTok</a></div>
+    </div>
+    <div class="bot"><a class="logo" href="#" style="color:#fff"><svg class="mark" viewBox="64 58 408 408" aria-hidden="true"><g fill="currentColor"><polygon points="178,76 289,76 219,344 427,344 390,442 100,442"/><polygon points="324,76 430,76 390,203 268,258"/></g></svg>LEGIT LAB</a><span>© 2026 LEGIT LAB&nbsp;&nbsp;&nbsp;Оферта&nbsp;&nbsp;&nbsp;Конфиденциальность</span></div>
+  </div>
+</footer>
+</main>
+
+<div class="pages note" style="border:0">
+  <h3>Остальные страницы и куда ведут кнопки главной</h3>
+  <table>
+    <tr><td>Мастер проверки</td><td>/check</td><td>«Начать проверку» везде; фото категории открывает мастер с уже выбранной категорией. Шаги: категория, бренд, съёмка 6–7 кадров, срочность, оплата кредитами. Без входа — сначала вход.</td></tr>
+    <tr><td>Вход и регистрация</td><td>/auth</td><td>«Войти» в шапке; мастер перед оплатой.</td></tr>
+    <tr><td>Как это работает</td><td>/how</td><td>«Как это работает» на первом экране и в шапке.</td></tr>
+    <tr><td>Цены и кредиты</td><td>/pricing</td><td>«Цены» в шапке и футере. Цена по брендам и пакеты кредитов.</td></tr>
+    <tr><td>Каталог проверок</td><td>/checks</td><td>«Проверки» в шапке, «Смотреть все проверки».</td></tr>
+    <tr><td>Публичная страница проверки</td><td>/checks/ID</td><td>Клик по фото проверки. Сюда же ведёт QR-код сертификата.</td></tr>
+    <tr><td>Статьи и статья</td><td>/articles, /articles/slug</td><td>«Все статьи», клик по статье.</td></tr>
+    <tr><td>Кабинет и кошелёк</td><td>/account, /account/wallet</td><td>После входа: мои проверки, заключения, сертификаты, досъёмка, пополнение кредитов.</td></tr>
+    <tr><td>Оферта, конфиденциальность</td><td>/legal/…</td><td>Футер.</td></tr>
+    <tr><td>Внешние</td><td>Telegram, TikTok</td><td>«Открыть в Telegram» — бот @legit_lab_bot; футер — бот, канал, TikTok.</td></tr>
+  </table>
+</div>
+
+<script>
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+const reduce=matchMedia('(prefers-reduced-motion:reduce)').matches;
+function seg(attr,fn){$$(`[data-${attr}]`).forEach(b=>{if(!b.closest('.bar'))return;b.onclick=()=>{$$(`.bar [data-${attr}]`).forEach(x=>x.classList.toggle('on',x===b));fn(b.dataset[attr])}})}
+seg('w',v=>{document.body.classList.toggle('phone',v==='phone');setTimeout(()=>{fitHero();layout()},400)});
+seg('n',v=>document.body.classList.toggle('clean',v==='off'));
+seg('gr',v=>document.body.classList.toggle('grid',v==='on'));
+$$('.note .row[data-for]').forEach(r=>r.querySelectorAll('button').forEach(b=>b.onclick=()=>{r.querySelectorAll('button').forEach(x=>x.classList.toggle('on',x===b));document.getElementById(r.dataset.for).dataset.v=b.dataset.v}));
+$$('#lays button').forEach(b=>b.onclick=()=>{$$('#lays button').forEach(x=>x.classList.toggle('on',x===b));$('#hero').dataset.l=b.dataset.l;packed=false;fitHero();layout()});
+
+/* hero: seven frames */
+const FR=['Общий вид','Бирка','Этикетка','Швы','Фурнитура','Логотип','Изнанка'];
+const POS=[[-.40,-.30,-120],[.36,-.33,60],[-.44,.16,80],[.42,.20,-90],[-.20,.38,180],[.22,-.02,220],[.04,-.42,-200]];
+const cloud=$('#cloud'),hero=$('#hero'),scene=$('#scene');
+FR.forEach(f=>{const d=document.createElement('div');d.className='fr';d.innerHTML=`<div class="ph"></div>${f}`;cloud.appendChild(d)});
+let packed=false;
+function layout(){const w=scene.clientWidth,h=scene.clientHeight;const fr=$$('.fr');const ph=w<600;const fw=ph?70:118;const gap=Math.min(fw+12,(w-2*(ph?18:48))/7);
+ fr.forEach((d,i)=>{const p=POS[i];d.style.transform=packed?`translate3d(${(i-3)*gap}px,${ph?40:60}px,40px) scale(${Math.min(1,(gap-8)/fw)})`:`translate3d(${p[0]*w*(ph?.95:.85)}px,${p[1]*h*.8}px,${p[2]}px) rotateY(${-p[0]*28}deg)`});
+ hero.classList.toggle('packed',packed);const m=$('#msg');m.style.top=(scene.offsetTop+h/2+(ph?100:150))+'px'}
+scene.addEventListener('click',()=>{packed=!packed;if(packed)cloud.style.transform='none';layout()});
+scene.addEventListener('pointermove',e=>{if(packed||reduce)return;const r=scene.getBoundingClientRect();cloud.style.transform=`rotateX(${-((e.clientY-r.top)/r.height-.5)*18}deg) rotateY(${((e.clientX-r.left)/r.width-.5)*30}deg)`});
+addEventListener('scroll',()=>{const p=scrollY>160;if(p!==packed){packed=p;if(p)cloud.style.transform='none';layout()}},{passive:true});
+function fit(el,maxW,maxF){let lo=20,hi=maxF;for(let k=0;k<14;k++){const m=(lo+hi)/2;el.style.fontSize=m+'px';(el.scrollWidth<=maxW?lo=m:hi=m)}el.style.fontSize=lo+'px'}
+function fitHero(){const w=hero.clientWidth;const L=hero.dataset.l;const ph=w<600;if(ph){$$('.hero h1').forEach(h=>h.style.fontSize='');return}const m=48;
+ const side=(w-2*m-24*11)/12*4+24*3; // 4 columns
+ if(L==='1'){fit($('.l1 .h-a'),side+40,200);$('.l1 .h-b').style.fontSize=$('.l1 .h-a').style.fontSize}
+ if(L==='2')fit($('.l2 h1'),w-2*m,220);
+ if(L==='3'){const sh=$('.l3 .sheet h1');fit(sh,sh.parentElement.clientWidth*0.5-40,110)}}
+function layoutAll(){fitHero();layout()}
+addEventListener('resize',layoutAll);layoutAll();
+
+/* how: pinned iPhone */
+let step=-1;
+function setStep(i){if(i===step)return;step=i;$$('.st').forEach(s=>s.classList.toggle('on',+s.dataset.s===i));$('#track').style.transform=`translateY(${-i*618}px)`}
+$$('.st').forEach(s=>s.onclick=()=>{const el=$('#howpin');const r=el.getBoundingClientRect();const top=scrollY+r.top;const span=el.offsetHeight-innerHeight;scrollTo({top:top+span*(+s.dataset.s+.5)/3,behavior:'smooth'})});
+function howScroll(){const el=$('#howpin');if(!el.offsetParent)return;const r=el.getBoundingClientRect();const span=el.offsetHeight-innerHeight;const p=Math.min(.999,Math.max(0,-r.top/span));setStep(Math.floor(p*3))}
+addEventListener('scroll',howScroll,{passive:true});setStep(0);
+
+/* checks */
+const CK=[['Amiri','Одежда','o',300],['Moncler','Верхняя одежда','r',220],['Gucci','Сумки','o',260],['Air Jordan','Кроссовки','r',340],['Nike','Обувь','o',200],['Louis Vuitton','Аксессуары','r',280],['Stone Island','Одежда','o',330],['Balenciaga','Кроссовки','r',240],['Raf Simons','Обувь','o',230],['MCM','Аксессуары','r',300],['Y-3','Одежда','o',260],['Golden Goose','Кроссовки','r',210]];
+const card=c=>`<a class="chk" href="#" data-f="${c[2]}"><div class="ph" style="height:${c[3]}px">настоящее фото</div><span class="vd ${c[2]}" style="bottom:auto;top:${c[3]-42}px">${c[2]==='o'?'Оригинал':'Реплика'}</span><div class="nm"><b>${c[0]}</b><span class="small mute">${c[1]}</span></div></a>`;
+const tile=`<div class="alltile v1"><b>Все проверки с фото и итогом</b><span class="small" style="color:#aaa">Оригиналы и реплики, которые прислали люди. Фильтр по бренду и категории.</span><a class="btn inv" href="#">Смотреть все проверки</a></div>`;
+$('#masonry').innerHTML=CK.map(card).join('');
+$$('#filters button').forEach(b=>b.onclick=()=>{$$('#filters button').forEach(x=>x.classList.toggle('on',x===b));$$('#masonry .chk').forEach(c=>c.style.display=(b.dataset.f==='all'||c.dataset.f===b.dataset.f)?'':'none')});
+</script>
+</body>
+</html>
