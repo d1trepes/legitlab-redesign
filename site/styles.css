@@ -398,7 +398,7 @@ picture{display:contents}
  .iph{touch-action:pan-y;-webkit-user-select:none;user-select:none}
  .steps{display:none}
  .mstep{display:block;order:3;margin-top:28px}
- .how .lt>.btn{order:4;width:100%;margin-top:28px}
+ .how .lt>.btn{order:4;width:100%;margin-top:20px}
  .segs{display:flex;gap:6px;margin:0 0 6px}
  .segs button{flex:1;height:44px;border:0;background:none;position:relative;padding:0}
  .segs button:before{content:"";position:absolute;left:0;right:0;top:0;height:3px;background:var(--line);transition:background .3s}
@@ -407,8 +407,8 @@ picture{display:contents}
  .stx{display:grid;margin-top:-26px}
  .stx>div{grid-area:1/1;opacity:0;transform:translateY(6px);transition:opacity .35s,transform .35s var(--ease)}
  .stx>div.on{opacity:1;transform:none}
- .stx b{display:block;font-size:22px;font-weight:500;line-height:1.2;margin-bottom:6px}
- .stx span{display:block;font-size:16px;font-weight:300;color:var(--mute);line-height:1.45}
+ .stx b{display:block;white-space:nowrap;font-size:min(22px,5.6vw);font-weight:500;line-height:1.2;margin-bottom:6px}
+ .stx span{display:block;white-space:nowrap;font-size:min(16px,4.1vw);font-weight:300;color:var(--mute);line-height:1.45}
  .lite .stx>div{transition:none}
 
  /* ---------- 4. настоящие проверки ---------- */
