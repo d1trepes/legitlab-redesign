@@ -271,7 +271,7 @@ picture{display:contents}
    ===================================================================== */
 @media (max-width:1023px){
  :root{--m:32px;--g:16px;--rs:24px;--sh:8px}
- body{font-size:16px}
+ body{font-size:16px;overflow-x:clip}
  .wrap{padding:0 var(--m)}
  .btn{height:52px;font-size:16px;padding:0 22px}
  .btn.sm{height:40px;padding:0 16px;font-size:14px}
@@ -330,13 +330,13 @@ picture{display:contents}
  .rm .mmenu,.rm .mnav a,.rm .mcta,.lite .mmenu,.lite .mnav a,.lite .mcta{transition:none}
 
  /* ---------- 1. первый экран ---------- */
- .hero{height:auto}
- .hero .pin{position:relative;height:100vh;height:100svh;min-height:560px;transform:none!important;opacity:1!important}
+ .hero{height:calc(var(--vh,100svh) * 1.7)}
+ .hero .pin{height:var(--vh,100svh);min-height:540px}
  .scene{top:60px;perspective:900px;touch-action:pan-y;-webkit-user-select:none;user-select:none}
- .thing{filter:none;height:calc((100svh - 60px - var(--sheetH,400px)) * .46)}
+ .thing{filter:none;height:calc((var(--vh,100svh) - 60px - var(--sheetH,400px)) * .58)}
  .tsh{display:block;position:absolute;left:50%;top:50%;width:150px;height:18px;border-radius:50%;background:rgba(13,14,15,.3);filter:blur(9px);pointer-events:none}
- .fr{left:-39px;top:-57px;width:78px;padding:4px 4px 6px;font-size:11px;line-height:1.15;box-shadow:0 10px 22px rgba(13,14,15,.14);will-change:auto}
- .fr img{width:70px;height:88px;margin-bottom:5px}
+ .fr{left:-44px;top:-70px;width:88px;padding:4px 4px 7px;font-size:13px;font-weight:500;line-height:1.15;box-shadow:0 10px 24px rgba(13,14,15,.16);will-change:auto}
+ .fr img{width:80px;height:100px;margin-bottom:6px}
  .js .fr{animation:fl 6s ease-in-out infinite alternate}
  .fr:nth-child(3n+1){animation-duration:5.2s;animation-delay:-1.4s}
  .fr:nth-child(3n+2){animation-duration:6.6s;animation-delay:-3.1s}
@@ -345,21 +345,18 @@ picture{display:contents}
  @keyframes fl{from{translate:0 -4px}to{translate:0 5px}}
  .lite .scene,.rm .scene{perspective:none}
  .msg{font-size:15px;padding:0 var(--m);transition:opacity .4s}
- .sheet{left:var(--sh);right:var(--sh);display:block;padding:28px calc(var(--m) - var(--sh)) 52px;border-radius:var(--rs) var(--rs) 0 0}
+ .sheet{left:var(--sh);right:var(--sh);display:block;padding:28px calc(var(--m) - var(--sh)) calc(24px + env(safe-area-inset-bottom));border-radius:var(--rs) var(--rs) 0 0}
  .sheet h1{font-size:56px;margin-bottom:16px}
  .sheet .rt{gap:20px;padding:0}
  .sheet p{font-size:16px;line-height:1.45;max-width:none}
  .sheet p br{display:none}
  .sheet .cta{flex-direction:column-reverse;gap:10px}
  .sheet .btn{width:100%;padding:0 22px}
- .js .sheet h1 .ln i{transform:none}
- .js .sheet p,.js .sheet .cta{opacity:1;transform:none}
- .js.ready .sheet{animation:none}
 
  /* ---------- 2. что мы проверяем ---------- */
  .dk{margin:0 var(--sh)}
  .dk .wrap{padding:0 calc(var(--m) - var(--sh))}
- .cats{margin-top:-24px;padding:80px 0 40px;box-shadow:0 -16px 40px rgba(13,14,15,.16)}
+ .cats{margin-top:calc(var(--vh,100svh) * -.35);padding:80px 0 40px;box-shadow:0 -16px 40px rgba(13,14,15,.16)}
  .head{display:block;margin-bottom:28px}
  .head h2,.how h2{font-size:48px}
  .head .side{font-size:16px;margin-top:16px}
@@ -431,19 +428,19 @@ picture{display:contents}
  .art .ld{font-size:15px}
 
  /* ---------- 6. финальный призыв ---------- */
- .final{padding:88px 0 72px;--ih:min(calc(560 / 390 * 100vw),780px);--fs:calc((100vw - 2 * var(--m)) / 3.7)}
- .final .stage{height:var(--ih)}
- .final .ph{top:calc(var(--ih) * .05);font-size:var(--fs);line-height:.82;text-align:left}
- .final .ph span{white-space:normal;width:min-content}
- .final .fig{height:var(--ih);filter:contrast(.9) brightness(1.06)}
- .final .floor{top:calc(var(--ih) * .934);width:calc(var(--ih) * .3);height:16px}
+ /* фраза читается целиком: две строки над головой, фигура заходит только на низ второй строки */
+ .final{padding:88px 0 72px;--ih:min(calc(540 / 390 * 100vw),760px);--fs:calc((100vw - 2 * var(--m)) / 4.95);--pt:calc(var(--fs) * .95)}
+ .final .stage{height:calc(var(--ih) + var(--pt))}
+ .final .ph{top:0;font-size:var(--fs);line-height:.82;color:#B3B6B9}
+ .final .fig{top:var(--pt);height:var(--ih);filter:contrast(.9) brightness(1.06)}
+ .final .floor{top:calc(var(--pt) + var(--ih) * .934);width:calc(var(--ih) * .3);height:16px}
  .final .cta{flex-direction:column;gap:10px;margin-top:28px}
  .final .cta .btn{width:100%}
 
  /* ---------- футер ---------- */
- .foot{padding:64px 0 24px;margin-bottom:var(--sh)}
+ .foot{padding:64px 0 24px;margin-bottom:var(--sh);overflow:hidden}
  .foot .g12{display:grid;grid-template-columns:1fr 1fr;column-gap:var(--g);row-gap:28px}
- .foot .phr{grid-column:1/-1;font-size:36px;margin-bottom:12px}
+ .foot .phr{grid-column:1/-1;font-size:calc((100vw - 2 * var(--m)) / 10.8);white-space:nowrap;margin-bottom:12px}
  .foot .col,.foot .col:nth-child(2),.foot .col:nth-child(3){grid-column:auto;gap:0;padding:0}
  .foot .col:nth-child(4){grid-column:1/-1}
  .foot .col h4{margin-bottom:4px}

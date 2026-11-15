@@ -8,9 +8,9 @@ const root = document.documentElement;
 // мобильная версия (до 1023 px) и телефон (до 767 px) — chats/4-mobile.md
 const MQ = matchMedia('(max-width:1023px)'), PH = matchMedia('(max-width:767px)');
 const isM = () => MQ.matches;
-// облегчённый режим: уменьшить движение, экономия трафика, слабое устройство
+// облегчённый режим: «уменьшить движение» или экономия трафика
 const nc = navigator.connection || {};
-const LITE_DEV = !!nc.saveData || (navigator.hardwareConcurrency || 8) <= 4 || (navigator.deviceMemory || 8) <= 3;
+const LITE_DEV = !!nc.saveData;
 
 /* ---------- уменьшить движение: только системная настройка ---------- */
 const mq = matchMedia('(prefers-reduced-motion: reduce)');
@@ -273,42 +273,63 @@ function observe() { $$('[data-r]:not(.in)').forEach(el => io.observe(el)); }
 const lite = () => root.classList.contains('lite');
 const tsh = $('#tsh');
 
-/* ---------- 1. облако под палец ---------- */
-// x, y — доля свободного поля сцены (−1…1, кадр не выходит за края); z; поворот Y; наклон Z
-const CM = [[-.96, -1, -30, 12, -4], [-1, .02, 30, 10, 3], [-.88, 1, -10, 8, -2], [.3, -1, -70, -4, 2], [.98, -.72, 20, -10, 3], [.88, .14, -40, -12, -3], [1, 1, 24, -8, 2]];
-const hm = { ry: 0, v: 0, drag: false, moved: false, x0: 0, ry0: 0, lx: 0, lt: 0, P: 0, T: 0, from: 0, t0: 0, raf: 0, last: 0 };
-let MW = 390, MH = 400, JH = 180, FS = 1, FH = 116;
+/* ---------- 1. облако: собирается прокруткой (как на десктопе), касанием, крутится свайпом ---------- */
+// высота экрана фиксируется в px: панели Telegram и Safari при прокрутке не дёргают первый экран
+let VW = root.clientWidth;
+const setVH = () => root.style.setProperty('--vh', (root.clientHeight || innerHeight) + 'px');
+// координаты кадров для сцены 390×400 (от центра, px), z, поворот Y, наклон Z
+// две сверху, три слева, две справа
+const CM = [[-138, -120, 0, 10, -4], [-140, 8, 10, 10, 3], [-136, 134, -10, 8, -2], [-50, -134, 16, 4, 3], [84, -138, 6, -4, -3], [140, -16, 14, -10, 3], [136, 120, -6, -8, -2]];
+const hm = { ry: 0, v: 0, drag: false, down: false, moved: false, x0: 0, ry0: 0, lx: 0, lt: 0, P: 0, T: 0, from: 0, t0: 0, raf: 0, last: 0, sp: 0 };
+let MW = 390, MH = 400, JH = 220, FS = 1, FH = 140, FW = 88;
 function mSize() {
   if (!isM()) return;
   root.style.setProperty('--sheetH', sheet.offsetHeight + 'px');
   MW = scene.clientWidth; MH = scene.clientHeight;
-  JH = Math.round(MH * .46); thing.style.height = JH + 'px';
-  FS = clamp(Math.min(MH / 410, MW / 390), .6, 1.3);
-  FH = els[0].offsetHeight || 116;
+  JH = Math.round(Math.min(MH * .58, MW * .66 / AR)); thing.style.height = JH + 'px';
+  FS = clamp(Math.min(MH / 400, MW / 390), .62, 1.35);
+  FW = els[0].offsetWidth || 88; FH = els[0].offsetHeight || 140;
   tsh.style.width = Math.round(JH * AR * .9) + 'px';
   tsh.style.transform = `translate(-50%,${Math.round(JH * .47)}px)`;
-  mApply();
+  mScroll();
 }
+const scrollPM = () => clamp(scrollY / ((hero.offsetHeight - innerHeight) * .5));
 function mApply() {
-  const e = ease(hm.P), f = 1 - e, L = lite();
-  const fw = 78, rxR = Math.max(0, MW / 2 - fw * FS / 2 - 12), ryR = Math.max(0, MH / 2 - FH * FS / 2 - 10);
+  const P = Math.max(hm.sp, hm.P), e = ease(P), f = 1 - e, L = lite();
+  const kx = Math.min(MW / 390, 1.6), ky = MH / 400;
   // собранные кадры: строка сообщения, под ней 4 + 3
-  const GS = Math.min(FS, (MW - 40 - 30) / (4 * fw), (MH - 24 - 46) / (2 * FH));
-  const gw = fw * GS + 10, gh = FH * GS, t0 = -(36 + 2 * gh + 10) / 2;
+  const GS = Math.min(FS, (MW - 40 - 30) / (4 * FW), (MH - 24 - 46) / (2 * FH));
+  const gw = FW * GS + 10, gh = FH * GS, t0 = -(36 + 2 * gh + 10) / 2;
   msg.style.top = (MH / 2 + t0) + 'px';
   const ryc = L ? 0 : hm.ry * f;
   cloud.style.transform = ryc ? `rotateY(${ryc}deg)` : '';
   els.forEach((el, i) => {
-    const c = CM[i], q = ease(clamp((hm.P - i * .04) / (1 - 6 * .04)));
+    const c = CM[i], q = ease(clamp((P - i * .04) / (1 - 6 * .04)));
     const gx = i < 4 ? (i - 1.5) * gw : (i - 5) * gw, gy = t0 + 36 + gh / 2 + (i < 4 ? 0 : gh + 10);
-    const x = lerp(c[0] * rxR, gx, q), y = lerp(c[1] * ryR, gy, q), z = L ? 0 : lerp(c[2], 0, q);
+    const x = lerp(c[0] * kx, gx, q), y = lerp(c[1] * ky, gy, q), z = L ? 0 : lerp(c[2], 0, q);
     el.style.transform = `translate3d(${x.toFixed(1)}px,${y.toFixed(1)}px,${z.toFixed(1)}px) rotateY(${L ? 0 : lerp(c[3], 0, q).toFixed(2)}deg) rotateZ(${lerp(c[4], 0, q).toFixed(2)}deg) scale(${lerp(FS, GS, q).toFixed(3)})`;
   });
+  hero.classList.toggle('asm', P > .02);
   thing.style.opacity = 1 - .78 * e; tsh.style.opacity = 1 - .85 * e;
-  thing.style.transform = `rotateY(${-ryc}deg) translate3d(${-JH * AR / 2}px,${-JH / 2}px,0)`;
-  msg.style.opacity = clamp((hm.P - .7) / .3);
+  const sc = 1 - .06 * e;
+  thing.style.transform = `rotateY(${-ryc}deg) translate3d(${-JH * AR * sc / 2}px,${-JH * sc / 2}px,0) scale(${sc})`;
+  msg.style.opacity = clamp((P - .7) / .3);
 }
-// цикл кадров крутится только во время жеста, инерции и сборки
+// прокрутка: сборка кадров, затем чёрный лист наезжает, первый экран чуть уходит вглубь
+let sq = false;
+function mScroll() {
+  sq = false;
+  if (!isM()) return;
+  const y = scrollY;
+  if (y > hero.offsetHeight + 50) return;
+  hm.sp = scrollPM();
+  const cv = clamp((y + innerHeight - cats.offsetTop) / (innerHeight * .6));
+  pin.style.transform = RM ? '' : `translateY(${(-24 * cv).toFixed(1)}px)`;
+  pin.style.opacity = (1 - .25 * cv).toFixed(3);
+  mApply();
+}
+addEventListener('scroll', () => { if (isM() && !sq) { sq = true; requestAnimationFrame(mScroll); } }, { passive: true });
+// цикл кадров крутится только во время жеста, инерции и сборки касанием
 function mTick(t) {
   hm.raf = 0;
   const dt = hm.last ? Math.min(.04, (t - hm.last) / 1000) : .016; hm.last = t;
@@ -323,16 +344,17 @@ function mTick(t) {
 }
 const kick = () => { if (!hm.raf) { hm.last = 0; hm.raf = requestAnimationFrame(mTick); } };
 const mToggle = () => {
-  hm.T = hm.T ? 0 : 1; hm.from = hm.P; hm.t0 = performance.now();
-  hero.classList.toggle('asm', !!hm.T);
+  const on = Math.max(hm.sp, hm.P) > .5;
+  if (on && hm.sp > .02) { hm.T = hm.P = 0; scrollTo({ top: 0, behavior: RM ? 'auto' : 'smooth' }); return; }
+  hm.T = on ? 0 : 1; hm.from = hm.P; hm.t0 = performance.now();
   scene.setAttribute('aria-pressed', !!hm.T);
-  if (lite()) { hm.P = hm.T; mApply(); return; }
+  if (RM) { hm.P = hm.T; mApply(); return; }
   kick();
 };
 scene.addEventListener('pointerdown', e => {
   if (!isM()) return;
   hm.down = true; hm.moved = false; hm.x0 = hm.lx = e.clientX;
-  if (lite() || hm.T) return;
+  if (lite() || Math.max(hm.sp, hm.P) > .3) return;
   hm.drag = true; hm.ry0 = hm.ry; hm.lt = e.timeStamp; hm.v = 0;
 }, { passive: true });
 scene.addEventListener('pointermove', e => {
@@ -456,22 +478,24 @@ lazyFade = (scope = document) => {
 
 /* ---------- переключение десктоп ↔ мобильная ---------- */
 const enterM = () => {
+  VW = root.clientWidth; setVH();
   pin.style.transform = pin.style.opacity = '';
   hdr.classList.remove('hide', 'solid'); mhs = ''; lastY = scrollY;
   $('#phoneFit').style.transform = '';
-  hm.P = hm.T = 0; hero.classList.remove('asm');
+  hm.P = hm.T = 0;
   mSize(); aUpd(); lazyFade();
   if (how.getBoundingClientRect().top < innerHeight) { cur = -1; show(0); }
 };
 const enterD = () => {
   closeMenu(); clearTimeout(autoT);
-  thing.style.height = ''; tsh.removeAttribute('style'); cloud.style.transform = '';
+  thing.style.height = ''; tsh.removeAttribute('style'); cloud.style.transform = ''; root.style.removeProperty('--vh');
   clickT = 0; p = 0; hero.classList.remove('asm');
   size(); fit(); startD(); cur = -1; show(0);
 };
 MQ.addEventListener && MQ.addEventListener('change', () => { (isM() ? enterM : enterD)(); render(); });
 PH.addEventListener && PH.addEventListener('change', () => { if (isM()) { render(); aUpd(); } });
-addEventListener('resize', () => { if (isM()) { mSize(); aUpd(); } });
+// пересчёт только при смене ширины (поворот экрана), не при прыжках панелей браузера
+addEventListener('resize', () => { if (isM() && root.clientWidth !== VW) { VW = root.clientWidth; setVH(); mSize(); aUpd(); } });
 document.fonts && document.fonts.ready.then(() => { if (isM()) mSize(); });
 thing.addEventListener('load', () => { if (isM()) mSize(); });
 if (isM()) enterM();
