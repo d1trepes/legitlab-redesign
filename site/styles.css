@@ -48,7 +48,7 @@ img{display:block;max-width:100%}
 .hero .pin{position:sticky;top:0;height:100vh;min-height:720px;overflow:hidden;transform-origin:50% 100%}
 .hdr{position:fixed;left:0;right:0;top:0;z-index:60;transition:transform .45s var(--ease),background .3s,box-shadow .3s}
 .hdr.hide{transform:translateY(-100%)}
-.hdr.solid{background:rgba(232,233,233,.96);box-shadow:0 1px 0 var(--line)}
+.hdr.solid{background:rgba(232,233,233,.96)}
 .rm .hdr{transition:none}
 .hdr.ondk{color:#F2F3F3}
 .hdr.ondk.solid{background:rgba(13,14,15,.97);box-shadow:none}
@@ -319,7 +319,7 @@ picture{display:contents}
  .hdr.mon .mbtn i:last-child{transform:translateY(-.5px) rotate(-45deg)}
 
  /* меню: чёрный лист на весь экран */
- .mmenu{display:flex;flex-direction:column;position:fixed;inset:0;z-index:55;background:var(--dark);color:#F2F3F3;padding:76px var(--m) calc(20px + env(safe-area-inset-bottom));transform:translateY(100%);transition:transform .45s var(--ease);overflow-y:auto;overscroll-behavior:contain}
+ .mmenu{display:flex;flex-direction:column;position:fixed;inset:0;z-index:55;background:var(--dark);color:#F2F3F3;padding:76px var(--m) calc(20px + env(safe-area-inset-bottom));transform:translateX(100%);transition:transform .45s var(--ease);overflow-y:auto;overscroll-behavior:contain}
  .mmenu[hidden]{display:none}
  .mmenu.on{transform:none}
  .mnav{display:flex;flex-direction:column;border-top:1px solid var(--dline)}
@@ -328,7 +328,7 @@ picture{display:contents}
  .mcta .btn{width:100%}
  .mcta .fill{background:#fff;color:var(--ink);border-color:#fff}
  .mcta .out{color:#fff;border-color:rgba(255,255,255,.72)}
- .mnav a,.mcta{opacity:0;transform:translateY(12px);transition:opacity .35s,transform .35s var(--ease)}
+ .mnav a,.mcta{opacity:0;transform:translateX(24px);transition:opacity .35s,transform .35s var(--ease)}
  .mmenu.on .mnav a,.mmenu.on .mcta{opacity:1;transform:none}
  .mmenu.on .mnav a:nth-child(1){transition-delay:.12s}
  .mmenu.on .mnav a:nth-child(2){transition-delay:.16s}
@@ -338,14 +338,14 @@ picture{display:contents}
  .rm .mmenu,.rm .mnav a,.rm .mcta,.lite .mmenu,.lite .mnav a,.lite .mcta{transition:none}
 
  /* ---------- 1. первый экран ---------- */
- .hero{height:calc(var(--vh,100svh) * 1.4)}
+ .hero{height:calc(var(--vh,100svh) * 2.1)}
  .hero .pin{height:var(--vh,100svh);min-height:540px}
  .scene{top:60px;perspective:900px;touch-action:pan-y;-webkit-user-select:none;user-select:none}
  .thing{filter:none;height:calc((var(--vh,100svh) - 60px - var(--sheetH,400px)) * .68)}
  .tsh{display:block;position:absolute;left:50%;top:50%;width:150px;height:18px;border-radius:50%;background:rgba(13,14,15,.3);filter:blur(9px);pointer-events:none}
  .fr{left:-37px;top:-55px;width:74px;padding:3px 3px 5px;font-size:11.5px;white-space:nowrap;font-weight:500;line-height:1.15;box-shadow:0 8px 18px rgba(13,14,15,.15);will-change:transform}
  .fr img{width:68px;height:85px;margin-bottom:4px}
- .js .fr{animation:fl 6s ease-in-out infinite alternate}
+ .js .fr{animation:none}
  .fr:nth-child(3n+1){animation-duration:5.2s;animation-delay:-1.4s}
  .fr:nth-child(3n+2){animation-duration:6.6s;animation-delay:-3.1s}
  .hero.asm .fr,.hero.off .fr,.lite .fr,.rm .fr{animation:none}
@@ -357,7 +357,7 @@ picture{display:contents}
  .sheet h1{font-size:56px;margin-bottom:16px}
  .sheet .rt{gap:20px;padding:0}
  .sheet p{font-size:16px;line-height:1.45;max-width:none}
- .sheet p br{display:none}
+ .sheet p br,.sheet .p2{display:none}
  .sheet .cta{flex-direction:column-reverse;gap:10px}
  .sheet .btn{width:100%;padding:0 22px}
  .js .sheet h1 .ln i,.js .sheet p,.js .sheet .cta{opacity:1;transform:none;transition:none}
@@ -368,7 +368,7 @@ picture{display:contents}
  /* ---------- 2. что мы проверяем ---------- */
  .dk{margin:0 var(--sh)}
  .dk .wrap{padding:0 calc(var(--m) - var(--sh))}
- .cats{margin-top:calc(var(--vh,100svh) * -.4);padding:80px 0 40px;box-shadow:0 -16px 40px rgba(13,14,15,.16)}
+ .cats{margin-top:calc(var(--vh,100svh) * -.45);padding:80px 0 40px;box-shadow:0 -16px 40px rgba(13,14,15,.16)}
  .head{display:block;margin-bottom:28px}
  .head h2,.how h2{font-size:48px}
  .head .side{font-size:16px;margin-top:16px}
