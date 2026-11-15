@@ -338,10 +338,11 @@ picture{display:contents}
  .rm .mmenu,.rm .mnav a,.rm .mcta,.lite .mmenu,.lite .mnav a,.lite .mcta{transition:none}
 
  /* ---------- 1. первый экран ---------- */
- .hero{height:calc(var(--vh,100svh) * 2.1)}
- .hero .pin{height:var(--vh,100svh);min-height:540px}
+ .hero{height:calc(var(--vh,100svh) * 2.1 + 200px)}
+ /* лист продлён на 200 px ниже экрана: когда панель браузера прячется и экран растёт, снизу остаётся белое, а не серое */
+ .hero .pin{height:calc(var(--vh,100svh) + 200px);min-height:740px}
  .scene{top:60px;perspective:900px;touch-action:pan-y;-webkit-user-select:none;user-select:none}
- .thing{filter:none;height:calc((var(--vh,100svh) - 60px - var(--sheetH,400px)) * .68)}
+ .thing{filter:none;height:calc((var(--vh,100svh) + 140px - var(--sheetH,600px)) * .68)}
  .tsh{display:block;position:absolute;left:50%;top:50%;width:150px;height:18px;border-radius:50%;background:rgba(13,14,15,.3);filter:blur(9px);pointer-events:none}
  .fr{left:-37px;top:-55px;width:74px;padding:3px 3px 5px;font-size:11.5px;white-space:nowrap;font-weight:500;line-height:1.15;box-shadow:0 8px 18px rgba(13,14,15,.15);will-change:transform}
  .fr img{width:68px;height:85px;margin-bottom:4px}
@@ -353,7 +354,7 @@ picture{display:contents}
  @keyframes fl{from{translate:0 -4px}to{translate:0 5px}}
  .lite .scene,.rm .scene{perspective:none}
  .msg{font-size:min(15px,3.7vw);white-space:nowrap;padding:0 var(--m);transition:opacity .4s}
- .sheet{left:var(--sh);right:var(--sh);display:block;padding:28px calc(var(--m) - var(--sh)) calc(24px + env(safe-area-inset-bottom));border-radius:var(--rs) var(--rs) 0 0}
+ .sheet{left:var(--sh);right:var(--sh);display:block;padding:28px calc(var(--m) - var(--sh)) calc(224px + env(safe-area-inset-bottom));margin-bottom:0;border-radius:var(--rs) var(--rs) 0 0}
  .sheet h1{font-size:56px;margin-bottom:16px}
  .sheet .rt{gap:20px;padding:0}
  .sheet p{font-size:16px;line-height:1.45;max-width:none}
@@ -368,7 +369,7 @@ picture{display:contents}
  /* ---------- 2. что мы проверяем ---------- */
  .dk{margin:0 var(--sh)}
  .dk .wrap{padding:0 calc(var(--m) - var(--sh))}
- .cats{margin-top:calc(var(--vh,100svh) * -.45);padding:80px 0 40px;box-shadow:0 -16px 40px rgba(13,14,15,.16)}
+ .cats{margin-top:calc(var(--vh,100svh) * -.45 - 200px);padding:80px 0 40px;box-shadow:0 -16px 40px rgba(13,14,15,.16)}
  .head{display:block;margin-bottom:28px}
  .head h2,.how h2{font-size:48px}
  .head .side{font-size:16px;margin-top:16px}
@@ -501,7 +502,7 @@ picture{display:contents}
  .arts .mend{margin-top:28px}
 }
 @media (max-width:1023px) and (max-height:700px){
- :root{--sheetH:320px}
+ :root{--sheetH:520px}
  .sheet .p2{display:none}
  .sheet{padding-top:22px}
  .sheet h1{margin-bottom:12px}
