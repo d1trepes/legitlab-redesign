@@ -375,8 +375,9 @@ picture{display:contents}
  .head .side{font-size:16px;margin-top:16px}
  .head .side br{display:none}
  .tiles{display:grid;grid-template-columns:1fr 1fr;gap:var(--g)}
- .tile{transition:transform .18s var(--ease)}
- .tile:active{transform:scale(.98)}
+ a.tile,a.art,.chk a,a.chk{-webkit-touch-callout:none}
+ .tile img{transition:opacity .15s}
+ .tile:active img{opacity:.82}
  .tile:hover img{transform:none}
  .tile.big{grid-column:auto;aspect-ratio:4/3}
  .tile .btn{display:none}
@@ -483,7 +484,7 @@ picture{display:contents}
  .tile.big,.tile.sm{aspect-ratio:4/5}
  .tile .cap,.tile.sm .cap{left:12px;right:12px;bottom:12px}
  .tile .cap b,.tile.sm .cap b{font-size:18px;margin-bottom:2px}
- .tile .cap span{font-size:12px;line-height:1.3}
+ .tile .cap span{display:block;font-size:12px;line-height:1.35}
  .tile.big:first-child .cap{left:16px;bottom:14px}
  .tile.big:first-child .cap b{font-size:22px}
  /* малые плитки: подпись под фото, чтобы не ложилась на светлую вещь */
@@ -497,6 +498,9 @@ picture{display:contents}
  .arow{display:flex;gap:var(--g);overflow-x:auto;overflow-y:hidden;touch-action:pan-x pan-y;padding-bottom:4px;scroll-snap-type:x mandatory;margin:0 calc(-1 * var(--m));padding:0 var(--m);scroll-padding:0 var(--m);scrollbar-width:none;overscroll-behavior-x:contain}
  .arow::-webkit-scrollbar{display:none}
  .art{flex:0 0 82%;scroll-snap-align:start}
+ .arow [data-r]{opacity:1;transform:none;transition:none}
+ .arow{padding-right:0}
+ .arow:after{content:"";flex:0 0 calc(var(--m) - var(--g))}
  .abar{display:block;position:relative;height:2px;background:var(--line);margin-top:24px;overflow:hidden}
  .abar i{position:absolute;left:0;top:0;bottom:0;width:33.4%;background:var(--ink);will-change:transform}
  .arts .mend{margin-top:28px}
