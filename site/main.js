@@ -125,8 +125,16 @@ function frame(t) {
   pin.style.opacity = 1 - .25 * cv;
 }
 // шапка: видна наверху, прячется, пока лист наезжает, возвращается с подложкой
+// шапка над чёрным листом — чёрная, над светлым — светлая
+const darks = $$('.dk'); let hdrDk = false;
+const hdrTone = () => {
+  const y = hdr.offsetHeight / 2;
+  const d = darks.some(el => { const r = el.getBoundingClientRect(); return r.top <= y && r.bottom >= y; });
+  if (d !== hdrDk) { hdrDk = d; hdr.classList.toggle('ondk', d); }
+};
 let hdrState = '';
 function header() {
+  hdrTone();
   const y = scrollY, st = y < innerHeight * .25 ? 'top' : y < cats.offsetTop - 40 ? 'hide' : 'solid';
   if (st === hdrState) return; hdrState = st;
   hdr.classList.toggle('hide', st === 'hide'); hdr.classList.toggle('solid', st === 'solid');
@@ -277,28 +285,27 @@ const tsh = $('#tsh');
 // высота экрана фиксируется в px: панели Telegram и Safari при прокрутке не дёргают первый экран
 let VW = root.clientWidth;
 const setVH = () => root.style.setProperty('--vh', (root.clientHeight || innerHeight) + 'px');
-// координаты кадров для сцены 390×400 (от центра, px), z, поворот Y, наклон Z
+// координаты кадров для сцены 390×410 (от центра, px), z, поворот Y, наклон Z
 // две сверху, три слева, две справа
-const CM = [[-138, -120, 0, 10, -4], [-140, 8, 10, 10, 3], [-136, 134, -10, 8, -2], [-50, -134, 16, 4, 3], [84, -138, 6, -4, -3], [140, -16, 14, -10, 3], [136, 120, -6, -8, -2]];
+const CM = [[-148, -128, 0, 10, -4], [-150, 6, 10, 10, 3], [-146, 138, -10, 8, -2], [-72, -150, 16, 4, 3], [78, -152, 6, -4, -3], [148, -40, 14, -10, 3], [146, 112, -6, -8, -2]];
 const hm = { ry: 0, v: 0, drag: false, down: false, moved: false, x0: 0, ry0: 0, lx: 0, lt: 0, P: 0, T: 0, from: 0, t0: 0, raf: 0, last: 0, sp: 0 };
-let MW = 390, MH = 400, JH = 220, FS = 1, FH = 140, FW = 88;
+let MW = 390, MH = 410, JH = 280, FS = 1, FH = 112, FW = 74;
 function mSize() {
   if (!isM()) return;
   root.style.setProperty('--sheetH', sheet.offsetHeight + 'px');
   MW = scene.clientWidth; MH = scene.clientHeight;
-  JH = Math.round(Math.min(MH * .58, MW * .66 / AR)); thing.style.height = JH + 'px';
-  FS = clamp(Math.min(MH / 400, MW / 390), .62, 1.35);
-  FW = els[0].offsetWidth || 88; FH = els[0].offsetHeight || 140;
+  JH = Math.round(Math.min(MH * .68, MW * .74 / AR)); thing.style.height = JH + 'px';
+  FS = clamp(Math.min(MH / 410, MW / 390), .72, 1.3);
+  FW = els[0].offsetWidth || 74; FH = els[0].offsetHeight || 112;
   tsh.style.width = Math.round(JH * AR * .9) + 'px';
   tsh.style.transform = `translate(-50%,${Math.round(JH * .47)}px)`;
-  mScroll();
+  mApply();
 }
-const scrollPM = () => clamp(scrollY / ((hero.offsetHeight - innerHeight) * .5));
 function mApply() {
-  const P = Math.max(hm.sp, hm.P), e = ease(P), f = 1 - e, L = lite();
-  const kx = Math.min(MW / 390, 1.6), ky = MH / 400;
+  const P = hm.P, e = ease(P), f = 1 - e, L = lite();
+  const kx = Math.min(MW / 390, 1.6), ky = MH / 410;
   // собранные кадры: строка сообщения, под ней 4 + 3
-  const GS = Math.min(FS, (MW - 40 - 30) / (4 * FW), (MH - 24 - 46) / (2 * FH));
+  const GS = Math.min(1.25, (MW - 40 - 30) / (4 * FW), (MH - 40 - 46) / (2 * FH));
   const gw = FW * GS + 10, gh = FH * GS, t0 = -(36 + 2 * gh + 10) / 2;
   msg.style.top = (MH / 2 + t0) + 'px';
   const ryc = L ? 0 : hm.ry * f;
@@ -315,18 +322,20 @@ function mApply() {
   thing.style.transform = `rotateY(${-ryc}deg) translate3d(${-JH * AR * sc / 2}px,${-JH * sc / 2}px,0) scale(${sc})`;
   msg.style.opacity = clamp((P - .7) / .3);
 }
-// прокрутка: сборка кадров, затем чёрный лист наезжает, первый экран чуть уходит вглубь
-let sq = false;
+// начали листать — кадры съезжаются (короткая анимация по времени, не на каждый пиксель прокрутки);
+// вернулись наверх — разъезжаются. Чёрный лист наезжает за счёт sticky, без JS.
+let sq = false, autoW = 0;
+const setT = v => {
+  hm.T = v; hm.from = hm.P; hm.t0 = performance.now();
+  scene.setAttribute('aria-pressed', !!v);
+  if (RM) { hm.P = v; mApply(); return; }
+  kick();
+};
 function mScroll() {
   sq = false;
   if (!isM()) return;
-  const y = scrollY;
-  if (y > hero.offsetHeight + 50) return;
-  hm.sp = scrollPM();
-  const cv = clamp((y + innerHeight - cats.offsetTop) / (innerHeight * .6));
-  pin.style.transform = RM ? '' : `translateY(${(-24 * cv).toFixed(1)}px)`;
-  pin.style.opacity = (1 - .25 * cv).toFixed(3);
-  mApply();
+  const w = scrollY > 24 ? 1 : 0;
+  if (w !== autoW) { autoW = w; if (hm.T !== w) setT(w); }
 }
 addEventListener('scroll', () => { if (isM() && !sq) { sq = true; requestAnimationFrame(mScroll); } }, { passive: true });
 // цикл кадров крутится только во время жеста, инерции и сборки касанием
@@ -338,23 +347,16 @@ function mTick(t) {
     if (Math.abs(hm.ry) > .03 || Math.abs(hm.v) > .3) { hm.v += (-60 * hm.ry - 11 * hm.v) * dt; hm.ry = clamp(hm.ry + hm.v * dt, -14, 14); go = true; }
     else { hm.ry = 0; hm.v = 0; }
   }
-  if (hm.P !== hm.T) { const k = (t - hm.t0) / 760; hm.P = k >= 1 ? hm.T : lerp(hm.from, hm.T, k); go = true; }
+  if (hm.P !== hm.T) { const k = (t - hm.t0) / 700; hm.P = k >= 1 ? hm.T : lerp(hm.from, hm.T, k); go = true; }
   mApply();
   if (go) hm.raf = requestAnimationFrame(mTick); else hm.last = 0;
 }
 const kick = () => { if (!hm.raf) { hm.last = 0; hm.raf = requestAnimationFrame(mTick); } };
-const mToggle = () => {
-  const on = Math.max(hm.sp, hm.P) > .5;
-  if (on && hm.sp > .02) { hm.T = hm.P = 0; scrollTo({ top: 0, behavior: RM ? 'auto' : 'smooth' }); return; }
-  hm.T = on ? 0 : 1; hm.from = hm.P; hm.t0 = performance.now();
-  scene.setAttribute('aria-pressed', !!hm.T);
-  if (RM) { hm.P = hm.T; mApply(); return; }
-  kick();
-};
+const mToggle = () => setT(hm.T ? 0 : 1);
 scene.addEventListener('pointerdown', e => {
   if (!isM()) return;
   hm.down = true; hm.moved = false; hm.x0 = hm.lx = e.clientX;
-  if (lite() || Math.max(hm.sp, hm.P) > .3) return;
+  if (lite() || hm.P > .3) return;
   hm.drag = true; hm.ry0 = hm.ry; hm.lt = e.timeStamp; hm.v = 0;
 }, { passive: true });
 scene.addEventListener('pointermove', e => {
@@ -376,6 +378,7 @@ new IntersectionObserver(es => es.forEach(e => hero.classList.toggle('off', !e.i
 let lastY = scrollY, mhs = '', hq = false, menuOpen = false;
 const mHdr = () => {
   if (!isM() || menuOpen) return;
+  hdrTone();
   const y = scrollY, d = y - lastY; let st = mhs;
   if (y < 10) st = 'top'; else if (d > 4 && y > 60) st = 'hide'; else if (d < -4) st = 'solid';
   if (Math.abs(d) > 4 || y < 10) lastY = y;
@@ -483,7 +486,7 @@ const enterM = () => {
   hdr.classList.remove('hide', 'solid'); mhs = ''; lastY = scrollY;
   $('#phoneFit').style.transform = '';
   hm.P = hm.T = 0;
-  mSize(); aUpd(); lazyFade();
+  mSize(); mScroll(); aUpd(); lazyFade();
   if (how.getBoundingClientRect().top < innerHeight) { cur = -1; show(0); }
 };
 const enterD = () => {

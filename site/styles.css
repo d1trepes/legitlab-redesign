@@ -50,6 +50,13 @@ img{display:block;max-width:100%}
 .hdr.hide{transform:translateY(-100%)}
 .hdr.solid{background:rgba(232,233,233,.96);box-shadow:0 1px 0 var(--line)}
 .rm .hdr{transition:none}
+.hdr.ondk{color:#F2F3F3}
+.hdr.ondk.solid{background:rgba(13,14,15,.97);box-shadow:none}
+.hdr.ondk .fill{background:#fff;color:var(--ink);border-color:#fff}
+.hdr.ondk .fill:hover{background:#D6D8D9;border-color:#D6D8D9}
+.hdr.ondk .out{color:#fff;border-color:rgba(255,255,255,.72)}
+.hdr.ondk .out:hover{background:#fff;color:var(--ink);border-color:#fff}
+.hdr.ondk .nav a:hover{color:var(--dmute)}
 .hdr .wrap{height:76px;display:flex;align-items:center;gap:44px}
 .nav{display:flex;gap:30px;font-size:15px;margin-right:auto}
 .nav a{transition:color .15s}.nav a:hover{color:var(--mute)}
@@ -304,6 +311,7 @@ picture{display:contents}
  .mbtn i:first-child{transform:translateY(-4px)}
  .mbtn i:last-child{transform:translateY(3px)}
  .mbtn:focus-visible{outline:2px solid var(--ink);outline-offset:3px}
+ .hdr.ondk .mbtn{border-color:rgba(255,255,255,.72)}
  .hdr.mon{background:transparent;box-shadow:none;transform:none;color:#fff}
  .hdr.mon .bs{visibility:hidden}
  .hdr.mon .mbtn{border-color:rgba(255,255,255,.72)}
@@ -330,13 +338,13 @@ picture{display:contents}
  .rm .mmenu,.rm .mnav a,.rm .mcta,.lite .mmenu,.lite .mnav a,.lite .mcta{transition:none}
 
  /* ---------- 1. первый экран ---------- */
- .hero{height:calc(var(--vh,100svh) * 1.7)}
+ .hero{height:calc(var(--vh,100svh) * 1.4)}
  .hero .pin{height:var(--vh,100svh);min-height:540px}
  .scene{top:60px;perspective:900px;touch-action:pan-y;-webkit-user-select:none;user-select:none}
- .thing{filter:none;height:calc((var(--vh,100svh) - 60px - var(--sheetH,400px)) * .58)}
+ .thing{filter:none;height:calc((var(--vh,100svh) - 60px - var(--sheetH,400px)) * .68)}
  .tsh{display:block;position:absolute;left:50%;top:50%;width:150px;height:18px;border-radius:50%;background:rgba(13,14,15,.3);filter:blur(9px);pointer-events:none}
- .fr{left:-44px;top:-70px;width:88px;padding:4px 4px 7px;font-size:13px;font-weight:500;line-height:1.15;box-shadow:0 10px 24px rgba(13,14,15,.16);will-change:auto}
- .fr img{width:80px;height:100px;margin-bottom:6px}
+ .fr{left:-37px;top:-55px;width:74px;padding:3px 3px 5px;font-size:11.5px;white-space:nowrap;font-weight:500;line-height:1.15;box-shadow:0 8px 18px rgba(13,14,15,.15);will-change:transform}
+ .fr img{width:68px;height:85px;margin-bottom:4px}
  .js .fr{animation:fl 6s ease-in-out infinite alternate}
  .fr:nth-child(3n+1){animation-duration:5.2s;animation-delay:-1.4s}
  .fr:nth-child(3n+2){animation-duration:6.6s;animation-delay:-3.1s}
@@ -344,7 +352,7 @@ picture{display:contents}
  .hero.off .fr{animation-play-state:paused}
  @keyframes fl{from{translate:0 -4px}to{translate:0 5px}}
  .lite .scene,.rm .scene{perspective:none}
- .msg{font-size:15px;padding:0 var(--m);transition:opacity .4s}
+ .msg{font-size:min(15px,3.7vw);white-space:nowrap;padding:0 var(--m);transition:opacity .4s}
  .sheet{left:var(--sh);right:var(--sh);display:block;padding:28px calc(var(--m) - var(--sh)) calc(24px + env(safe-area-inset-bottom));border-radius:var(--rs) var(--rs) 0 0}
  .sheet h1{font-size:56px;margin-bottom:16px}
  .sheet .rt{gap:20px;padding:0}
@@ -352,11 +360,15 @@ picture{display:contents}
  .sheet p br{display:none}
  .sheet .cta{flex-direction:column-reverse;gap:10px}
  .sheet .btn{width:100%;padding:0 22px}
+ .js .sheet h1 .ln i,.js .sheet p,.js .sheet .cta{opacity:1;transform:none;transition:none}
+ .js .sheet{transform:translateY(105%);animation:none!important}
+ .js.ready .sheet{transform:none;transition:transform .8s var(--ease)}
+ .rm .sheet{transform:none!important;transition:none!important}
 
  /* ---------- 2. что мы проверяем ---------- */
  .dk{margin:0 var(--sh)}
  .dk .wrap{padding:0 calc(var(--m) - var(--sh))}
- .cats{margin-top:calc(var(--vh,100svh) * -.35);padding:80px 0 40px;box-shadow:0 -16px 40px rgba(13,14,15,.16)}
+ .cats{margin-top:calc(var(--vh,100svh) * -.4);padding:80px 0 40px;box-shadow:0 -16px 40px rgba(13,14,15,.16)}
  .head{display:block;margin-bottom:28px}
  .head h2,.how h2{font-size:48px}
  .head .side{font-size:16px;margin-top:16px}
@@ -481,7 +493,7 @@ picture{display:contents}
  .tile.big:first-child .cap span{font-size:14px}
  .how .rt{height:500px}
  .phone-fit{transform:scale(.78)!important}
- .arow{display:flex;gap:var(--g);overflow-x:auto;scroll-snap-type:x mandatory;margin:0 calc(-1 * var(--m));padding:0 var(--m);scroll-padding:0 var(--m);scrollbar-width:none;overscroll-behavior-x:contain}
+ .arow{display:flex;gap:var(--g);overflow-x:auto;overflow-y:hidden;touch-action:pan-x pan-y;padding-bottom:4px;scroll-snap-type:x mandatory;margin:0 calc(-1 * var(--m));padding:0 var(--m);scroll-padding:0 var(--m);scrollbar-width:none;overscroll-behavior-x:contain}
  .arow::-webkit-scrollbar{display:none}
  .art{flex:0 0 82%;scroll-snap-align:start}
  .abar{display:block;position:relative;height:2px;background:var(--line);margin-top:24px;overflow:hidden}
