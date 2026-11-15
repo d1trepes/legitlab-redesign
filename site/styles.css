@@ -19,7 +19,7 @@ img{display:block;max-width:100%}
 .mute{color:var(--mute)}
 
 /* кнопки: только заливка и обводка */
-.btn{display:inline-flex;align-items:center;justify-content:center;height:48px;padding:0 26px;border-radius:0;font-family:var(--txt);font-weight:500;font-size:15px;border:1.5px solid var(--ink);white-space:nowrap;transition:background .18s,color .18s,border-color .18s,transform .08s;user-select:none}
+.btn{display:inline-flex;align-items:center;justify-content:center;height:48px;padding:0 26px;border-radius:12px;font-family:var(--txt);font-weight:500;font-size:15px;border:1.5px solid var(--ink);white-space:nowrap;transition:background .18s,color .18s,border-color .18s,transform .08s;user-select:none}
 .btn.sm{height:40px;padding:0 18px;font-size:14px}
 .fill{background:var(--ink);color:var(--surf)}
 .fill:hover{background:var(--hov);border-color:var(--hov)}
@@ -299,7 +299,7 @@ picture{display:contents}
  .hdr .logo{gap:4px}
  .hdr .logo svg{width:24px;height:24px}
  .hdr .logo .wm{font-size:11px}
- .mbtn{display:block;position:relative;width:44px;height:44px;border:1.5px solid var(--ink);background:transparent;flex:none;margin-left:4px}
+ .mbtn{display:block;position:relative;width:44px;height:44px;border:1.5px solid var(--ink);border-radius:12px;background:transparent;flex:none;margin-left:4px}
  .mbtn i{position:absolute;left:11px;right:11px;height:1.5px;background:currentColor;top:50%;transition:transform .3s var(--ease)}
  .mbtn i:first-child{transform:translateY(-4px)}
  .mbtn i:last-child{transform:translateY(3px)}
@@ -462,10 +462,23 @@ picture{display:contents}
 @media (max-width:767px){
  :root{--m:20px;--g:12px}
  .sheet h1{font-size:56px}
- .tiles{grid-template-columns:1fr}
- .strip{display:flex;gap:var(--g);overflow-x:auto;scroll-snap-type:x mandatory;margin:0 calc(var(--sh) - var(--m));padding:0 calc(var(--m) - var(--sh));scroll-padding:0 calc(var(--m) - var(--sh));scrollbar-width:none;overscroll-behavior-x:contain}
- .strip::-webkit-scrollbar{display:none}
- .tile.sm{flex:0 0 72%;scroll-snap-align:start}
+ :root{--sh:0px}
+ /* категории: все пять видны сразу — верхняя одежда во всю ширину, остальные 2 × 2 */
+ .tiles{grid-template-columns:1fr 1fr;gap:10px}
+ .strip{display:contents}
+ .tiles>.tile:first-child{grid-column:1/-1;aspect-ratio:16/10}
+ .tile.big,.tile.sm{aspect-ratio:4/5}
+ .tile .cap,.tile.sm .cap{left:12px;right:12px;bottom:12px}
+ .tile .cap b,.tile.sm .cap b{font-size:18px;margin-bottom:2px}
+ .tile .cap span{font-size:12px;line-height:1.3}
+ .tile.big:first-child .cap{left:16px;bottom:14px}
+ .tile.big:first-child .cap b{font-size:22px}
+ /* малые плитки: подпись под фото, чтобы не ложилась на светлую вещь */
+ .tile.big+.tile.big,.strip .tile{aspect-ratio:auto;overflow:visible;background:none;border-radius:0}
+ .tile.big+.tile.big img,.strip .tile img{position:relative;inset:auto;height:auto;aspect-ratio:4/5;border-radius:var(--rt);background:#1a1b1c}
+ .tile.big+.tile.big .cap,.strip .tile .cap{position:static;margin-top:10px}
+ .tile.big+.tile.big .cap span,.strip .tile .cap span{color:rgba(242,243,243,.6)}
+ .tile.big:first-child .cap span{font-size:14px}
  .how .rt{height:500px}
  .phone-fit{transform:scale(.78)!important}
  .arow{display:flex;gap:var(--g);overflow-x:auto;scroll-snap-type:x mandatory;margin:0 calc(-1 * var(--m));padding:0 var(--m);scroll-padding:0 var(--m);scrollbar-width:none;overscroll-behavior-x:contain}

@@ -34,7 +34,7 @@ save('assets/v3/hero-puffer.png', 'site/img/hero-puffer-700.webp', h=700, q=78)
 save('assets/v3/final-person.png', 'site/img/final-person-1000.webp', h=1000, q=78)
 for n in ['outerwear-wide', 'sneakers-wide']:
     save(f'assets/v3/cat-{n}.png', f'site/img/cats/{n}-480.webp', w=480, q=74)
-for n in ['clothing', 'bags', 'accessories']:
+for n in ['clothing', 'bags', 'accessories', 'sneakers']:
     for w in (480, 800): save(f'assets/v2/cat-{n}.png', f'site/img/cats/{n}-{w}.webp', w=w, q=74)
 for i in 'AXNH7B W47H8W 817FVB 1WB5ON IRJXHR Z9EWEH 4U462Q MXVU0I N59BDU 01LKHM 392CVO ZHM645 YE88LN 22HOYN LVIWH2 BK9NMB'.split():
     save(f'content/catalog-photos/{i}.jpg', f'site/img/checks/{i}-400.webp', w=400, q=74)
